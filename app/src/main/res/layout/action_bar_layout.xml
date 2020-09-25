@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+
+        <TextView
+            android:id="@+id/txtActionBarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawablePadding="16dp"
+            android:fontFamily="@font/proxima_nova_bold"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:drawableLeftCompat="@drawable/ic_baseline_keyboard_backspace_24"
+            />
+
+
+        <ru.nikartm.support.ImageBadgeView
+            android:id="@+id/badge_cart"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            app:ibv_badgeValue="1"
+            app:ibv_badgePosition="top_right"
+            app:ibv_badgeTextSize="8sp"
+            android:padding="3dp"
+            app:ibv_fixedBadgeRadius="7dp"
+            app:ibv_badgeTextStyle="normal"
+            app:ibv_badgeTextColor="@color/white"
+            app:ibv_badgeColor="#00ACC1"
+            app:ibv_badgeLimitValue="false"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_baseline_shopping_cart_24" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:background="@color/colorGray" />
+</LinearLayout>
