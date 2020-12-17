@@ -4,8 +4,8 @@ import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.buddy.basket.model.ResItemsListResponse;
-import com.buddy.basket.model.RestaurantListResponse;
+import com.buddy.basket.model.ItemsListResponse;
+import com.buddy.basket.model.ShopsListResponse;
 import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.buddy.basket.network.RetrofitService.*;
 
 public class JournalRepository {
     private MutableLiveData<String> toastMessageObserver;
@@ -27,11 +29,11 @@ public class JournalRepository {
         return journalRepository;
     }
 
-    private Api newsApi;
-
+   private ApiInterface newsApiInterface;
 
     public JournalRepository(Context context) {
-        newsApi = RetrofitService.createService(Api.class,context);
+
+        newsApiInterface = createService(ApiInterface.class, context);
         progressbarObservable = new MutableLiveData<>();
         toastMessageObserver = new MutableLiveData<>();
     }
@@ -45,12 +47,13 @@ public class JournalRepository {
     }
 
     // getting restaurant data response
-    public MutableLiveData<RestaurantListResponse> getRestaurantData(JsonObject jsonObject) {
+    public MutableLiveData<ShopsListResponse> getShopsListData(JsonObject jsonObject) {
         progressbarObservable.setValue(true);
-        MutableLiveData<RestaurantListResponse> homeData = new MutableLiveData<>();
-        newsApi.getRestaurantList(jsonObject).enqueue(new Callback<RestaurantListResponse>() {
+        MutableLiveData<ShopsListResponse> homeData = new MutableLiveData<>();
+
+        newsApiInterface.getShopsList(jsonObject).enqueue(new Callback<ShopsListResponse>() {
             @Override
-            public void onResponse(@NotNull Call<RestaurantListResponse> call, @NotNull Response<RestaurantListResponse> response) {
+            public void onResponse(@NotNull Call<ShopsListResponse> call, @NotNull Response<ShopsListResponse> response) {
                 if (response.isSuccessful()) {
                     progressbarObservable.setValue(false);
                     homeData.setValue(response.body());
@@ -62,7 +65,7 @@ public class JournalRepository {
             }
 
             @Override
-            public void onFailure(@NotNull Call<RestaurantListResponse> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<ShopsListResponse> call, @NotNull Throwable t) {
                 if (t instanceof NoConnectivityException) {
                     // show No Connectivity message to user or do whatever you want.
                     toastMessageObserver.setValue(t.getMessage());
@@ -77,12 +80,12 @@ public class JournalRepository {
     }
 
     // getting list items data response
-    public MutableLiveData<ResItemsListResponse> getRestaurantItemsData(JsonObject jsonObject) {
+    public MutableLiveData<ItemsListResponse> getItemsListData(JsonObject jsonObject) {
         progressbarObservable.setValue(true);
-        MutableLiveData<ResItemsListResponse> homeData = new MutableLiveData<>();
-        newsApi.getItemsList(jsonObject).enqueue(new Callback<ResItemsListResponse>() {
+        MutableLiveData<ItemsListResponse> homeData = new MutableLiveData<>();
+        newsApiInterface.getItemsList(jsonObject).enqueue(new Callback<ItemsListResponse>() {
             @Override
-            public void onResponse(@NotNull Call<ResItemsListResponse> call, @NotNull Response<ResItemsListResponse> response) {
+            public void onResponse(@NotNull Call<ItemsListResponse> call, @NotNull Response<ItemsListResponse> response) {
                 if (response.isSuccessful()) {
                     progressbarObservable.setValue(false);
                     homeData.setValue(response.body());
@@ -94,7 +97,7 @@ public class JournalRepository {
             }
 
             @Override
-            public void onFailure(@NotNull Call<ResItemsListResponse> call, @NotNull Throwable t) {
+            public void onFailure(@NotNull Call<ItemsListResponse> call, @NotNull Throwable t) {
                 if (t instanceof NoConnectivityException) {
                     // show No Connectivity message to user or do whatever you want.
                     toastMessageObserver.setValue(t.getMessage());

@@ -1,55 +1,45 @@
 package com.buddy.basket.fragments;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.Constraints;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.buddy.basket.R;
-import com.buddy.basket.activities.HomeActivity;
-import com.buddy.basket.adapters.RestaurantsItemsListAdapter;
-import com.buddy.basket.adapters.RestaurantsListAdapter;
-import com.buddy.basket.databinding.FragmentRestaurantsBinding;
-import com.buddy.basket.databinding.FragmentRestaurantsItemsListBinding;
+import com.buddy.basket.adapters.ItemsListAdapter;
+
+
+import com.buddy.basket.databinding.FragmentItemsListBinding;
 import com.buddy.basket.helper.utils;
-import com.buddy.basket.model.Product;
-import com.buddy.basket.model.ResItemsListResponse;
-import com.buddy.basket.model.RestaurantListResponse;
-import com.buddy.basket.viewmodels.RestaurantItemsListViewModel;
-import com.buddy.basket.viewmodels.RestaurantsViewModel;
+import com.buddy.basket.model.ItemDetailsResponse;
+import com.buddy.basket.model.ItemsListResponse;
+import com.buddy.basket.viewmodels.ItemsListViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
 
+public class ItemsListFragment extends Fragment {
 
-public class RestaurantsItemsListFragment extends Fragment implements RestaurantsItemsListAdapter.RestaurantItemInterface {
+    ArrayList<ItemsListResponse.DataBean> dataBeanArrayList = new ArrayList<>();
+    List<ItemDetailsResponse> itemDetailsResponseList = new ArrayList<>();
 
-    ArrayList<ResItemsListResponse.DataBean> dataBeanArrayList = new ArrayList<>();
-    List<Product> productList = new ArrayList<>();
-
-    RestaurantItemsListViewModel restaurantsViewModel;
-    FragmentRestaurantsItemsListBinding binding;
-    RestaurantsItemsListAdapter restaurantsListAdapter;
+    ItemsListViewModel restaurantsViewModel;
+    FragmentItemsListBinding binding;
+    ItemsListAdapter restaurantsListAdapter;
 
     String id,name,type,address,time;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        restaurantsViewModel = new ViewModelProvider(this).get(RestaurantItemsListViewModel.class);
+        restaurantsViewModel = new ViewModelProvider(this).get(ItemsListViewModel.class);
         //View root = inflater.inflate(R.layout.fragment_restaurants, container, false);
-        binding = FragmentRestaurantsItemsListBinding.inflate(inflater,container,false);
+        binding = FragmentItemsListBinding.inflate(inflater,container,false);
 
         //hideBottomNav();
 
@@ -104,17 +94,17 @@ public class RestaurantsItemsListFragment extends Fragment implements Restaurant
         });
 
 
-        // get home data
+       /* // get home data
         restaurantsViewModel.getRepository().observe(getViewLifecycleOwner(), homeResponse -> {
-            List<ResItemsListResponse.DataBean> catDetailsBeanList = homeResponse.getData();
+            List<ItemsListResponse.DataBean> catDetailsBeanList = homeResponse.getData();
 
             dataBeanArrayList.addAll(catDetailsBeanList);
-            for (ResItemsListResponse.DataBean product : catDetailsBeanList){
-                productList.add(new Product(product.getItem_ID(),product.getItem_Name(),product.getCategory(),product.getType(),product.getImgUrl(),Double.parseDouble(product.getItem_Price()),0));
+            for (ItemsListResponse.DataBean product : catDetailsBeanList){
+                itemDetailsResponseList.add(new ItemDetailsResponse(product.getItem_ID(),product.getItem_Name(),product.getCategory(),product.getType(),product.getImgUrl(),Double.parseDouble(product.getItem_Price()),0));
             }
 
 
-            restaurantsListAdapter = new RestaurantsItemsListAdapter(productList,getActivity(),this);
+            restaurantsListAdapter = new ItemsListAdapter(itemDetailsResponseList,getActivity(),this);
             binding.recyclerHomeList.setAdapter(restaurantsListAdapter);
 
 
@@ -123,7 +113,7 @@ public class RestaurantsItemsListFragment extends Fragment implements Restaurant
 
             restaurantsListAdapter.notifyDataSetChanged();
 
-        });
+        });*/
 
 
 
@@ -131,23 +121,23 @@ public class RestaurantsItemsListFragment extends Fragment implements Restaurant
         return binding.getRoot();
     }
 
-    @Override
-    public void onMinusClick(int position, Product product) {
-        int i = productList.indexOf(product);
-        Log.d(TAG, "onMinusClick: "+product.getQty());
-        if (product.getQty() > 0) {
+   /* @Override
+    public void onMinusClick(int position, ItemDetailsResponse itemDetailsResponse) {
+        int i = itemDetailsResponseList.indexOf(itemDetailsResponse);
+        Log.d(TAG, "onMinusClick: "+ itemDetailsResponse.getQty());
+        if (itemDetailsResponse.getQty() > 0) {
 
-            Product updatedProduct = new Product(
-                    product.getId(), product.getPdtName(), product.getCategory(), product.getType(),product.getImage(),
-                    product.getPrice(),
-                    (product.getQty() - 1)
+            ItemDetailsResponse updatedItemDetailsResponse = new ItemDetailsResponse(
+                    itemDetailsResponse.getId(), itemDetailsResponse.getPdtName(), itemDetailsResponse.getCategory(), itemDetailsResponse.getType(), itemDetailsResponse.getImage(),
+                    itemDetailsResponse.getPrice(),
+                    (itemDetailsResponse.getQty() - 1)
             );
 
-            productList.remove(product);
-            productList.add(i, updatedProduct);
+            itemDetailsResponseList.remove(itemDetailsResponse);
+            itemDetailsResponseList.add(i, updatedItemDetailsResponse);
 
             restaurantsListAdapter.notifyDataSetChanged();
-            Log.d(TAG, "onMinusClick1: "+product.getQty());
+            Log.d(TAG, "onMinusClick1: "+ itemDetailsResponse.getQty());
 
             calculateCartTotal();
         }
@@ -155,32 +145,32 @@ public class RestaurantsItemsListFragment extends Fragment implements Restaurant
     }
 
     @Override
-    public void onPlusClick(int position, Product product) {
-        int i = productList.indexOf(product);
-        Product updatedProduct = new Product(
-                product.getId(), product.getPdtName(), product.getCategory(), product.getType(),product.getImage(),
-                product.getPrice(),
-                (product.getQty() + 1)
+    public void onPlusClick(int position, ItemDetailsResponse itemDetailsResponse) {
+        int i = itemDetailsResponseList.indexOf(itemDetailsResponse);
+        ItemDetailsResponse updatedItemDetailsResponse = new ItemDetailsResponse(
+                itemDetailsResponse.getId(), itemDetailsResponse.getPdtName(), itemDetailsResponse.getCategory(), itemDetailsResponse.getType(), itemDetailsResponse.getImage(),
+                itemDetailsResponse.getPrice(),
+                (itemDetailsResponse.getQty() + 1)
         );
 
-        productList.remove(product);
-        productList.add(i, updatedProduct);
+        itemDetailsResponseList.remove(itemDetailsResponse);
+        itemDetailsResponseList.add(i, updatedItemDetailsResponse);
 
         restaurantsListAdapter.notifyDataSetChanged();
         calculateCartTotal();
     }
 
     @Override
-    public void onAddClick(int position, Product product) {
-        int i = productList.indexOf(product);
-        Product updatedProduct = new Product(
-                product.getId(), product.getPdtName(), product.getCategory(), product.getType(),product.getImage(),
-                product.getPrice(),
+    public void onAddClick(int position, ItemDetailsResponse itemDetailsResponse) {
+        int i = itemDetailsResponseList.indexOf(itemDetailsResponse);
+        ItemDetailsResponse updatedItemDetailsResponse = new ItemDetailsResponse(
+                itemDetailsResponse.getId(), itemDetailsResponse.getPdtName(), itemDetailsResponse.getCategory(), itemDetailsResponse.getType(), itemDetailsResponse.getImage(),
+                itemDetailsResponse.getPrice(),
                 1
         );
 
-        productList.remove(product);
-        productList.add(i, updatedProduct);
+        itemDetailsResponseList.remove(itemDetailsResponse);
+        itemDetailsResponseList.add(i, updatedItemDetailsResponse);
         restaurantsListAdapter.notifyDataSetChanged();
         calculateCartTotal();
     }
@@ -190,7 +180,7 @@ public class RestaurantsItemsListFragment extends Fragment implements Restaurant
 
         int grandTotal = 0;
         int itemCount = 0;
-        for (Product order : productList) {
+        for (ItemDetailsResponse order : itemDetailsResponseList) {
 
             grandTotal += order.getPrice() * order.getQty();
 
@@ -207,7 +197,7 @@ public class RestaurantsItemsListFragment extends Fragment implements Restaurant
             binding.actionBottomCart.getRoot().setVisibility(View.GONE);
         }
 
-       /* btnAddtocart.setOnClickListener(view -> {
+       *//* btnAddtocart.setOnClickListener(view -> {
 
             if (btnAddtocart.getText().toString().equalsIgnoreCase("GOTO CART")){
                 Intent intent = new Intent(ProductsActivity.this,HomeActivity.class);
@@ -217,8 +207,8 @@ public class RestaurantsItemsListFragment extends Fragment implements Restaurant
                 addToCart(cartArray);
             }
 
-        });*/
+        });*//*
 
 
-    }
+    }*/
 }

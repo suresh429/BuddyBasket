@@ -1,39 +1,28 @@
 package com.buddy.basket.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.buddy.basket.R;
 import com.buddy.basket.databinding.RestaurantsItemsListBinding;
-import com.buddy.basket.model.Product;
-import com.buddy.basket.model.ResItemsListResponse;
-import com.buddy.basket.model.RestaurantListResponse;
+import com.buddy.basket.model.ItemDetailsResponse;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
 
+public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.ViewHolder> {
 
-public class RestaurantsItemsListAdapter extends RecyclerView.Adapter<RestaurantsItemsListAdapter.ViewHolder> {
-
-    List<Product> modelList;
+    List<ItemDetailsResponse.ItemDetailsBean> modelList;
     Context context;
-    RestaurantItemInterface restaurantItemInterface;
-    public RestaurantsItemsListAdapter(List<Product> modelList, Context context,RestaurantItemInterface restaurantItemInterface) {
+     public RestaurantItemInterface restaurantItemInterface;
+    public ItemsListAdapter(List<ItemDetailsResponse.ItemDetailsBean> modelList, Context context, RestaurantItemInterface restaurantItemInterface) {
         this.modelList = modelList;
         this.context = context;
         this.restaurantItemInterface = restaurantItemInterface;
@@ -41,18 +30,18 @@ public class RestaurantsItemsListAdapter extends RecyclerView.Adapter<Restaurant
 
     @NonNull
     @Override
-    public RestaurantsItemsListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemsListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(RestaurantsItemsListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RestaurantsItemsListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemsListAdapter.ViewHolder holder, int position) {
 
-        holder.rowItemBinding.txtItemName.setText(modelList.get(position).getPdtName());
+        holder.rowItemBinding.txtItemName.setText(modelList.get(position).getItemname());
         holder.rowItemBinding.txtItemPrice.setText("\u20B9"+modelList.get(position).getPrice());
-        holder.rowItemBinding.txtItemCategory.setText(modelList.get(position).getCategory());
+        holder.rowItemBinding.txtItemCategory.setText(modelList.get(position).getDescription());
 
-        if (modelList.get(position).getType().equalsIgnoreCase("Vegetarian")){
+        if (modelList.get(position).getChoices().equalsIgnoreCase("veg")){
             holder.rowItemBinding.imgItemType.setImageResource(R.drawable.ic_baseline_green_24);
         }else {
             holder.rowItemBinding.imgItemType.setImageResource(R.drawable.ic_baseline_red_24);
@@ -60,7 +49,7 @@ public class RestaurantsItemsListAdapter extends RecyclerView.Adapter<Restaurant
 
         Glide.with(context).load(modelList.get(position).getImage()).into(holder.rowItemBinding.imgItem);
 
-        if (modelList.get(position).getQty() == 0) {
+       /* if (modelList.get(position).getQty() == 0) {
             holder.rowItemBinding.productQuantity.setText("ADD");
             holder.rowItemBinding.productMinus.setVisibility(View.GONE);
             holder.rowItemBinding.productPlus.setVisibility(View.GONE);
@@ -93,7 +82,7 @@ public class RestaurantsItemsListAdapter extends RecyclerView.Adapter<Restaurant
             restaurantItemInterface.onPlusClick(position, modelList.get(position));
 
         });
-
+*/
 
         holder.rowItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,10 +114,10 @@ public class RestaurantsItemsListAdapter extends RecyclerView.Adapter<Restaurant
     }
 
     public interface RestaurantItemInterface {
-        void onMinusClick(int position,Product product);
+        void onMinusClick(int position, ItemDetailsResponse itemDetailsResponse);
 
-        void onPlusClick(int position,Product product);
+        void onPlusClick(int position, ItemDetailsResponse itemDetailsResponse);
 
-        void onAddClick(int position,Product product);
+        void onAddClick(int position, ItemDetailsResponse itemDetailsResponse);
     }
 }

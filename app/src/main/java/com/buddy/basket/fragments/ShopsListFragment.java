@@ -10,36 +10,36 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.buddy.basket.adapters.RestaurantsListAdapter;
-import com.buddy.basket.databinding.FragmentRestaurantsBinding;
+import com.buddy.basket.adapters.ShopsListAdapter;
+import com.buddy.basket.databinding.FragmentShopsNamesBinding;
 import com.buddy.basket.helper.utils;
-import com.buddy.basket.model.RestaurantListResponse;
-import com.buddy.basket.viewmodels.RestaurantsViewModel;
+import com.buddy.basket.model.ShopsListResponse;
+import com.buddy.basket.viewmodels.ShopsViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class RestaurantsListFragment extends Fragment {
+public class ShopsListFragment extends Fragment {
 
 
-    ArrayList<RestaurantListResponse.DataBean> dataBeanArrayList = new ArrayList<>();
+    ArrayList<ShopsListResponse.DataBean> dataBeanArrayList = new ArrayList<>();
 
-    RestaurantsViewModel restaurantsViewModel;
-    FragmentRestaurantsBinding binding;
-    RestaurantsListAdapter restaurantsListAdapter;
+    ShopsViewModel shopsViewModel;
+    FragmentShopsNamesBinding binding;
+    ShopsListAdapter shopsListAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        restaurantsViewModel = new ViewModelProvider(this).get(RestaurantsViewModel.class);
+        shopsViewModel = new ViewModelProvider(this).get(ShopsViewModel.class);
         //View root = inflater.inflate(R.layout.fragment_restaurants, container, false);
-        binding = FragmentRestaurantsBinding.inflate(inflater,container,false);
+        binding = FragmentShopsNamesBinding.inflate(inflater,container,false);
 
-        restaurantsViewModel.init("Kakinada","Jayendra Nagar",requireActivity());
+        shopsViewModel.init("Kakinada","Jayendra Nagar",requireActivity());
 
         // Alert toast msg
-        restaurantsViewModel.getToastObserver().observe(getViewLifecycleOwner(), message -> {
+        shopsViewModel.getToastObserver().observe(getViewLifecycleOwner(), message -> {
             // Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
             Snackbar snackbar = Snackbar.make(binding.getRoot().getRootView(), message, Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
@@ -53,7 +53,7 @@ public class RestaurantsListFragment extends Fragment {
 
 
         // progress bar
-        restaurantsViewModel.getProgressbarObservable().observe(getViewLifecycleOwner(), aBoolean -> {
+        shopsViewModel.getProgressbarObservable().observe(getViewLifecycleOwner(), aBoolean -> {
             if (aBoolean){
                 binding.progressBar.setVisibility(View.VISIBLE);
 
@@ -65,19 +65,19 @@ public class RestaurantsListFragment extends Fragment {
 
 
         // get home data
-        restaurantsViewModel.getRepository().observe(getViewLifecycleOwner(), homeResponse -> {
-            List<RestaurantListResponse.DataBean> catDetailsBeanList = homeResponse.getData();
+        shopsViewModel.getRepository().observe(getViewLifecycleOwner(), homeResponse -> {
+            List<ShopsListResponse.DataBean> catDetailsBeanList = homeResponse.getData();
 
             dataBeanArrayList.addAll(catDetailsBeanList);
 
-            restaurantsListAdapter = new RestaurantsListAdapter(catDetailsBeanList,getActivity());
-            binding.recyclerHomeList.setAdapter(restaurantsListAdapter);
+            shopsListAdapter = new ShopsListAdapter(catDetailsBeanList,getActivity());
+            binding.recyclerHomeList.setAdapter(shopsListAdapter);
 
 
 
             binding.progressBar.setVisibility(View.GONE);
 
-            restaurantsListAdapter.notifyDataSetChanged();
+            shopsListAdapter.notifyDataSetChanged();
 
         });
 

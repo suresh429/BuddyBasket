@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.buddy.basket.R;
 import com.buddy.basket.databinding.RestaurantItemBinding;
 
-import com.buddy.basket.model.RestaurantListResponse;
+import com.buddy.basket.model.ShopsListResponse;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -28,33 +28,33 @@ import com.bumptech.glide.request.transition.Transition;
 import java.util.List;
 
 
-public class RestaurantsListAdapter extends RecyclerView.Adapter<RestaurantsListAdapter.ViewHolder> {
+public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.ViewHolder> {
 
-    List<RestaurantListResponse.DataBean> modelList;
+    List<ShopsListResponse.DataBean> modelList;
 
     Context context;
-    public RestaurantsListAdapter(List<RestaurantListResponse.DataBean> modelList, Context context) {
+    public ShopsListAdapter(List<ShopsListResponse.DataBean> modelList, Context context) {
         this.modelList = modelList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public RestaurantsListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ShopsListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(RestaurantItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RestaurantsListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ShopsListAdapter.ViewHolder holder, int position) {
 
-        holder.rowItemBinding.txtRestaruantName.setText(modelList.get(position).getRestaurant_Name());
+        holder.rowItemBinding.txtRestaruantName.setText(modelList.get(position).getShopname());
         holder.rowItemBinding.txtAddreess.setText(modelList.get(position).getAddress());
-        holder.rowItemBinding.txtAvgPrepTime.setText(modelList.get(position).getAvgPrepTime());
-        holder.rowItemBinding.txtKnownFor.setText(modelList.get(position).getKnownFor());
+        holder.rowItemBinding.txtAvgPrepTime.setText(modelList.get(position).getOpentime());
+        holder.rowItemBinding.txtKnownFor.setText(modelList.get(position).getClosetime());
       //  holder.rowItemBinding.txtOperationStatus.setText(modelList.get(position).getOperationStatus());
 
         Glide.with(context)
-                .load(modelList.get(position).getRestaurantLogo())
+                .load(modelList.get(position).getImage())
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
                 .into(new CustomTarget<Drawable>() {
                     @Override
@@ -75,12 +75,9 @@ public class RestaurantsListAdapter extends RecyclerView.Adapter<RestaurantsList
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("id", modelList.get(position).getRestaurant_ID());
-                bundle.putString("name", modelList.get(position).getRestaurant_Name());
-                bundle.putString("type", modelList.get(position).getKnownFor());
-                bundle.putString("time", modelList.get(position).getAvgPrepTime());
-                bundle.putString("address", modelList.get(position).getAddress());
-
+                bundle.putString("id", String.valueOf(modelList.get(position).getId()));
+                bundle.putString("name", modelList.get(position).getShopname());
+                bundle.putString("type", modelList.get(position).getShopname());
 
                 NavController navController = Navigation.findNavController(v);
                 navController.navigate(R.id.restaurantsItemsListFragment,bundle);

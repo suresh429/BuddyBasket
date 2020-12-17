@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.buddy.basket.fragments.RestaurantsListFragment"
+        android:name="com.buddy.basket.fragments.ShopsListFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_restaurants" >
+        tools:layout="@layout/fragment_shops_names" >
         <action
             android:id="@+id/action_navigation_home_to_restaurantsItemsListFragment"
             app:destination="@id/restaurantsItemsListFragment" />
@@ -39,7 +39,7 @@
         tools:layout="@layout/fragment_cart"/>
     <fragment
         android:id="@+id/restaurantsItemsListFragment"
-        android:name="com.buddy.basket.fragments.RestaurantsItemsListFragment"
+        android:name="com.buddy.basket.fragments.ItemsListFragment"
         android:label="RestaurantsItemsListFragment"
-        tools:layout="@layout/fragment_restaurants_items_list"/>
+        tools:layout="@layout/fragment_items_list"/>
 </navigation>
