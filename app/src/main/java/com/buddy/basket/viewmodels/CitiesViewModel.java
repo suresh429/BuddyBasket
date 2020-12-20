@@ -7,31 +7,33 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.buddy.basket.model.CategoriesResponse;
-import com.buddy.basket.model.ShopsListResponse;
+import com.buddy.basket.model.CitiesResponse;
 import com.buddy.basket.network.JournalRepository;
 import com.google.gson.JsonObject;
 
-public class CategoriesViewModel extends ViewModel {
+public class CitiesViewModel extends ViewModel {
 
     private MutableLiveData<String> toastMessageObserver;
     private MutableLiveData<Boolean> progressbarObservable;
-    private MutableLiveData<CategoriesResponse> mutableLiveData;
+    private MutableLiveData<CitiesResponse> mutableLiveData;
 
 
-    public void initCategories( Context context) {
+    public void initCities(String id, Context context) {
         if (mutableLiveData != null) {
             return;
         }
         JournalRepository journalRepository = JournalRepository.getInstance(context);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("id", id);
 
-        mutableLiveData = journalRepository.getCategoriesData();
+        mutableLiveData = journalRepository.getCitiesData(jsonObject);
         progressbarObservable = journalRepository.getProgressbarObservable();
         toastMessageObserver = journalRepository.getToastObserver();
 
 
     }
 
-    public LiveData<CategoriesResponse> getRepository() {
+    public LiveData<CitiesResponse> getRepository() {
         return mutableLiveData;
     }
 

@@ -6,7 +6,7 @@ public class ItemsListResponse {
 
 
     /**
-     * data : [{"id":11,"itemname":"Top Ramen","slug":"top-ramen","shop_id":"5","category_id":"18","subcategory_id":"13","price":"58.00","description":"Veg-Noodles","choices":"veg","image":"storage/items/top-ramen_20201127141936.jpg","status":"1","created_at":"2020-11-27T14:19:36.000000Z","updated_at":"2020-11-28T17:33:02.000000Z"},{"id":12,"itemname":"Maggi","slug":"maggi","shop_id":"5","category_id":"18","subcategory_id":"13","price":"80.00","description":"Veg Noodles","choices":"veg","image":"storage/items/maggi_20201127142141.jpg","status":"1","created_at":"2020-11-27T14:21:41.000000Z","updated_at":"2020-11-28T17:33:28.000000Z"},{"id":13,"itemname":"Britannia Biscuits","slug":"britannia-biscuits","shop_id":"5","category_id":"18","subcategory_id":"14","price":"40.00","description":"Crispy and Munchy Biscuits","choices":"veg","image":"storage/items/britannia-biscuits_20201127142553.jpg","status":"1","created_at":"2020-11-27T14:25:53.000000Z","updated_at":"2020-11-28T17:33:36.000000Z"}]
+     * data : [{"id":11,"itemname":"Top Ramen","slug":"top-ramen","qty":"10","shop_id":"5","category_id":"18","subcategory_id":"13","price":"58.00","description":"Veg-Noodles","choices":"veg","image":"storage/items/top-ramen_20201127141936.jpg","status":"1","created_at":"2020-11-27T14:19:36.000000Z","updated_at":"2020-11-28T17:33:02.000000Z"},{"id":12,"itemname":"Maggi","slug":"maggi","qty":"10","shop_id":"5","category_id":"18","subcategory_id":"13","price":"80.00","description":"Veg Noodles","choices":"veg","image":"storage/items/maggi_20201127142141.jpg","status":"1","created_at":"2020-11-27T14:21:41.000000Z","updated_at":"2020-11-28T17:33:28.000000Z"},{"id":13,"itemname":"Britannia Biscuits","slug":"britannia-biscuits","qty":"10","shop_id":"5","category_id":"18","subcategory_id":"14","price":"40.00","description":"Crispy and Munchy Biscuits","choices":"veg","image":"storage/items/britannia-biscuits_20201127142553.jpg","status":"1","created_at":"2020-11-27T14:25:53.000000Z","updated_at":"2020-11-28T17:33:36.000000Z"}]
      * status : true
      */
 
@@ -15,6 +15,7 @@ public class ItemsListResponse {
      * id : 11
      * itemname : Top Ramen
      * slug : top-ramen
+     * qty : 10
      * shop_id : 5
      * category_id : 18
      * subcategory_id : 13
@@ -49,6 +50,7 @@ public class ItemsListResponse {
         private int id;
         private String itemname;
         private String slug;
+        private String qty;
         private String shop_id;
         private String category_id;
         private String subcategory_id;
@@ -82,6 +84,14 @@ public class ItemsListResponse {
 
         public void setSlug(String slug) {
             this.slug = slug;
+        }
+
+        public String getQty() {
+            return qty;
+        }
+
+        public void setQty(String qty) {
+            this.qty = qty;
         }
 
         public String getShop_id() {

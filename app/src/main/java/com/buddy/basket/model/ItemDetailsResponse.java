@@ -5,7 +5,7 @@ public class ItemDetailsResponse {
 
     /**
      * status : true
-     * item_details : {"id":13,"itemname":"Britannia Biscuits","slug":"britannia-biscuits","shop_id":"5","category_id":"18","subcategory_id":"14","price":"40.00","description":"Crispy and Munchy Biscuits","choices":"veg","image":"storage/items/britannia-biscuits_20201127142553.jpg","status":"1","created_at":"2020-11-27T14:25:53.000000Z","updated_at":"2020-11-28T17:33:36.000000Z"}
+     * item_details : {"id":13,"itemname":"Britannia Biscuits","slug":"britannia-biscuits","qty":"10","shop_id":"5","category_id":"18","subcategory_id":"14","price":"40.00","description":"Crispy and Munchy Biscuits","choices":"veg","image":"storage/items/britannia-biscuits_20201127142553.jpg","status":"1","created_at":"2020-11-27T14:25:53.000000Z","updated_at":"2020-11-28T17:33:36.000000Z"}
      */
 
     private String status;
@@ -13,6 +13,7 @@ public class ItemDetailsResponse {
      * id : 13
      * itemname : Britannia Biscuits
      * slug : britannia-biscuits
+     * qty : 10
      * shop_id : 5
      * category_id : 18
      * subcategory_id : 14
@@ -47,6 +48,7 @@ public class ItemDetailsResponse {
         private int id;
         private String itemname;
         private String slug;
+        private String qty;
         private String shop_id;
         private String category_id;
         private String subcategory_id;
@@ -80,6 +82,14 @@ public class ItemDetailsResponse {
 
         public void setSlug(String slug) {
             this.slug = slug;
+        }
+
+        public String getQty() {
+            return qty;
+        }
+
+        public void setQty(String qty) {
+            this.qty = qty;
         }
 
         public String getShop_id() {

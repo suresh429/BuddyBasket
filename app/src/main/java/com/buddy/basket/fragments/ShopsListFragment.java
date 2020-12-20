@@ -36,7 +36,7 @@ public class ShopsListFragment extends Fragment {
         //View root = inflater.inflate(R.layout.fragment_restaurants, container, false);
         binding = FragmentShopsNamesBinding.inflate(inflater,container,false);
 
-        shopsViewModel.init("Kakinada","Jayendra Nagar",requireActivity());
+        shopsViewModel.initShops("Kakinada","Jayendra Nagar",requireActivity());
 
         // Alert toast msg
         shopsViewModel.getToastObserver().observe(getViewLifecycleOwner(), message -> {

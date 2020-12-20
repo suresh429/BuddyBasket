@@ -28,7 +28,7 @@ public interface ApiInterface {
 
     @Headers("Content-Type: application/json")
     @POST("categories")
-    Call<CategoriesResponse> getCategoriesList(@Body JsonObject jsonObject);
+    Call<CategoriesResponse> getCategoriesList();
 
     @Headers("Content-Type: application/json")
     @POST("shops")

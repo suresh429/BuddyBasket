@@ -4,20 +4,21 @@ import java.util.List;
 
 public class CartResponse {
 
+
     /**
-     * cart : [{"id":1,"customer_id":"5","item_id":"8","qty":"1","created_at":"2020-12-17T11:40:44.000000Z","updated_at":"2020-12-17T11:40:44.000000Z","item":{"id":8,"itemname":"Lays","slug":"lays","shop_id":"4","category_id":"18","subcategory_id":"9","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-11-28T17:32:34.000000Z"}}]
+     * cart : [{"id":5,"customer_id":"5","item_id":"8","qty":"1","created_at":"2020-12-20T13:32:53.000000Z","updated_at":"2020-12-20T13:32:53.000000Z","item":{"id":8,"itemname":"Lays","slug":"lays","qty":"10","shop_id":"4","category_id":"18","subcategory_id":"11","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-12-19T14:08:20.000000Z"}}]
      * status : true
      */
 
     private String status;
     /**
-     * id : 1
+     * id : 5
      * customer_id : 5
      * item_id : 8
      * qty : 1
-     * created_at : 2020-12-17T11:40:44.000000Z
-     * updated_at : 2020-12-17T11:40:44.000000Z
-     * item : {"id":8,"itemname":"Lays","slug":"lays","shop_id":"4","category_id":"18","subcategory_id":"9","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-11-28T17:32:34.000000Z"}
+     * created_at : 2020-12-20T13:32:53.000000Z
+     * updated_at : 2020-12-20T13:32:53.000000Z
+     * item : {"id":8,"itemname":"Lays","slug":"lays","qty":"10","shop_id":"4","category_id":"18","subcategory_id":"11","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-12-19T14:08:20.000000Z"}
      */
 
     private List<CartBean> cart;
@@ -49,16 +50,17 @@ public class CartResponse {
          * id : 8
          * itemname : Lays
          * slug : lays
+         * qty : 10
          * shop_id : 4
          * category_id : 18
-         * subcategory_id : 9
+         * subcategory_id : 11
          * price : 58.00
          * description : Chips
          * choices : veg
          * image : storage/items/lays_20201127140933.jpg
          * status : 1
          * created_at : 2020-11-27T14:09:33.000000Z
-         * updated_at : 2020-11-28T17:32:34.000000Z
+         * updated_at : 2020-12-19T14:08:20.000000Z
          */
 
         private ItemBean item;
@@ -123,6 +125,7 @@ public class CartResponse {
             private int id;
             private String itemname;
             private String slug;
+            private String qty;
             private String shop_id;
             private String category_id;
             private String subcategory_id;
@@ -156,6 +159,14 @@ public class CartResponse {
 
             public void setSlug(String slug) {
                 this.slug = slug;
+            }
+
+            public String getQty() {
+                return qty;
+            }
+
+            public void setQty(String qty) {
+                this.qty = qty;
             }
 
             public String getShop_id() {

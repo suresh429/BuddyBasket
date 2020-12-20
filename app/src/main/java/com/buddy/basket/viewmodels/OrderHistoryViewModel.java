@@ -6,32 +6,34 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.buddy.basket.model.CategoriesResponse;
-import com.buddy.basket.model.ShopsListResponse;
+import com.buddy.basket.model.CitiesResponse;
+import com.buddy.basket.model.OrderHistoryResponse;
 import com.buddy.basket.network.JournalRepository;
 import com.google.gson.JsonObject;
 
-public class CategoriesViewModel extends ViewModel {
+public class OrderHistoryViewModel extends ViewModel {
 
     private MutableLiveData<String> toastMessageObserver;
     private MutableLiveData<Boolean> progressbarObservable;
-    private MutableLiveData<CategoriesResponse> mutableLiveData;
+    private MutableLiveData<OrderHistoryResponse> mutableLiveData;
 
 
-    public void initCategories( Context context) {
+    public void initOrderHistory(String customer_id, Context context) {
         if (mutableLiveData != null) {
             return;
         }
         JournalRepository journalRepository = JournalRepository.getInstance(context);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("customer_id", customer_id);
 
-        mutableLiveData = journalRepository.getCategoriesData();
+        mutableLiveData = journalRepository.getOrderHistoryData(jsonObject);
         progressbarObservable = journalRepository.getProgressbarObservable();
         toastMessageObserver = journalRepository.getToastObserver();
 
 
     }
 
-    public LiveData<CategoriesResponse> getRepository() {
+    public LiveData<OrderHistoryResponse> getRepository() {
         return mutableLiveData;
     }
 

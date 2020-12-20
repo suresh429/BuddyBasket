@@ -6,19 +6,18 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.buddy.basket.model.CartResponse;
+import com.buddy.basket.model.CustomerResponse;
 import com.buddy.basket.model.ShopsListResponse;
 import com.buddy.basket.network.JournalRepository;
 import com.google.gson.JsonObject;
 
-public class CartViewModel extends ViewModel {
-
+public class CustomerViewModel extends ViewModel {
     private MutableLiveData<String> toastMessageObserver;
     private MutableLiveData<Boolean> progressbarObservable;
-    private MutableLiveData<CartResponse> mutableLiveData;
+    private MutableLiveData<CustomerResponse> mutableLiveData;
 
 
-    public void initInsertCart(String customer_id,String item_id, String qty, Context context) {
+    public void initCustomer(String phonenumber, Context context) {
         if (mutableLiveData != null) {
             return;
         }
@@ -26,17 +25,15 @@ public class CartViewModel extends ViewModel {
 
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("customer_id", customer_id);
-        jsonObject.addProperty("item_id", item_id);
-        jsonObject.addProperty("qty", qty);
-        mutableLiveData = journalRepository.getCartInsertData(jsonObject);
+        jsonObject.addProperty("phonenumber", phonenumber);
+        mutableLiveData = journalRepository.getCustomerData(jsonObject);
         progressbarObservable = journalRepository.getProgressbarObservable();
         toastMessageObserver = journalRepository.getToastObserver();
 
 
     }
 
-    public void initUpdateCart(String customer_id,String item_id, String qty, Context context) {
+    public void initCustomerVerify(String phonenumber,String password, Context context) {
         if (mutableLiveData != null) {
             return;
         }
@@ -44,17 +41,16 @@ public class CartViewModel extends ViewModel {
 
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("customer_id", customer_id);
-        jsonObject.addProperty("item_id", item_id);
-        jsonObject.addProperty("qty", qty);
-        mutableLiveData = journalRepository.getCartUpdateData(jsonObject);
+        jsonObject.addProperty("phonenumber", phonenumber);
+        jsonObject.addProperty("password", password);
+        mutableLiveData = journalRepository.getCustomerVerifyData(jsonObject);
         progressbarObservable = journalRepository.getProgressbarObservable();
         toastMessageObserver = journalRepository.getToastObserver();
 
 
     }
 
-    public void initViewCart(String customer_id, Context context) {
+    public void initCustomerInsert(String name,String phonenumber,String password, Context context) {
         if (mutableLiveData != null) {
             return;
         }
@@ -62,8 +58,10 @@ public class CartViewModel extends ViewModel {
 
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("customer_id", customer_id);
-        mutableLiveData = journalRepository.getCartViewData(jsonObject);
+        jsonObject.addProperty("name", name);
+        jsonObject.addProperty("phonenumber", phonenumber);
+        jsonObject.addProperty("password", password);
+        mutableLiveData = journalRepository.getCustomerInsertData(jsonObject);
         progressbarObservable = journalRepository.getProgressbarObservable();
         toastMessageObserver = journalRepository.getToastObserver();
 
@@ -71,7 +69,7 @@ public class CartViewModel extends ViewModel {
     }
 
 
-    public LiveData<CartResponse> getRepository() {
+    public LiveData<CustomerResponse> getRepository() {
         return mutableLiveData;
     }
 
@@ -82,4 +80,6 @@ public class CartViewModel extends ViewModel {
     public MutableLiveData<Boolean> getProgressbarObservable() {
         return progressbarObservable;
     }
+
+
 }

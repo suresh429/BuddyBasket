@@ -16,7 +16,7 @@ public class ShopsViewModel extends ViewModel {
     private MutableLiveData<ShopsListResponse> mutableLiveData;
 
 
-    public void init(String city,String area, Context context) {
+    public void initShops(String city,String area, Context context) {
         if (mutableLiveData != null) {
             return;
         }

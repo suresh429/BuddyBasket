@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/navigation_myaccount"
-        android:name="com.buddy.basket.fragments.MyAccountFragment"
+        android:name="com.buddy.basket.fragments.CustomerFragment"
         android:label="@string/my_account"
         tools:layout="@layout/fragment_myaccount" />
     <fragment

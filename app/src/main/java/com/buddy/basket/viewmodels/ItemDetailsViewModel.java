@@ -6,32 +6,35 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.buddy.basket.model.CategoriesResponse;
-import com.buddy.basket.model.ShopsListResponse;
+import com.buddy.basket.model.ItemDetailsResponse;
+import com.buddy.basket.model.ItemsListResponse;
 import com.buddy.basket.network.JournalRepository;
 import com.google.gson.JsonObject;
 
-public class CategoriesViewModel extends ViewModel {
-
+public class ItemDetailsViewModel extends ViewModel {
     private MutableLiveData<String> toastMessageObserver;
     private MutableLiveData<Boolean> progressbarObservable;
-    private MutableLiveData<CategoriesResponse> mutableLiveData;
+    private MutableLiveData<ItemDetailsResponse> mutableLiveData;
 
 
-    public void initCategories( Context context) {
+    public void initItemDetails(String item_id, Context context) {
         if (mutableLiveData != null) {
             return;
         }
         JournalRepository journalRepository = JournalRepository.getInstance(context);
 
-        mutableLiveData = journalRepository.getCategoriesData();
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("item_id", item_id);
+
+        mutableLiveData = journalRepository.getItemDetailsData(jsonObject);
         progressbarObservable = journalRepository.getProgressbarObservable();
         toastMessageObserver = journalRepository.getToastObserver();
 
 
     }
 
-    public LiveData<CategoriesResponse> getRepository() {
+    public LiveData<ItemDetailsResponse> getRepository() {
         return mutableLiveData;
     }
 
@@ -42,4 +45,6 @@ public class CategoriesViewModel extends ViewModel {
     public MutableLiveData<Boolean> getProgressbarObservable() {
         return progressbarObservable;
     }
+
+
 }
