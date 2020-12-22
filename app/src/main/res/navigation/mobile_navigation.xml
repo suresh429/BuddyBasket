@@ -47,5 +47,9 @@
         android:id="@+id/shopsFragment"
         android:name="com.buddy.basket.fragments.ShopsFragment"
         android:label="ShopsFragment"
-        tools:layout="@layout/fragment_shops_names"/>
+        tools:layout="@layout/fragment_shops_names">
+        <action
+            android:id="@+id/action_shopsFragment_to_restaurantsItemsListFragment"
+            app:destination="@id/restaurantsItemsListFragment" />
+    </fragment>
 </navigation>

@@ -1,33 +1,15 @@
 package com.buddy.basket.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class ItemsListResponse {
 
 
-    /**
-     * data : [{"id":11,"itemname":"Top Ramen","slug":"top-ramen","qty":"10","shop_id":"5","category_id":"18","subcategory_id":"13","price":"58.00","description":"Veg-Noodles","choices":"veg","image":"storage/items/top-ramen_20201127141936.jpg","status":"1","created_at":"2020-11-27T14:19:36.000000Z","updated_at":"2020-11-28T17:33:02.000000Z"},{"id":12,"itemname":"Maggi","slug":"maggi","qty":"10","shop_id":"5","category_id":"18","subcategory_id":"13","price":"80.00","description":"Veg Noodles","choices":"veg","image":"storage/items/maggi_20201127142141.jpg","status":"1","created_at":"2020-11-27T14:21:41.000000Z","updated_at":"2020-11-28T17:33:28.000000Z"},{"id":13,"itemname":"Britannia Biscuits","slug":"britannia-biscuits","qty":"10","shop_id":"5","category_id":"18","subcategory_id":"14","price":"40.00","description":"Crispy and Munchy Biscuits","choices":"veg","image":"storage/items/britannia-biscuits_20201127142553.jpg","status":"1","created_at":"2020-11-27T14:25:53.000000Z","updated_at":"2020-11-28T17:33:36.000000Z"}]
-     * status : true
-     */
-
+    @SerializedName("status")
     private String status;
-    /**
-     * id : 11
-     * itemname : Top Ramen
-     * slug : top-ramen
-     * qty : 10
-     * shop_id : 5
-     * category_id : 18
-     * subcategory_id : 13
-     * price : 58.00
-     * description : Veg-Noodles
-     * choices : veg
-     * image : storage/items/top-ramen_20201127141936.jpg
-     * status : 1
-     * created_at : 2020-11-27T14:19:36.000000Z
-     * updated_at : 2020-11-28T17:33:02.000000Z
-     */
-
+    @SerializedName("data")
     private List<DataBean> data;
 
     public String getStatus() {
@@ -47,20 +29,34 @@ public class ItemsListResponse {
     }
 
     public static class DataBean {
+        @SerializedName("id")
         private int id;
+        @SerializedName("itemname")
         private String itemname;
+        @SerializedName("slug")
         private String slug;
+        @SerializedName("qty")
         private String qty;
-        private String shop_id;
-        private String category_id;
-        private String subcategory_id;
+        @SerializedName("shop_id")
+        private String shopId;
+        @SerializedName("category_id")
+        private String categoryId;
+        @SerializedName("subcategory_id")
+        private String subcategoryId;
+        @SerializedName("price")
         private String price;
+        @SerializedName("description")
         private String description;
+        @SerializedName("choices")
         private String choices;
+        @SerializedName("image")
         private String image;
+        @SerializedName("status")
         private String status;
-        private String created_at;
-        private String updated_at;
+        @SerializedName("created_at")
+        private String createdAt;
+        @SerializedName("updated_at")
+        private String updatedAt;
 
         public int getId() {
             return id;
@@ -94,28 +90,28 @@ public class ItemsListResponse {
             this.qty = qty;
         }
 
-        public String getShop_id() {
-            return shop_id;
+        public String getShopId() {
+            return shopId;
         }
 
-        public void setShop_id(String shop_id) {
-            this.shop_id = shop_id;
+        public void setShopId(String shopId) {
+            this.shopId = shopId;
         }
 
-        public String getCategory_id() {
-            return category_id;
+        public String getCategoryId() {
+            return categoryId;
         }
 
-        public void setCategory_id(String category_id) {
-            this.category_id = category_id;
+        public void setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
         }
 
-        public String getSubcategory_id() {
-            return subcategory_id;
+        public String getSubcategoryId() {
+            return subcategoryId;
         }
 
-        public void setSubcategory_id(String subcategory_id) {
-            this.subcategory_id = subcategory_id;
+        public void setSubcategoryId(String subcategoryId) {
+            this.subcategoryId = subcategoryId;
         }
 
         public String getPrice() {
@@ -158,20 +154,20 @@ public class ItemsListResponse {
             this.status = status;
         }
 
-        public String getCreated_at() {
-            return created_at;
+        public String getCreatedAt() {
+            return createdAt;
         }
 
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
         }
 
-        public String getUpdated_at() {
-            return updated_at;
+        public String getUpdatedAt() {
+            return updatedAt;
         }
 
-        public void setUpdated_at(String updated_at) {
-            this.updated_at = updated_at;
+        public void setUpdatedAt(String updatedAt) {
+            this.updatedAt = updatedAt;
         }
     }
 }

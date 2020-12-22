@@ -2,6 +2,7 @@ package com.buddy.basket.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.buddy.basket.R;
 import com.buddy.basket.databinding.RestaurantsItemsListBinding;
 import com.buddy.basket.model.ItemDetailsResponse;
+import com.buddy.basket.model.ItemsListResponse;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
+
 
 public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.ViewHolder> {
 
-    List<ItemDetailsResponse.ItemDetailsBean> modelList;
+    List<ItemDetailsResponse> modelList;
     Context context;
      public RestaurantItemInterface restaurantItemInterface;
-    public ItemsListAdapter(List<ItemDetailsResponse.ItemDetailsBean> modelList, Context context, RestaurantItemInterface restaurantItemInterface) {
+    public ItemsListAdapter(List<ItemDetailsResponse> modelList, Context context, RestaurantItemInterface restaurantItemInterface) {
         this.modelList = modelList;
         this.context = context;
         this.restaurantItemInterface = restaurantItemInterface;
@@ -47,9 +52,9 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.View
             holder.rowItemBinding.imgItemType.setImageResource(R.drawable.ic_baseline_red_24);
         }
 
-        Glide.with(context).load(modelList.get(position).getImage()).into(holder.rowItemBinding.imgItem);
+        Glide.with(context).load(IMAGE_HOME_URL+modelList.get(position).getImage()).into(holder.rowItemBinding.imgItem);
 
-       /* if (modelList.get(position).getQty() == 0) {
+        if (modelList.get(position).getQty() == 0) {
             holder.rowItemBinding.productQuantity.setText("ADD");
             holder.rowItemBinding.productMinus.setVisibility(View.GONE);
             holder.rowItemBinding.productPlus.setVisibility(View.GONE);
@@ -82,7 +87,6 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.View
             restaurantItemInterface.onPlusClick(position, modelList.get(position));
 
         });
-*/
 
         holder.rowItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override

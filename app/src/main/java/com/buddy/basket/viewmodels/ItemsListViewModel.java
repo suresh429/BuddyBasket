@@ -24,7 +24,7 @@ public class ItemsListViewModel extends ViewModel {
 
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("restaurant_ID", id);
+        jsonObject.addProperty("shop_id", id);
 
         mutableLiveData = repository.getItemsListData(jsonObject);
         progressbarObservable = repository.getProgressbarObservable();
