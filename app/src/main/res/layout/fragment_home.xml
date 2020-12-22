@@ -12,11 +12,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/action_layout"
-            layout="@layout/action_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <include layout="@layout/location_layout"
+            android:id="@+id/action_layout"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,13 +24,13 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recyclerShopList"
+                android:id="@+id/recyclerHomeList"
                 android:orientation="vertical"
                 android:nestedScrollingEnabled="false"
                 tools:itemCount="3"
                 android:padding="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/shop_item" />
+                tools:listitem="@layout/catgoery_list_item" />
 
 
         </LinearLayout>
@@ -46,9 +43,5 @@
         android:id="@+id/progressBar"
         android:visibility="gone"
         tools:visibility="visible"
-        />
-    <include
-        android:id="@+id/errorLayout"
-        layout="@layout/error_layout"
         />
 </FrameLayout>

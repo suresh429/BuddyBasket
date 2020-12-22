@@ -15,7 +15,7 @@ import com.buddy.basket.adapters.ItemsListAdapter;
 
 
 import com.buddy.basket.databinding.FragmentItemsListBinding;
-import com.buddy.basket.helper.utils;
+import com.buddy.basket.helper.Util;
 import com.buddy.basket.model.ItemDetailsResponse;
 import com.buddy.basket.model.ItemsListResponse;
 import com.buddy.basket.viewmodels.ItemsListViewModel;
@@ -34,7 +34,8 @@ public class ItemsListFragment extends Fragment {
     FragmentItemsListBinding binding;
     ItemsListAdapter restaurantsListAdapter;
 
-    String id,name,type,address,time;
+    String name,type,address,time;
+    int id;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         restaurantsViewModel = new ViewModelProvider(this).get(ItemsListViewModel.class);
@@ -45,11 +46,8 @@ public class ItemsListFragment extends Fragment {
 
         Bundle bundle=getArguments();
         assert bundle != null;
-        id=bundle.getString("id");
+        id=bundle.getInt("id");
         name=bundle.getString("name");
-        type=bundle.getString("type");
-        address=bundle.getString("address");
-        time=bundle.getString("time");
 
         // init
         restaurantsViewModel.init(id,requireActivity());
@@ -76,7 +74,7 @@ public class ItemsListFragment extends Fragment {
             snackBarView.setBackgroundColor(Color.BLACK);
             snackbar.show();
 
-            utils.noNetworkAlert(getActivity(),message);
+            Util.noNetworkAlert(getActivity(),message);
 
 
         });

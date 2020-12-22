@@ -7,8 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.buddy.basket.model.CustomerResponse;
-import com.buddy.basket.model.ShopsListResponse;
-import com.buddy.basket.network.JournalRepository;
+import com.buddy.basket.network.Repository;
 import com.google.gson.JsonObject;
 
 public class CustomerViewModel extends ViewModel {
@@ -21,14 +20,14 @@ public class CustomerViewModel extends ViewModel {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("phonenumber", phonenumber);
-        mutableLiveData = journalRepository.getCustomerData(jsonObject);
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        mutableLiveData = repository.getCustomerData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }
@@ -37,15 +36,15 @@ public class CustomerViewModel extends ViewModel {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("phonenumber", phonenumber);
         jsonObject.addProperty("password", password);
-        mutableLiveData = journalRepository.getCustomerVerifyData(jsonObject);
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        mutableLiveData = repository.getCustomerVerifyData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }
@@ -54,16 +53,16 @@ public class CustomerViewModel extends ViewModel {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("name", name);
         jsonObject.addProperty("phonenumber", phonenumber);
         jsonObject.addProperty("password", password);
-        mutableLiveData = journalRepository.getCustomerInsertData(jsonObject);
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        mutableLiveData = repository.getCustomerInsertData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }

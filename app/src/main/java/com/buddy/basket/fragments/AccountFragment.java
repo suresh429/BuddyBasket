@@ -1,5 +1,6 @@
 package com.buddy.basket.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.buddy.basket.R;
+import com.buddy.basket.activities.HomeActivity;
+import com.buddy.basket.activities.LoginActivity;
 import com.buddy.basket.databinding.FragmentMyaccountBinding;
+import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.viewmodels.CustomerViewModel;
 
 
-public class CustomerFragment extends Fragment {
+public class AccountFragment extends Fragment implements View.OnClickListener {
+    private UserSessionManager session;
+
     FragmentMyaccountBinding binding;
     private CustomerViewModel customerViewModel;
 
@@ -22,8 +29,21 @@ public class CustomerFragment extends Fragment {
         customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
         binding = FragmentMyaccountBinding.inflate(inflater, container, false);
 
+        session =new  UserSessionManager(requireContext());
 
+        binding.txtLogout.setOnClickListener(this);
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.txtLogout) {
+
+            session.clearSession();
+            Intent intentLogin = new Intent(requireActivity(), LoginActivity.class);
+            intentLogin.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intentLogin);
+        }
     }
 }

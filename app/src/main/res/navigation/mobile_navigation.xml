@@ -7,12 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.buddy.basket.fragments.ShopsListFragment"
+        android:name="com.buddy.basket.fragments.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_shops_names" >
+        tools:layout="@layout/fragment_home" >
+
         <action
-            android:id="@+id/action_navigation_home_to_restaurantsItemsListFragment"
-            app:destination="@id/restaurantsItemsListFragment" />
+            android:id="@+id/action_navigation_home_to_shopsFragment3"
+            app:destination="@id/shopsFragment" />
     </fragment>
 
     <fragment
@@ -23,7 +24,7 @@
 
     <fragment
         android:id="@+id/navigation_myaccount"
-        android:name="com.buddy.basket.fragments.CustomerFragment"
+        android:name="com.buddy.basket.fragments.AccountFragment"
         android:label="@string/my_account"
         tools:layout="@layout/fragment_myaccount" />
     <fragment
@@ -42,4 +43,9 @@
         android:name="com.buddy.basket.fragments.ItemsListFragment"
         android:label="RestaurantsItemsListFragment"
         tools:layout="@layout/fragment_items_list"/>
+    <fragment
+        android:id="@+id/shopsFragment"
+        android:name="com.buddy.basket.fragments.ShopsFragment"
+        android:label="ShopsFragment"
+        tools:layout="@layout/fragment_shops_names"/>
 </navigation>

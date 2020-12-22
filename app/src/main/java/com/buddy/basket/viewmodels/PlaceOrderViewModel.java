@@ -6,9 +6,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.buddy.basket.model.CartResponse;
 import com.buddy.basket.model.PlaceOrderResponse;
-import com.buddy.basket.network.JournalRepository;
+import com.buddy.basket.network.Repository;
 import com.google.gson.JsonObject;
 
 public class PlaceOrderViewModel extends ViewModel {
@@ -22,7 +21,7 @@ public class PlaceOrderViewModel extends ViewModel {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
@@ -30,9 +29,9 @@ public class PlaceOrderViewModel extends ViewModel {
         jsonObject.addProperty("total_amt", total_amt);
         jsonObject.addProperty("customer_comments", customer_comments);
         jsonObject.addProperty("address_id", address_id);
-        mutableLiveData = journalRepository.getPlaceOrderData(jsonObject);
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        mutableLiveData = repository.getPlaceOrderData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }

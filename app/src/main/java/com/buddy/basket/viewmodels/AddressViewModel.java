@@ -7,8 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.buddy.basket.model.AddressResponse;
-import com.buddy.basket.model.CartResponse;
-import com.buddy.basket.network.JournalRepository;
+import com.buddy.basket.network.Repository;
 import com.google.gson.JsonObject;
 
 public class AddressViewModel extends ViewModel {
@@ -22,14 +21,14 @@ public class AddressViewModel extends ViewModel {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("customer_id", customer_id);
-        mutableLiveData = journalRepository.getAddressData(jsonObject);
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        mutableLiveData = repository.getAddressData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }
@@ -38,7 +37,7 @@ public class AddressViewModel extends ViewModel {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
@@ -48,9 +47,9 @@ public class AddressViewModel extends ViewModel {
         jsonObject.addProperty("landmark", landmark);
         jsonObject.addProperty("pincode", pincode);
 
-        mutableLiveData = journalRepository.getInsertAddressData(jsonObject);
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        mutableLiveData = repository.getInsertAddressData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }
@@ -59,7 +58,7 @@ public class AddressViewModel extends ViewModel {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
@@ -70,9 +69,9 @@ public class AddressViewModel extends ViewModel {
         jsonObject.addProperty("landmark", landmark);
         jsonObject.addProperty("pincode", pincode);
 
-        mutableLiveData = journalRepository.getUpdateAddressData(jsonObject);
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        mutableLiveData = repository.getUpdateAddressData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }
@@ -81,15 +80,15 @@ public class AddressViewModel extends ViewModel {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("customer_id", customer_id);
         jsonObject.addProperty("id", id);
-        mutableLiveData = journalRepository.getDeleteAddressData(jsonObject);
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        mutableLiveData = repository.getDeleteAddressData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }

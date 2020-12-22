@@ -7,8 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.buddy.basket.model.CartResponse;
-import com.buddy.basket.model.ShopsListResponse;
-import com.buddy.basket.network.JournalRepository;
+import com.buddy.basket.network.Repository;
 import com.google.gson.JsonObject;
 
 public class CartViewModel extends ViewModel {
@@ -22,16 +21,16 @@ public class CartViewModel extends ViewModel {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("customer_id", customer_id);
         jsonObject.addProperty("item_id", item_id);
         jsonObject.addProperty("qty", qty);
-        mutableLiveData = journalRepository.getCartInsertData(jsonObject);
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        mutableLiveData = repository.getCartInsertData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }
@@ -40,16 +39,16 @@ public class CartViewModel extends ViewModel {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("customer_id", customer_id);
         jsonObject.addProperty("item_id", item_id);
         jsonObject.addProperty("qty", qty);
-        mutableLiveData = journalRepository.getCartUpdateData(jsonObject);
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        mutableLiveData = repository.getCartUpdateData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }
@@ -58,14 +57,14 @@ public class CartViewModel extends ViewModel {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("customer_id", customer_id);
-        mutableLiveData = journalRepository.getCartViewData(jsonObject);
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        mutableLiveData = repository.getCartViewData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }

@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.buddy.basket.model.ItemsListResponse;
-import com.buddy.basket.network.JournalRepository;
+import com.buddy.basket.network.Repository;
 import com.google.gson.JsonObject;
 
 public class ItemsListViewModel extends ViewModel {
@@ -16,19 +16,19 @@ public class ItemsListViewModel extends ViewModel {
     private MutableLiveData<ItemsListResponse> mutableLiveData;
 
 
-    public void init(String id, Context context) {
+    public void init(int id, Context context) {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("restaurant_ID", id);
 
-        mutableLiveData = journalRepository.getItemsListData(jsonObject);
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        mutableLiveData = repository.getItemsListData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }

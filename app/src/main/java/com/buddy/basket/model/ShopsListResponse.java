@@ -1,36 +1,15 @@
 package com.buddy.basket.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class ShopsListResponse {
 
 
-    /**
-     * data : [{"id":5,"shopname":"Vishal Mart","slug":"vishal-mart","description":"General Store - Available at various locations across India","state_id":"1","city_id":"2","category_id":"18","address":"Kurmannapalem","phone":"9052952930","website":null,"opentime":"10:00 A.M","closetime":"10:00 P.M","image":"storage/shops/vishal-mart_20201127132224.jpg","status":"1","created_at":"2020-11-27T13:22:09.000000Z","updated_at":"2020-11-28T05:56:08.000000Z","city":{"id":2,"city":"Visakhapatnam","slug":"visakhapatnam","status":"1","state_id":"1","created_at":"2020-11-19T21:27:32.000000Z","updated_at":"2020-11-19T21:27:32.000000Z"}},{"id":6,"shopname":"Ratnadeep Super Market","slug":"ratnadeep-super-market","description":"First Class Supermarket","state_id":"1","city_id":"2","category_id":"18","address":"Gajuwaka","phone":"9490677878","website":null,"opentime":"10:00 A.M","closetime":"10:00 P.M","image":"storage/shops/ratnadeep-super-market_20201127132530.jpg","status":"1","created_at":"2020-11-27T13:25:30.000000Z","updated_at":"2020-11-28T05:56:14.000000Z","city":{"id":2,"city":"Visakhapatnam","slug":"visakhapatnam","status":"1","state_id":"1","created_at":"2020-11-19T21:27:32.000000Z","updated_at":"2020-11-19T21:27:32.000000Z"}}]
-     * status : true
-     */
-
+    @SerializedName("status")
     private String status;
-    /**
-     * id : 5
-     * shopname : Vishal Mart
-     * slug : vishal-mart
-     * description : General Store - Available at various locations across India
-     * state_id : 1
-     * city_id : 2
-     * category_id : 18
-     * address : Kurmannapalem
-     * phone : 9052952930
-     * website : null
-     * opentime : 10:00 A.M
-     * closetime : 10:00 P.M
-     * image : storage/shops/vishal-mart_20201127132224.jpg
-     * status : 1
-     * created_at : 2020-11-27T13:22:09.000000Z
-     * updated_at : 2020-11-28T05:56:08.000000Z
-     * city : {"id":2,"city":"Visakhapatnam","slug":"visakhapatnam","status":"1","state_id":"1","created_at":"2020-11-19T21:27:32.000000Z","updated_at":"2020-11-19T21:27:32.000000Z"}
-     */
-
+    @SerializedName("data")
     private List<DataBean> data;
 
     public String getStatus() {
@@ -50,32 +29,39 @@ public class ShopsListResponse {
     }
 
     public static class DataBean {
+        @SerializedName("id")
         private int id;
+        @SerializedName("shopname")
         private String shopname;
+        @SerializedName("slug")
         private String slug;
+        @SerializedName("description")
         private String description;
-        private String state_id;
-        private String city_id;
-        private String category_id;
+        @SerializedName("state_id")
+        private String stateId;
+        @SerializedName("city_id")
+        private String cityId;
+        @SerializedName("category_id")
+        private String categoryId;
+        @SerializedName("address")
         private String address;
+        @SerializedName("phone")
         private String phone;
+        @SerializedName("website")
         private Object website;
+        @SerializedName("opentime")
         private String opentime;
+        @SerializedName("closetime")
         private String closetime;
+        @SerializedName("image")
         private String image;
+        @SerializedName("status")
         private String status;
-        private String created_at;
-        private String updated_at;
-        /**
-         * id : 2
-         * city : Visakhapatnam
-         * slug : visakhapatnam
-         * status : 1
-         * state_id : 1
-         * created_at : 2020-11-19T21:27:32.000000Z
-         * updated_at : 2020-11-19T21:27:32.000000Z
-         */
-
+        @SerializedName("created_at")
+        private String createdAt;
+        @SerializedName("updated_at")
+        private String updatedAt;
+        @SerializedName("city")
         private CityBean city;
 
         public int getId() {
@@ -110,28 +96,28 @@ public class ShopsListResponse {
             this.description = description;
         }
 
-        public String getState_id() {
-            return state_id;
+        public String getStateId() {
+            return stateId;
         }
 
-        public void setState_id(String state_id) {
-            this.state_id = state_id;
+        public void setStateId(String stateId) {
+            this.stateId = stateId;
         }
 
-        public String getCity_id() {
-            return city_id;
+        public String getCityId() {
+            return cityId;
         }
 
-        public void setCity_id(String city_id) {
-            this.city_id = city_id;
+        public void setCityId(String cityId) {
+            this.cityId = cityId;
         }
 
-        public String getCategory_id() {
-            return category_id;
+        public String getCategoryId() {
+            return categoryId;
         }
 
-        public void setCategory_id(String category_id) {
-            this.category_id = category_id;
+        public void setCategoryId(String categoryId) {
+            this.categoryId = categoryId;
         }
 
         public String getAddress() {
@@ -190,20 +176,20 @@ public class ShopsListResponse {
             this.status = status;
         }
 
-        public String getCreated_at() {
-            return created_at;
+        public String getCreatedAt() {
+            return createdAt;
         }
 
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
         }
 
-        public String getUpdated_at() {
-            return updated_at;
+        public String getUpdatedAt() {
+            return updatedAt;
         }
 
-        public void setUpdated_at(String updated_at) {
-            this.updated_at = updated_at;
+        public void setUpdatedAt(String updatedAt) {
+            this.updatedAt = updatedAt;
         }
 
         public CityBean getCity() {
@@ -215,13 +201,20 @@ public class ShopsListResponse {
         }
 
         public static class CityBean {
+            @SerializedName("id")
             private int id;
+            @SerializedName("city")
             private String city;
+            @SerializedName("slug")
             private String slug;
+            @SerializedName("status")
             private String status;
-            private String state_id;
-            private String created_at;
-            private String updated_at;
+            @SerializedName("state_id")
+            private String stateId;
+            @SerializedName("created_at")
+            private String createdAt;
+            @SerializedName("updated_at")
+            private String updatedAt;
 
             public int getId() {
                 return id;
@@ -255,28 +248,28 @@ public class ShopsListResponse {
                 this.status = status;
             }
 
-            public String getState_id() {
-                return state_id;
+            public String getStateId() {
+                return stateId;
             }
 
-            public void setState_id(String state_id) {
-                this.state_id = state_id;
+            public void setStateId(String stateId) {
+                this.stateId = stateId;
             }
 
-            public String getCreated_at() {
-                return created_at;
+            public String getCreatedAt() {
+                return createdAt;
             }
 
-            public void setCreated_at(String created_at) {
-                this.created_at = created_at;
+            public void setCreatedAt(String createdAt) {
+                this.createdAt = createdAt;
             }
 
-            public String getUpdated_at() {
-                return updated_at;
+            public String getUpdatedAt() {
+                return updatedAt;
             }
 
-            public void setUpdated_at(String updated_at) {
-                this.updated_at = updated_at;
+            public void setUpdatedAt(String updatedAt) {
+                this.updatedAt = updatedAt;
             }
         }
     }

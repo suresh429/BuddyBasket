@@ -7,8 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.buddy.basket.model.CategoriesResponse;
-import com.buddy.basket.model.ShopsListResponse;
-import com.buddy.basket.network.JournalRepository;
+import com.buddy.basket.network.Repository;
 import com.google.gson.JsonObject;
 
 public class CategoriesViewModel extends ViewModel {
@@ -22,11 +21,13 @@ public class CategoriesViewModel extends ViewModel {
         if (mutableLiveData != null) {
             return;
         }
-        JournalRepository journalRepository = JournalRepository.getInstance(context);
+        Repository repository = Repository.getInstance(context);
 
-        mutableLiveData = journalRepository.getCategoriesData();
-        progressbarObservable = journalRepository.getProgressbarObservable();
-        toastMessageObserver = journalRepository.getToastObserver();
+        JsonObject jsonObject=new JsonObject();
+        jsonObject.addProperty("page","1");
+        mutableLiveData = repository.getCategoriesData(jsonObject);
+        progressbarObservable = repository.getProgressbarObservable();
+        toastMessageObserver = repository.getToastObserver();
 
 
     }

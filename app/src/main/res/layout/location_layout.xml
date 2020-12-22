@@ -13,6 +13,13 @@
         android:orientation="vertical"
         android:padding="5dp">
 
+       <!-- <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:id="@+id/locSpinner"
+            android:backgroundTint="@android:color/white"/>-->
+
         <TextView
             android:id="@+id/text_location"
             android:layout_width="wrap_content"
@@ -22,7 +29,7 @@
             android:fontFamily="@font/proxima_nova_bold"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:text="Hyderabad"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="18sp"
             app:drawableLeftCompat="@drawable/ic_baseline_location_on_24"

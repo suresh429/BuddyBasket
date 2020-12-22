@@ -2,7 +2,15 @@ package com.buddy.basket.network;
 
 import android.content.Context;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -17,6 +25,27 @@ public class RetrofitService {
             OkHttpClient.Builder oktHttpClient = new OkHttpClient.Builder()
                     .addInterceptor(new NetworkConnectionInterceptor(context));
             // Adding NetworkConnectionInterceptor with okHttpClientBuilder.
+
+
+            oktHttpClient.addInterceptor(new Interceptor() {
+                @NotNull
+                @Override
+                public Response intercept(@NotNull Chain chain) throws IOException {
+                    Request original = chain.request();
+                    HttpUrl originalHttpUrl = original.url();
+
+                    HttpUrl url = originalHttpUrl.newBuilder()
+                            .addQueryParameter("api_token", "LpDUtnLPfkzzthcCGy06KlU0l8bzD0mSUl8IBWNjRapThL7WFkvyyIvsMRq7")
+                            .build();
+
+                    // Request customization: add request headers
+                    Request.Builder requestBuilder = original.newBuilder()
+                            .url(url);
+
+                    Request request = requestBuilder.build();
+                    return chain.proceed(request);
+                }
+            });
 
             retrofit = new Retrofit.Builder()
                     .baseUrl("https://www.buddybasket.in/api/")

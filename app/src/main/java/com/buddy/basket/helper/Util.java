@@ -9,15 +9,39 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.buddy.basket.BuildConfig;
 import com.buddy.basket.R;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Objects;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 
-public class utils {
+public class Util {
+
+    public static void snackBar(View view, String message, int color) {
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        // snackbar.setAction("RETRY", view1 -> Log.d(TAG, "onClick: "+"click"));
+        //snackbar.setActionTextColor(Color.RED);
+        View sbView = snackbar.getView();
+        TextView textView = sbView.findViewById(R.id.snackbar_text);
+        textView.setTextColor(color);
+        snackbar.show();
+    }
+
+    public static void toast(Context context,String message){
+
+        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
+
     public static Boolean isNetworkAvailable(Context application) {
         ConnectivityManager connectivityManager = (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -72,6 +96,16 @@ public class utils {
             context.startActivity(Intent.createChooser(shareIntent, "choose one"));
         } catch (Exception e) {
             e.printStackTrace();
+
+        }
+    }
+
+    public static void keypadHide(Activity context) {
+        try {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+            assert imm != null;
+            imm.hideSoftInputFromWindow(Objects.requireNonNull(context.getCurrentFocus()).getWindowToken(), 0);
+        } catch (Exception ignored) {
 
         }
     }

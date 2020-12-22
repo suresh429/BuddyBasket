@@ -6,34 +6,36 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.buddy.basket.model.ItemDetailsResponse;
+import com.buddy.basket.model.CustomerResponse;
 import com.buddy.basket.network.Repository;
 import com.google.gson.JsonObject;
 
-public class ItemDetailsViewModel extends ViewModel {
+public class CustomerVerifyViewModel extends ViewModel {
     private MutableLiveData<String> toastMessageObserver;
     private MutableLiveData<Boolean> progressbarObservable;
-    private MutableLiveData<ItemDetailsResponse> mutableLiveData;
+    private MutableLiveData<CustomerResponse> mutableLiveData;
+    Repository repository;
 
-
-    public void initItemDetails(String item_id, Context context) {
+    public void initCustomerVerify(String phonenumber,String password, Context context) {
         if (mutableLiveData != null) {
             return;
         }
-        Repository repository = Repository.getInstance(context);
+        repository = Repository.getInstance(context);
 
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("item_id", item_id);
-
-        mutableLiveData = repository.getItemDetailsData(jsonObject);
+        jsonObject.addProperty("phonenumber", phonenumber);
+        jsonObject.addProperty("password", password);
+        mutableLiveData = repository.getCustomerVerifyData(jsonObject);
         progressbarObservable = repository.getProgressbarObservable();
         toastMessageObserver = repository.getToastObserver();
 
 
     }
 
-    public LiveData<ItemDetailsResponse> getRepository() {
+
+
+    public LiveData<CustomerResponse> getRepository() {
         return mutableLiveData;
     }
 

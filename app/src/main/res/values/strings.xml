@@ -17,6 +17,21 @@
     <string name="categories">Categories</string>
     <string name="history">History</string>
     <string name="closed">Closed</string>
+    <string name="_10_digit_mobile_number">10 digit mobile number</string>
+    <string name="todo">TODO</string>
+    <string name="enter_mobile_number">enter mobile number</string>
+    <string name="enter_your_phone_number_to_proceed">Enter your phone number to proceed</string>
+    <string name="login">LOGIN</string>
+    <string name="entermobileno">ENTER MOBILE NUMBER</string>
+    <string name="continu">CONTINUE</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="enter_your_details_for_sign_up">Enter your details for sign up</string>
+    <string name="mobile_number">Mobile number</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="enter_email_id">Enter Email Id</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="logout">Logout</string>
+    <string name="select_locations">Select Locations</string>
 
 
 </resources>

@@ -20,8 +20,10 @@
         <activity
             android:name=".activities.HomeActivity"
             android:theme="@style/AppThemeHome" />
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.RegistrationActivity" />
+        <activity android:name=".activities.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".activities.RegistrationActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

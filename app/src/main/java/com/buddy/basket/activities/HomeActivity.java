@@ -1,8 +1,12 @@
 package com.buddy.basket.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.buddy.basket.R;
@@ -19,6 +23,9 @@ import androidx.navigation.ui.NavigationUI;
 
 public class HomeActivity extends AppCompatActivity {
      BottomNavigationView navView;
+    boolean doubleBackToExitPressedOnce = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,5 +53,22 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            moveTaskToBack(true);
 
+
+        } else {
+
+            Toast.makeText(getApplicationContext(), "Press Back again to Exit.", Toast.LENGTH_SHORT).show();
+            doubleBackToExitPressedOnce = true;
+            new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce = false, 2 * 1000);
+
+        }
+    }
 }

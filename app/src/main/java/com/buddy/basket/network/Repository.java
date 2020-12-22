@@ -24,22 +24,22 @@ import retrofit2.Response;
 
 import static com.buddy.basket.network.RetrofitService.*;
 
-public class JournalRepository {
+public class Repository {
     private MutableLiveData<String> toastMessageObserver;
     private MutableLiveData<Boolean> progressbarObservable;
-    private static JournalRepository journalRepository;
+    private static Repository repository;
 
-    public static JournalRepository getInstance(Context context) {
-        if (journalRepository == null) {
-            journalRepository = new JournalRepository(context);
+    public static Repository getInstance(Context context) {
+        if (repository == null) {
+            repository = new Repository(context);
 
         }
-        return journalRepository;
+        return repository;
     }
 
    private ApiInterface newsApiInterface;
 
-    public JournalRepository(Context context) {
+    public Repository(Context context) {
 
         newsApiInterface = createService(ApiInterface.class, context);
         progressbarObservable = new MutableLiveData<>();
@@ -541,11 +541,11 @@ public class JournalRepository {
     }
 
     // getting categories data response
-    public MutableLiveData<CategoriesResponse> getCategoriesData() {
+    public MutableLiveData<CategoriesResponse> getCategoriesData(JsonObject jsonObject) {
         progressbarObservable.setValue(true);
         MutableLiveData<CategoriesResponse> homeData = new MutableLiveData<>();
 
-        newsApiInterface.getCategoriesList().enqueue(new Callback<CategoriesResponse>() {
+        newsApiInterface.getCategoriesList(jsonObject).enqueue(new Callback<CategoriesResponse>() {
             @Override
             public void onResponse(@NotNull Call<CategoriesResponse> call, @NotNull Response<CategoriesResponse> response) {
                 if (response.isSuccessful()) {

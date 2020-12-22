@@ -1,26 +1,15 @@
 package com.buddy.basket.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class CitiesResponse {
 
 
-    /**
-     * data : [{"id":1,"city":"Hyderabad","slug":"hyderabad","status":"1","state_id":"2","created_at":"2020-11-15T03:42:16.000000Z","updated_at":"2020-11-29T14:10:22.000000Z"},{"id":2,"city":"Visakhapatnam","slug":"visakhapatnam","status":"1","state_id":"1","created_at":"2020-11-19T21:27:32.000000Z","updated_at":"2020-11-19T21:27:32.000000Z"},{"id":3,"city":"Vijiawada","slug":"vijiawada","status":"1","state_id":"1","created_at":"2020-11-19T21:27:40.000000Z","updated_at":"2020-11-19T21:27:40.000000Z"},{"id":4,"city":"Secunderabad","slug":"secunderabad","status":"1","state_id":"2","created_at":"2020-11-19T21:27:49.000000Z","updated_at":"2020-11-19T21:27:49.000000Z"},{"id":5,"city":"Warangal","slug":"warangal","status":"1","state_id":"2","created_at":"2020-11-19T21:27:57.000000Z","updated_at":"2020-11-19T21:27:57.000000Z"},{"id":6,"city":"Kakinada","slug":"kakinada","status":"1","state_id":"1","created_at":"2020-11-19T21:28:03.000000Z","updated_at":"2020-11-19T21:28:03.000000Z"},{"id":7,"city":"Rajahmundry","slug":"rajahmundry","status":"1","state_id":"1","created_at":"2020-11-19T21:28:10.000000Z","updated_at":"2020-11-19T21:28:10.000000Z"},{"id":8,"city":"Tirupathi","slug":"tirupathi","status":"1","state_id":"1","created_at":"2020-11-19T21:28:15.000000Z","updated_at":"2020-11-19T21:28:15.000000Z"},{"id":9,"city":"Adilabad","slug":"adilabad","status":"1","state_id":"2","created_at":"2020-11-19T21:28:23.000000Z","updated_at":"2020-11-19T21:28:23.000000Z"},{"id":10,"city":"Nalgonda","slug":"nalgonda","status":"1","state_id":"2","created_at":"2020-11-19T21:28:34.000000Z","updated_at":"2020-11-19T21:28:34.000000Z"}]
-     * status : true
-     */
-
+    @SerializedName("status")
     private String status;
-    /**
-     * id : 1
-     * city : Hyderabad
-     * slug : hyderabad
-     * status : 1
-     * state_id : 2
-     * created_at : 2020-11-15T03:42:16.000000Z
-     * updated_at : 2020-11-29T14:10:22.000000Z
-     */
-
+    @SerializedName("data")
     private List<DataBean> data;
 
     public String getStatus() {
@@ -40,13 +29,20 @@ public class CitiesResponse {
     }
 
     public static class DataBean {
+        @SerializedName("id")
         private int id;
+        @SerializedName("city")
         private String city;
+        @SerializedName("slug")
         private String slug;
+        @SerializedName("status")
         private String status;
-        private String state_id;
-        private String created_at;
-        private String updated_at;
+        @SerializedName("state_id")
+        private String stateId;
+        @SerializedName("created_at")
+        private String createdAt;
+        @SerializedName("updated_at")
+        private String updatedAt;
 
         public int getId() {
             return id;
@@ -80,28 +76,28 @@ public class CitiesResponse {
             this.status = status;
         }
 
-        public String getState_id() {
-            return state_id;
+        public String getStateId() {
+            return stateId;
         }
 
-        public void setState_id(String state_id) {
-            this.state_id = state_id;
+        public void setStateId(String stateId) {
+            this.stateId = stateId;
         }
 
-        public String getCreated_at() {
-            return created_at;
+        public String getCreatedAt() {
+            return createdAt;
         }
 
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
         }
 
-        public String getUpdated_at() {
-            return updated_at;
+        public String getUpdatedAt() {
+            return updatedAt;
         }
 
-        public void setUpdated_at(String updated_at) {
-            this.updated_at = updated_at;
+        public void setUpdatedAt(String updatedAt) {
+            this.updatedAt = updatedAt;
         }
     }
 }
