@@ -30,7 +30,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/txtRestaruantName"
@@ -125,5 +126,13 @@
         android:layout_gravity="center"
         android:visibility="gone"
         tools:visibility="visible" />
+
+    <include
+        android:id="@+id/errorLayout"
+        layout="@layout/error_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,13 +19,16 @@ import com.buddy.basket.adapters.ItemsListAdapter;
 
 
 import com.buddy.basket.databinding.FragmentItemsListBinding;
+import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.helper.Util;
 import com.buddy.basket.model.ItemDetailsResponse;
 import com.buddy.basket.model.ItemsListResponse;
+import com.buddy.basket.viewmodels.CartViewModel;
 import com.buddy.basket.viewmodels.ItemsListViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -36,17 +40,25 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
     List<ItemDetailsResponse> itemDetailsResponseList = new ArrayList<>();
 
     ItemsListViewModel itemsListViewModel;
+    CartViewModel cartViewModel ;
     FragmentItemsListBinding binding;
-    ItemsListAdapter restaurantsListAdapter;
+    ItemsListAdapter itemsListAdapter;
 
-    String shopName;
+    String shopName,customerId;
     int shopId;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        itemsListViewModel = new ViewModelProvider(this).get(ItemsListViewModel.class);
+
         //View root = inflater.inflate(R.layout.fragment_restaurants, container, false);
         binding = FragmentItemsListBinding.inflate(inflater, container, false);
+
+        UserSessionManager userSessionManager= new UserSessionManager(requireContext());
+        HashMap<String, String> userDetails = userSessionManager.getUserDetails();
+        customerId = userDetails.get("id");
+
+        itemsListViewModel = new ViewModelProvider(this).get(ItemsListViewModel.class);
+        cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
 
         //hideBottomNav();
 
@@ -106,27 +118,25 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
                 dataBeanArrayList.addAll(catDetailsBeanList);
 
                 for (ItemsListResponse.DataBean product : catDetailsBeanList) {
-                    itemDetailsResponseList.add(new ItemDetailsResponse(product.getId(), product.getItemname(), product.getSlug(), Integer.parseInt(product.getQty()), product.getShopId(), product.getCategoryId(),
+                    itemDetailsResponseList.add(new ItemDetailsResponse(product.getId(), product.getItemname(), product.getSlug(), 0, product.getShopId(), product.getCategoryId(),
                             product.getSubcategoryId(),Double.parseDouble(product.getPrice()),product.getDescription(),product.getChoices(),product.getImage(),product.getStatus(),product.getCreatedAt(),product.getUpdatedAt()));
                 }
 
-                restaurantsListAdapter = new ItemsListAdapter(itemDetailsResponseList, getActivity(), this);
-                binding.recyclerHomeList.setAdapter(restaurantsListAdapter);
-
-
+                itemsListAdapter = new ItemsListAdapter(itemDetailsResponseList, getActivity(), this);
+                binding.recyclerHomeList.setAdapter(itemsListAdapter);
                 binding.progressBar.setVisibility(View.GONE);
-
-                restaurantsListAdapter.notifyDataSetChanged();
+                binding.errorLayout.txtError.setVisibility(View.GONE);
+                itemsListAdapter.notifyDataSetChanged();
 
             }else {
-
+                binding.progressBar.setVisibility(View.GONE);
+                binding.errorLayout.txtError.setVisibility(View.VISIBLE);
             }
 
 
         });
 
     }
-
 
 
     @Override
@@ -142,7 +152,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
             itemDetailsResponseList.remove(itemDetailsResponse);
             itemDetailsResponseList.add(i, updatedItemDetailsResponse);
 
-            restaurantsListAdapter.notifyDataSetChanged();
+            itemsListAdapter.notifyDataSetChanged();
             Log.d(TAG, "onMinusClick1: "+ itemDetailsResponse.getQty());
 
             calculateCartTotal();
@@ -160,7 +170,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         itemDetailsResponseList.remove(itemDetailsResponse);
         itemDetailsResponseList.add(i, updatedItemDetailsResponse);
 
-        restaurantsListAdapter.notifyDataSetChanged();
+        itemsListAdapter.notifyDataSetChanged();
         calculateCartTotal();
     }
 
@@ -175,8 +185,10 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
 
         itemDetailsResponseList.remove(itemDetailsResponse);
         itemDetailsResponseList.add(i, updatedItemDetailsResponse);
-        restaurantsListAdapter.notifyDataSetChanged();
+        itemsListAdapter.notifyDataSetChanged();
         calculateCartTotal();
+
+        addCart(customerId,itemDetailsResponse.getId(),1);
     }
 
     // total Amount
@@ -215,5 +227,46 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
 
 
 
+    }
+
+    private void addCart(String customerId, int itemId, int qty){
+        // init
+        cartViewModel.initInsertCart(customerId,itemId,qty, requireActivity());
+
+        // Alert toast msg
+        cartViewModel.getToastObserver().observe(getViewLifecycleOwner(), message -> {
+            // Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+            Snackbar snackbar = Snackbar.make(binding.getRoot().getRootView(), message, Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(Color.BLACK);
+            snackbar.show();
+
+            Util.noNetworkAlert(getActivity(), message);
+
+
+        });
+
+        // progress bar
+        cartViewModel.getProgressbarObservable().observe(getViewLifecycleOwner(), aBoolean -> {
+            if (aBoolean) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+
+            } else {
+                binding.progressBar.setVisibility(View.GONE);
+
+            }
+        });
+
+        // get home data
+        cartViewModel.getRepository().observe(getViewLifecycleOwner(), homeResponse -> {
+
+            if (homeResponse.getStatus().equalsIgnoreCase("true")){
+                Toast.makeText(getContext(),"Item Added to Cart",Toast.LENGTH_SHORT).show();
+            }else {
+
+            }
+
+
+        });
     }
 }

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -74,6 +75,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
         Log.d(TAG, "onCreateView: "+ cityId + "======"+city_Name);
         //binding.actionLayout.textLocation.setText(city_Name);
         binding.actionLayout.textLocation.setOnClickListener(this);
+        binding.actionLayout.badgeCart.setOnClickListener(this);
 
 
         citiesList();
@@ -223,6 +225,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
     public void onClick(View v) {
         if (v.getId() == R.id.text_location){
             alertDialog.show();
+        }else if (v.getId() == R.id.badge_cart){
+            Navigation.findNavController(v).navigate(R.id.navigation_cart);
         }
     }
 

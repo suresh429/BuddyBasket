@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    @Override
+   /* @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -70,5 +70,5 @@ public class HomeActivity extends AppCompatActivity {
             new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce = false, 2 * 1000);
 
         }
-    }
+    }*/
 }
