@@ -41,6 +41,7 @@ public class CartViewModel extends ViewModel {
         }
         Repository repository = Repository.getInstance(context);
 
+
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("customer_id", customer_id);
         jsonObject.addProperty("item_id", item_id);

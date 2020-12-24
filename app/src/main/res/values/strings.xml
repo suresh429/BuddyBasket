@@ -32,6 +32,16 @@
     <string name="enter_password">Enter Password</string>
     <string name="logout">Logout</string>
     <string name="select_locations">Select Locations</string>
+    <string name="address_line_one">Address Line One</string>
+    <string name="address_line_two">Address Line Two  (optional)</string>
+    <string name="landmark">LandMark</string>
+    <string name="pincode">Pincode</string>
+    <string name="add_address">Add Address</string>
+    <string name="add_new_address">+ Add New Address</string>
+    <string name="delete">Delete</string>
+    <string name="select">Select</string>
+    <string name="edit">Edit</string>
+    <string name="place_order">Place Order</string>
 
 
 </resources>

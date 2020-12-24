@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.buddy.basket.R;
 import com.buddy.basket.activities.HomeActivity;
 import com.buddy.basket.adapters.ItemsListAdapter;
 
@@ -21,15 +22,24 @@ import com.buddy.basket.adapters.ItemsListAdapter;
 import com.buddy.basket.databinding.FragmentItemsListBinding;
 import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.helper.Util;
+import com.buddy.basket.model.CartModel;
+import com.buddy.basket.model.CartResponse;
 import com.buddy.basket.model.ItemDetailsResponse;
 import com.buddy.basket.model.ItemsListResponse;
+import com.buddy.basket.network.ApiInterface;
+import com.buddy.basket.network.RetrofitService;
 import com.buddy.basket.viewmodels.CartViewModel;
 import com.buddy.basket.viewmodels.ItemsListViewModel;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 
@@ -40,11 +50,12 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
     List<ItemDetailsResponse> itemDetailsResponseList = new ArrayList<>();
 
     ItemsListViewModel itemsListViewModel;
-    CartViewModel cartViewModel ;
+    CartViewModel cartViewModel;
     FragmentItemsListBinding binding;
     ItemsListAdapter itemsListAdapter;
 
-    String shopName,customerId;
+
+    String shopName, customerId;
     int shopId;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -53,7 +64,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         //View root = inflater.inflate(R.layout.fragment_restaurants, container, false);
         binding = FragmentItemsListBinding.inflate(inflater, container, false);
 
-        UserSessionManager userSessionManager= new UserSessionManager(requireContext());
+        UserSessionManager userSessionManager = new UserSessionManager(requireContext());
         HashMap<String, String> userDetails = userSessionManager.getUserDetails();
         customerId = userDetails.get("id");
 
@@ -112,15 +123,19 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         // get home data
         itemsListViewModel.getRepository().observe(getViewLifecycleOwner(), homeResponse -> {
 
-            if (homeResponse.getStatus().equalsIgnoreCase("true")){
+            if (homeResponse.getStatus().equalsIgnoreCase("true")) {
 
                 List<ItemsListResponse.DataBean> catDetailsBeanList = homeResponse.getData();
                 dataBeanArrayList.addAll(catDetailsBeanList);
 
+                itemDetailsResponseList.clear();
                 for (ItemsListResponse.DataBean product : catDetailsBeanList) {
                     itemDetailsResponseList.add(new ItemDetailsResponse(product.getId(), product.getItemname(), product.getSlug(), 0, product.getShopId(), product.getCategoryId(),
-                            product.getSubcategoryId(),Double.parseDouble(product.getPrice()),product.getDescription(),product.getChoices(),product.getImage(),product.getStatus(),product.getCreatedAt(),product.getUpdatedAt()));
+                            product.getSubcategoryId(), Double.parseDouble(product.getPrice()), product.getDescription(), product.getChoices(), product.getImage(), product.getStatus(), product.getCreatedAt(), product.getUpdatedAt()));
+
+                    itemCheck(product.getId());
                 }
+
 
                 itemsListAdapter = new ItemsListAdapter(itemDetailsResponseList, getActivity(), this);
                 binding.recyclerHomeList.setAdapter(itemsListAdapter);
@@ -128,7 +143,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
                 binding.errorLayout.txtError.setVisibility(View.GONE);
                 itemsListAdapter.notifyDataSetChanged();
 
-            }else {
+            } else {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.errorLayout.txtError.setVisibility(View.VISIBLE);
             }
@@ -138,23 +153,20 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
 
     }
 
-
     @Override
     public void onMinusClick(int position, ItemDetailsResponse itemDetailsResponse) {
         int i = itemDetailsResponseList.indexOf(itemDetailsResponse);
-        Log.d(TAG, "onMinusClick: "+ itemDetailsResponse.getQty());
+        Log.d(TAG, "onMinusClick: " + itemDetailsResponse.getQty());
         if (itemDetailsResponse.getQty() > 0) {
 
-            ItemDetailsResponse updatedItemDetailsResponse = new ItemDetailsResponse(itemDetailsResponse.getId(), itemDetailsResponse.getItemname(), itemDetailsResponse.getSlug(), (itemDetailsResponse.getQty()-1), itemDetailsResponse.getShop_id(), itemDetailsResponse.getCategory_id(),
-                    itemDetailsResponse.getSubcategory_id(),itemDetailsResponse.getPrice(),itemDetailsResponse.getDescription(),itemDetailsResponse.getChoices(),itemDetailsResponse.getImage(),itemDetailsResponse.getStatus(),itemDetailsResponse.getCreated_at(),itemDetailsResponse.getUpdated_at()
+            ItemDetailsResponse updatedItemDetailsResponse = new ItemDetailsResponse(itemDetailsResponse.getId(), itemDetailsResponse.getItemname(), itemDetailsResponse.getSlug(), (itemDetailsResponse.getQty() - 1), itemDetailsResponse.getShop_id(), itemDetailsResponse.getCategory_id(),
+                    itemDetailsResponse.getSubcategory_id(), itemDetailsResponse.getPrice(), itemDetailsResponse.getDescription(), itemDetailsResponse.getChoices(), itemDetailsResponse.getImage(), itemDetailsResponse.getStatus(), itemDetailsResponse.getCreated_at(), itemDetailsResponse.getUpdated_at()
             );
 
             itemDetailsResponseList.remove(itemDetailsResponse);
             itemDetailsResponseList.add(i, updatedItemDetailsResponse);
-
             itemsListAdapter.notifyDataSetChanged();
-            Log.d(TAG, "onMinusClick1: "+ itemDetailsResponse.getQty());
-
+            updateCart(updatedItemDetailsResponse);
             calculateCartTotal();
         }
 
@@ -163,14 +175,14 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
     @Override
     public void onPlusClick(int position, ItemDetailsResponse itemDetailsResponse) {
         int i = itemDetailsResponseList.indexOf(itemDetailsResponse);
-        ItemDetailsResponse updatedItemDetailsResponse = new ItemDetailsResponse(itemDetailsResponse.getId(), itemDetailsResponse.getItemname(), itemDetailsResponse.getSlug(), (itemDetailsResponse.getQty()+1), itemDetailsResponse.getShop_id(), itemDetailsResponse.getCategory_id(),
-                itemDetailsResponse.getSubcategory_id(),itemDetailsResponse.getPrice(),itemDetailsResponse.getDescription(),itemDetailsResponse.getChoices(),itemDetailsResponse.getImage(),itemDetailsResponse.getStatus(),itemDetailsResponse.getCreated_at(),itemDetailsResponse.getUpdated_at()
-                );
+        ItemDetailsResponse updatedItemDetailsResponse = new ItemDetailsResponse(itemDetailsResponse.getId(), itemDetailsResponse.getItemname(), itemDetailsResponse.getSlug(), (itemDetailsResponse.getQty() + 1), itemDetailsResponse.getShop_id(), itemDetailsResponse.getCategory_id(),
+                itemDetailsResponse.getSubcategory_id(), itemDetailsResponse.getPrice(), itemDetailsResponse.getDescription(), itemDetailsResponse.getChoices(), itemDetailsResponse.getImage(), itemDetailsResponse.getStatus(), itemDetailsResponse.getCreated_at(), itemDetailsResponse.getUpdated_at()
+        );
 
         itemDetailsResponseList.remove(itemDetailsResponse);
         itemDetailsResponseList.add(i, updatedItemDetailsResponse);
-
         itemsListAdapter.notifyDataSetChanged();
+        updateCart(updatedItemDetailsResponse);
         calculateCartTotal();
     }
 
@@ -179,7 +191,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         int i = itemDetailsResponseList.indexOf(itemDetailsResponse);
         ItemDetailsResponse updatedItemDetailsResponse = new ItemDetailsResponse(
                 itemDetailsResponse.getId(), itemDetailsResponse.getItemname(), itemDetailsResponse.getSlug(), 1, itemDetailsResponse.getShop_id(), itemDetailsResponse.getCategory_id(),
-                itemDetailsResponse.getSubcategory_id(),itemDetailsResponse.getPrice(),itemDetailsResponse.getDescription(),itemDetailsResponse.getChoices(),itemDetailsResponse.getImage(),itemDetailsResponse.getStatus(),itemDetailsResponse.getCreated_at(),itemDetailsResponse.getUpdated_at()
+                itemDetailsResponse.getSubcategory_id(), itemDetailsResponse.getPrice(), itemDetailsResponse.getDescription(), itemDetailsResponse.getChoices(), itemDetailsResponse.getImage(), itemDetailsResponse.getStatus(), itemDetailsResponse.getCreated_at(), itemDetailsResponse.getUpdated_at()
 
         );
 
@@ -188,12 +200,11 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         itemsListAdapter.notifyDataSetChanged();
         calculateCartTotal();
 
-        addCart(customerId,itemDetailsResponse.getId(),1);
+        addCart(customerId, itemDetailsResponse.getId(), 1);
     }
 
     // total Amount
     public void calculateCartTotal() {
-
         int grandTotal = 0;
         int itemCount = 0;
         for (ItemDetailsResponse order : itemDetailsResponseList) {
@@ -204,69 +215,129 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
                 itemCount += order.getQty();
             }
         }
-
         if (grandTotal != 0) {
             binding.actionBottomCart.txtItemPrice.setText("\u20B9 " + grandTotal);
-            binding.actionBottomCart.txtItemCount.setText(itemCount +" ITEMS");
+            binding.actionBottomCart.txtItemCount.setText(itemCount + " ITEMS");
             binding.actionBottomCart.getRoot().setVisibility(View.VISIBLE);
+            binding.actionBottomCart.txtViewCart.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.navigation_cart));
         } else {
             binding.actionBottomCart.getRoot().setVisibility(View.GONE);
         }
 
-       /* btnAddtocart.setOnClickListener(view -> {
-
-            if (btnAddtocart.getText().toString().equalsIgnoreCase("GOTO CART")){
-                Intent intent = new Intent(ProductsActivity.this, HomeActivity.class);
-                intent.putExtra(BOTTAM_TAB_POSITION,2);
-                startActivity(intent);
-            }else {
-                addToCart(cartArray);
-            }
-
-        });*/
-
-
 
     }
 
-    private void addCart(String customerId, int itemId, int qty){
-        // init
-        cartViewModel.initInsertCart(customerId,itemId,qty, requireActivity());
-
-        // Alert toast msg
-        cartViewModel.getToastObserver().observe(getViewLifecycleOwner(), message -> {
-            // Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-            Snackbar snackbar = Snackbar.make(binding.getRoot().getRootView(), message, Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundColor(Color.BLACK);
-            snackbar.show();
-
-            Util.noNetworkAlert(getActivity(), message);
+    private void addCart(String customerId, int itemId, int qty) {
 
 
-        });
+        binding.progressBar.setVisibility(View.VISIBLE);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("customer_id", customerId);
+        jsonObject.addProperty("item_id", itemId);
+        jsonObject.addProperty("qty", 1);
+        Call<CartResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).getCartInsertList(jsonObject);
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<CartResponse> call, @NonNull Response<CartResponse> response) {
 
-        // progress bar
-        cartViewModel.getProgressbarObservable().observe(getViewLifecycleOwner(), aBoolean -> {
-            if (aBoolean) {
-                binding.progressBar.setVisibility(View.VISIBLE);
+                if (response.isSuccessful()) {
+                    binding.progressBar.setVisibility(View.GONE);
 
-            } else {
+                    Toast.makeText(getContext(), "Item Added to Cart", Toast.LENGTH_SHORT).show();
+
+                } else if (response.errorBody() != null) {
+                    binding.progressBar.setVisibility(View.GONE);
+                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
+                    //Util.toast(context, "Session expired");
+                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
+                    */
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
+                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.progressBar.setVisibility(View.GONE);
-
             }
         });
+    }
 
-        // get home data
-        cartViewModel.getRepository().observe(getViewLifecycleOwner(), homeResponse -> {
+    private void updateCart(ItemDetailsResponse cartModel) {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("customer_id", customerId);
+        jsonObject.addProperty("item_id", cartModel.getId());
+        jsonObject.addProperty("qty", cartModel.getQty());
+        Call<CartResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).getCartUpdateList(jsonObject);
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<CartResponse> call, @NonNull Response<CartResponse> response) {
 
-            if (homeResponse.getStatus().equalsIgnoreCase("true")){
-                Toast.makeText(getContext(),"Item Added to Cart",Toast.LENGTH_SHORT).show();
-            }else {
+                if (response.isSuccessful()) {
+                    binding.progressBar.setVisibility(View.GONE);
 
+                    Toast.makeText(getContext(), "Item Updated", Toast.LENGTH_SHORT).show();
+
+                } else if (response.errorBody() != null) {
+                    binding.progressBar.setVisibility(View.GONE);
+                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
+                    //Util.toast(context, "Session expired");
+                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
+                    */
+                }
             }
 
+            @Override
+            public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
+                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
 
+    private void itemCheck(int id) {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("customer_id", customerId);
+        Call<CartResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).getCartViewList(jsonObject);
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<CartResponse> call, @NonNull Response<CartResponse> response) {
+
+                if (response.isSuccessful()) {
+                    binding.progressBar.setVisibility(View.GONE);
+
+                    assert response.body() != null;
+                    List<CartResponse.CartBean> cartBeanList = response.body().getCart();
+
+                    for (CartResponse.CartBean cartBean : cartBeanList) {
+
+                        if (cartBean.getItem_id().equalsIgnoreCase(String.valueOf(id))) {
+                            Log.d(TAG, "onResponse: " +"true");
+                        }
+                    }
+
+                   /* itemsListAdapter = new ItemsListAdapter(itemDetailsResponseList, getActivity(), this);
+                    binding.recyclerHomeList.setAdapter(itemsListAdapter);
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.errorLayout.txtError.setVisibility(View.GONE);
+                    itemsListAdapter.notifyDataSetChanged();*/
+
+
+                } else if (response.errorBody() != null) {
+                    binding.progressBar.setVisibility(View.GONE);
+                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
+                    //Util.toast(context, "Session expired");
+                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
+                    */
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
+                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.progressBar.setVisibility(View.GONE);
+            }
         });
     }
 }

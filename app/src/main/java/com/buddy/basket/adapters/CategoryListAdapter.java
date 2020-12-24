@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.buddy.basket.R;
 import com.buddy.basket.databinding.CatgoeryListItemBinding;
 import com.buddy.basket.databinding.RestaurantItemBinding;
+import com.buddy.basket.helper.UserSessionManager;
+import com.buddy.basket.model.AddressResponse;
 import com.buddy.basket.model.CategoriesResponse;
 import com.buddy.basket.model.ShopsListResponse;
 import com.bumptech.glide.Glide;
@@ -24,7 +26,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
@@ -32,12 +36,11 @@ import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
 
     List<CategoriesResponse.DataBean> modelList;
-    int cityId;
-
     Context context;
-    public CategoryListAdapter(List<CategoriesResponse.DataBean> modelList, int cityId, Context context) {
+
+
+    public CategoryListAdapter(List<CategoriesResponse.DataBean> modelList, Context context) {
         this.modelList = modelList;
-        this.cityId = cityId;
         this.context = context;
     }
 
@@ -53,7 +56,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         holder.rowItemBinding.catName.setText(modelList.get(position).getCategoryname());
 
         Glide.with(context)
-                .load(IMAGE_HOME_URL+modelList.get(position).getImage())
+                .load(IMAGE_HOME_URL + modelList.get(position).getImage())
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
                 .into(new CustomTarget<Drawable>() {
                     @Override
@@ -71,14 +74,19 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
                 });
 
         holder.rowItemBinding.getRoot().setOnClickListener(v -> {
+
+            UserSessionManager userSessionManager = new UserSessionManager(context);
+            HashMap<String, String> location = userSessionManager.getLocationDetails();
+            String cityId = location.get("cityId");
+
             Bundle bundle = new Bundle();
-            bundle.putInt("city_id", cityId);
+            bundle.putInt("city_id", Integer.parseInt(Objects.requireNonNull(cityId)));
             bundle.putInt("category_id", modelList.get(position).getId());
             bundle.putString("categoryname", modelList.get(position).getCategoryname());
             //bundle.putString("type", modelList.get(position).getShopname());
 
             NavController navController = Navigation.findNavController(v);
-            navController.navigate(R.id.shopsFragment,bundle);
+            navController.navigate(R.id.shopsFragment, bundle);
         });
     }
 
@@ -96,4 +104,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             this.rowItemBinding = rowItemBinding;
         }
     }
+
+
 }

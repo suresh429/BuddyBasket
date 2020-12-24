@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:id="@+id/txtInputPassword"
+            app:passwordToggleEnabled="true"
             android:visibility="gone">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -72,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_password"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:fontFamily="@font/proxima_nova_regular">
 
             </com.google.android.material.textfield.TextInputEditText>

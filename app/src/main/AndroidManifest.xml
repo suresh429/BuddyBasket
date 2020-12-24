@@ -19,12 +19,16 @@
         tools:targetApi="m">
         <activity
             android:name=".activities.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeHome" />
         <activity android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".activities.RegistrationActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".activities.SplashActivity">
+        <activity android:name=".activities.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -37,7 +37,8 @@ public class ShopsFragment extends Fragment {
     private ShopsViewModel shopsViewModel;
     ArrayList<ShopsListResponse.DataBean> dataBeanArrayList = new ArrayList<>();
     FragmentShopsNamesBinding binding;
-    String cityId,city_Name;
+    String cityId;
+    String city_Name;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         shopsViewModel = new ViewModelProvider(this).get(ShopsViewModel.class);

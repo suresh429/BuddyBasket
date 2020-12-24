@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.buddy.basket.R;
 import com.buddy.basket.activities.HomeActivity;
@@ -32,6 +33,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         session =new  UserSessionManager(requireContext());
 
         binding.txtLogout.setOnClickListener(this);
+        binding.txtAddress.setOnClickListener(this);
 
         return binding.getRoot();
     }
@@ -44,6 +46,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
             Intent intentLogin = new Intent(requireActivity(), LoginActivity.class);
             intentLogin.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intentLogin);
+        }
+        else if (v.getId() == R.id.txtAddress) {
+            Bundle bundle = new Bundle();
+            bundle.putString("TYPE","ACCOUNT");
+            Navigation.findNavController(v).navigate(R.id.addressListFragment,bundle);
         }
     }
 }

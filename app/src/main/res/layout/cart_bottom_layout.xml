@@ -39,12 +39,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="View Cart"
+            android:padding="8dp"
             android:id="@+id/txtViewCart"
             android:textColor="@color/white"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
             android:textSize="17sp"
             android:gravity="center"
+            android:foreground="?attr/selectableItemBackground"
             app:drawableRightCompat="@drawable/ic_baseline_arrow_right_24" />
 
     </RelativeLayout>

@@ -74,7 +74,7 @@ public class UserSessionManager {
         return profile;
     }
 
-    public HashMap<String, String> getLocationDetails() {
+    public HashMap<String,String> getLocationDetails() {
         HashMap<String, String> location = new HashMap<>();
         location.put("cityId", pref.getString(KEY_CITY_ID, null));
         location.put("cityName", pref.getString(KEY_CITY_NAME, null));

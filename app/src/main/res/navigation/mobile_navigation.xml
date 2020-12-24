@@ -29,7 +29,11 @@
         android:id="@+id/navigation_myaccount"
         android:name="com.buddy.basket.fragments.AccountFragment"
         android:label="@string/my_account"
-        tools:layout="@layout/fragment_myaccount" />
+        tools:layout="@layout/fragment_myaccount" >
+        <action
+            android:id="@+id/action_navigation_myaccount_to_addressListFragment"
+            app:destination="@id/addressListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_history"
         android:name="com.buddy.basket.fragments.HistoryFragment"
@@ -40,12 +44,21 @@
         android:id="@+id/navigation_cart"
         android:name="com.buddy.basket.fragments.CartFragment"
         android:label="@string/title_cart"
-        tools:layout="@layout/fragment_cart"/>
+        tools:layout="@layout/fragment_cart">
+
+        <action
+            android:id="@+id/action_navigation_cart_to_addressListFragment"
+            app:destination="@id/addressListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/restaurantsItemsListFragment"
         android:name="com.buddy.basket.fragments.ItemsListFragment"
         android:label="RestaurantsItemsListFragment"
-        tools:layout="@layout/fragment_items_list"/>
+        tools:layout="@layout/fragment_items_list">
+        <action
+            android:id="@+id/action_restaurantsItemsListFragment_to_navigation_cart"
+            app:destination="@id/navigation_cart" />
+    </fragment>
     <fragment
         android:id="@+id/shopsFragment"
         android:name="com.buddy.basket.fragments.ShopsFragment"
@@ -54,5 +67,37 @@
         <action
             android:id="@+id/action_shopsFragment_to_restaurantsItemsListFragment"
             app:destination="@id/restaurantsItemsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressListFragment"
+        android:name="com.buddy.basket.fragments.AddressListFragment"
+        android:label="Select Address"
+        tools:layout="@layout/address_items_list" >
+        <action
+            android:id="@+id/action_addressListFragment_to_addAddressFragment"
+            app:destination="@id/addAddressFragment" />
+        <action
+            android:id="@+id/action_addressListFragment_to_placeOrderFragment"
+            app:destination="@id/placeOrderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAddressFragment"
+        android:name="com.buddy.basket.fragments.AddAddressFragment"
+        android:label="AddAddressFragment"
+       >
+        <action
+            android:id="@+id/action_addAddressFragment_to_addressListFragment"
+            app:destination="@id/addressListFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/placeOrderFragment"
+        android:name="com.buddy.basket.fragments.PlaceOrderFragment"
+        android:label="PlaceOrderFragment"
+        tools:layout="@layout/fragment_placeorder">
+
+        <action
+            android:id="@+id/action_placeOrderFragment_to_navigation_home2"
+            app:destination="@id/navigation_home" />
     </fragment>
 </navigation>

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,11 +25,20 @@ import com.buddy.basket.R;
 import com.buddy.basket.databinding.ActivityLoginBinding;
 import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.helper.Util;
+import com.buddy.basket.model.CartResponse;
+import com.buddy.basket.model.CustomerResponse;
+import com.buddy.basket.network.ApiInterface;
+import com.buddy.basket.network.RetrofitService;
 import com.buddy.basket.viewmodels.CategoriesViewModel;
 import com.buddy.basket.viewmodels.CustomerVerifyViewModel;
 import com.buddy.basket.viewmodels.CustomerViewModel;
+import com.google.gson.JsonObject;
 
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.buddy.basket.helper.Util.keypadHide;
 
@@ -165,58 +175,56 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void verifyCustomer(String mobile) {
         keypadHide(this);
-        String password = binding.etPassword.getText().toString();
+        String password = Objects.requireNonNull(binding.etPassword.getText()).toString();
         if (password.length() > 5) {
-            CustomerVerifyViewModel customerVerifyViewModel = new ViewModelProvider(this).get(CustomerVerifyViewModel.class);
 
-            customerVerifyViewModel.initCustomerVerify(mobile, password, this);
+            binding.progressLayout.progressBar1.setVisibility(View.VISIBLE);
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("phonenumber", mobile);
+            jsonObject.addProperty("password", password);
+            Call<CustomerResponse> call = RetrofitService.createService(ApiInterface.class,this).getCustomerVerifyList(jsonObject);
+            call.enqueue(new Callback<CustomerResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<CustomerResponse> call, @NonNull Response<CustomerResponse> response) {
 
-            // progress bar
-            customerVerifyViewModel.getProgressbarObservable().observe(this, aBoolean -> {
-                if (aBoolean) {
-                    binding.progressLayout.progressBar1.setVisibility(View.VISIBLE);
+                    if (response.isSuccessful()) {
+                        binding.progressLayout.progressBar1.setVisibility(View.GONE);
+                        CustomerResponse baseResponse = response.body();
+                        assert baseResponse != null;
+                        if (baseResponse.getStatus().equalsIgnoreCase("true")) {
 
-                } else {
+                            // session manager
+                            session.createLogin(String.valueOf(baseResponse.getCustomer().get(0).getId()),
+                                    baseResponse.getCustomer().get(0).getName(),
+                                    baseResponse.getCustomer().get(0).getPhonenumber());
+
+                            // save device Token
+                            // displayFirebaseRegId(baseResponse.getData().getToken());
+
+                            Intent intentLogin = new Intent(LoginActivity.this, HomeActivity.class);
+                            intentLogin.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intentLogin);
+
+                        } else {
+                            Util.snackBar(binding.getRoot().getRootView(), "Invalid credentials !", Color.WHITE);
+                        }
+
+                    } else if (response.errorBody() != null) {
+                        binding.progressLayout.progressBar1.setVisibility(View.GONE);
+                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
+                    //Util.toast(context, "Session expired");
+                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
+                    */
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<CustomerResponse> call, @NonNull Throwable t) {
+                    Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                     binding.progressLayout.progressBar1.setVisibility(View.GONE);
                 }
             });
 
-            // Alert msg
-            customerVerifyViewModel.getToastObserver().observe(this, message -> {
-                if (message.equalsIgnoreCase("401")) {
-                    // Util.snackBar(binding.getRoot().getRootView(), message, Color.WHITE);
-                } else if (message.equalsIgnoreCase("500")) {
-                    Util.snackBar(binding.getRoot().getRootView(), message, Color.WHITE);
-                } else {
-                    Util.snackBar(binding.getRoot().getRootView(), message, Color.WHITE);
-                    // noInternetDialog(this);
-                    //  Util.snackBar(binding.getRoot().getRootView(), "No network available, please check your WiFi or Data connection", Color.WHITE);
-                }
-
-            });
-
-            // get  data
-            customerVerifyViewModel.getRepository().observe(this, baseResponse -> {
-                if (baseResponse.getStatus().equalsIgnoreCase("true")) {
-                    Log.d(TAG, "customer: " + baseResponse.getStatus());
-
-                    // session manager
-                    session.createLogin(String.valueOf(baseResponse.getCustomer().get(0).getId()),
-                            baseResponse.getCustomer().get(0).getName(),
-                            baseResponse.getCustomer().get(0).getPhonenumber());
-
-                    // save device Token
-                    // displayFirebaseRegId(baseResponse.getData().getToken());
-
-                    Intent intentLogin = new Intent(LoginActivity.this, HomeActivity.class);
-                    intentLogin.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intentLogin);
-
-                } else {
-                    Util.snackBar(binding.getRoot().getRootView(), "Invalid credentials !", Color.WHITE);
-                }
-
-            });
 
         } else {
             Util.snackBar(binding.getRoot().getRootView(), "Password Should be 5 or more characters!", Color.WHITE);

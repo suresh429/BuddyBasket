@@ -28,7 +28,7 @@ import com.buddy.basket.R;
 import com.buddy.basket.activities.HomeActivity;
 import com.buddy.basket.adapters.CategoryListAdapter;
 import com.buddy.basket.adapters.LocationListAdapter;
-import com.buddy.basket.adapters.LocationSpinAdapter;
+
 import com.buddy.basket.adapters.ShopsListAdapter;
 import com.buddy.basket.databinding.FragmentHomeBinding;
 import com.buddy.basket.databinding.FragmentShopsNamesBinding;
@@ -60,7 +60,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
 
     FragmentHomeBinding binding;
     CategoryListAdapter categoryListAdapter;
-    String cityId,city_Name;
+    String city_Name;
+    String cityId;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         citiesViewModel = new ViewModelProvider(this).get(CitiesViewModel.class);
         categoriesViewModel = new ViewModelProvider(this).get(CategoriesViewModel.class);
@@ -68,9 +69,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
         //View root = inflater.inflate(R.layout.fragment_restaurants, container, false);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         userSessionManager= new UserSessionManager(requireContext());
-        HashMap<String, String> location = userSessionManager.getLocationDetails();
+        HashMap<String , String> location = userSessionManager.getLocationDetails();
         cityId = location.get("cityId");
-        city_Name = location.get("cityName");
+        city_Name =  location.get("cityName");
 
         Log.d(TAG, "onCreateView: "+ cityId + "======"+city_Name);
         //binding.actionLayout.textLocation.setText(city_Name);
@@ -79,6 +80,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
 
 
         citiesList();
+
         homeData();
 
 
@@ -120,14 +122,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
             if (homeResponse.getStatus().equalsIgnoreCase("true")){
                 List<CitiesResponse.DataBean> dataBeans = homeResponse.getData();
 
-                if (cityId!=null && city_Name != null){
-                    binding.actionLayout.textLocation.setText(city_Name);
-                    cityId = cityId;
-                }else {
-                    binding.actionLayout.textLocation.setText(dataBeans.get(0).getCity());
-                    cityId = String.valueOf(dataBeans.get(0).getId());
-                }
 
+
+                if (cityId!=null && city_Name != null){
+
+                    binding.actionLayout.textLocation.setText(city_Name);
+
+                }else {
+                    userSessionManager.saveLocation(String.valueOf(dataBeans.get(0).getId()),dataBeans.get(0).getCity());
+                    binding.actionLayout.textLocation.setText(dataBeans.get(0).getCity());
+
+                }
 
                 Log.d(TAG, "inside method: "+ cityId + "======"+dataBeans.get(0).getCity());
 
@@ -146,7 +151,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
                 //finally creating the alert dialog and displaying it
                 alertDialog = builder.create();
                 alertDialog.setCancelable(true);
-                // alertDialog.show();
+                //alertDialog.show();
 
 
                 RecyclerView recyclerView = dialogView.findViewById(R.id.locationRecycler);
@@ -209,7 +214,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
 
             List<CategoriesResponse.DataBean> filterDataBean = CollectionsKt.filter(catDetailsBeanList, s -> !s.getStatus().equals("0"));
 
-            categoryListAdapter = new CategoryListAdapter(filterDataBean, Integer.parseInt(cityId), getActivity());
+            categoryListAdapter = new CategoryListAdapter(filterDataBean, getActivity());
             binding.recyclerHomeList.setAdapter(categoryListAdapter);
 
             binding.progressBar.setVisibility(View.GONE);
@@ -235,6 +240,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
         alertDialog.dismiss();
         userSessionManager.saveLocation(String.valueOf(product.getId()),product.getCity());
         binding.actionLayout.textLocation.setText(product.getCity());
+
 
     }
 }

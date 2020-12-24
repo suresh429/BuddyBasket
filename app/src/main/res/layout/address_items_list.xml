@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="3dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/txtAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/proxima_nova_regular"/>
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/btnEdit"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="@string/edit"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:background="@drawable/rounded_outline_grey_bg"/>
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="@string/delete"
+                android:layout_margin="5dp"
+                android:background="@drawable/rounded_outline_grey_bg"/>
+
+            <Button
+                android:id="@+id/btnSelect"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/rounded_outline_grey_bg"
+                android:text="@string/select"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

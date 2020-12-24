@@ -4,33 +4,59 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.buddy.basket.R;
-import com.buddy.basket.viewmodels.CartViewModel;
-import com.buddy.basket.viewmodels.HistoryViewModel;
+import com.buddy.basket.adapters.OrderHistoryListAdapter;
+import com.buddy.basket.databinding.FragmentHistoryBinding;
+import com.buddy.basket.helper.UserSessionManager;
+import com.buddy.basket.model.OrderHistoryResponse;
+import com.buddy.basket.viewmodels.OrderHistoryViewModel;
 
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class HistoryFragment extends Fragment {
 
-    private HistoryViewModel historyViewModel;
+    OrderHistoryViewModel orderHistoryViewModel;
+    FragmentHistoryBinding binding;
+    OrderHistoryListAdapter adapter;
+    String customerId;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        historyViewModel =
-                ViewModelProviders.of(this).get(HistoryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_history, container, false);
+        orderHistoryViewModel = new ViewModelProvider(this).get(OrderHistoryViewModel.class);
+        binding = FragmentHistoryBinding.inflate(inflater, container, false);
 
 
-        return root;
+        UserSessionManager userSessionManager = new UserSessionManager(requireContext());
+        HashMap<String, String> userDetails = userSessionManager.getUserDetails();
+        customerId = userDetails.get("id");
+
+        orderHistoryViewModel.initOrderHistory(customerId, requireActivity());
+        // get home data
+        orderHistoryViewModel.getRepository().observe(getViewLifecycleOwner(), homeResponse -> {
+
+            if (homeResponse.getStatus().equalsIgnoreCase("true")){
+                List<OrderHistoryResponse.OrdersBean> catDetailsBeanList = homeResponse.getOrders();
+                adapter = new OrderHistoryListAdapter(catDetailsBeanList, getActivity());
+                binding.recyclerHistory.setAdapter(adapter);
+                binding.progressBar.setVisibility(View.GONE);
+                binding.errorLayout.txtError.setVisibility(View.GONE);
+                adapter.notifyDataSetChanged();
+            }else {
+                binding.errorLayout.txtError.setVisibility(View.VISIBLE);
+                binding.progressBar.setVisibility(View.GONE);
+                binding.recyclerHistory.setVisibility(View.GONE);
+            }
+
+
+        });
+
+
+        return binding.getRoot();
     }
 }
