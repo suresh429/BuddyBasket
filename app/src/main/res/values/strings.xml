@@ -44,6 +44,8 @@
     <string name="place_order">Place Order</string>
     <string name="enter_phone">Enter Phone</string>
     <string name="update_address">Update Address</string>
+    <string name="cart">Cart</string>
+    <string name="no_data_available">No Data Available...</string>
 
 
 </resources>

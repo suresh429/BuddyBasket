@@ -79,12 +79,14 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
 
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
 
-        assert getArguments() != null;
-        shop_id = getArguments().getString("shop_id");
 
-        binding.actionLayout.txtActionBarTitle.setText("Cart");
-        binding.actionLayout.badgeCart.setVisibility(View.GONE);
-        binding.actionLayout.txtActionBarTitle.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
+       /* if (getArguments() != null){
+            shop_id = getArguments().getString("shop_id");
+        }*/
+
+
+        binding.actionLayout.textLocation.setText("Cart");
+        binding.actionLayout.textLocation.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
         cartListData();
     }
@@ -142,6 +144,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
             } else {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.errorLayout.txtError.setVisibility(View.VISIBLE);
+                binding.errorLayout.txtError.setText("Empty Cart");
             }
 
 
@@ -198,6 +201,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
 
         for (CartModel order : cartModelList) {
             grandTotal += order.getPrice() * order.getCart_qty();
+            shop_id = order.getShopId();
 
             if (order.getCart_qty() > 0) {
                 itemCount += order.getCart_qty();

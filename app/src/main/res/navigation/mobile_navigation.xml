@@ -19,11 +19,11 @@
             app:destination="@id/navigation_cart" />
     </fragment>
 
-    <fragment
-        android:id="@+id/navigation_categories"
+   <!-- <fragment
+        android:id="@+id/navigation_cart"
         android:name="com.buddy.basket.fragments.CategoriesFragment"
-        android:label="@string/title_categories"
-        tools:layout="@layout/fragment_categories" />
+        android:label="@string/title_cart"
+        tools:layout="@layout/fragment_categories" />-->
 
     <fragment
         android:id="@+id/navigation_myaccount"

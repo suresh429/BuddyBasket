@@ -1,24 +1,15 @@
 package com.buddy.basket.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 
 import com.buddy.basket.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 public class HomeActivity extends AppCompatActivity {
@@ -42,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId()==R.id.navigation_home || destination.getId()==R.id.navigation_categories
+            if (destination.getId()==R.id.navigation_home || destination.getId()==R.id.navigation_cart
                     || destination.getId()==R.id.navigation_history || destination.getId()==R.id.navigation_myaccount){
                 navView.setVisibility(View.VISIBLE);
             }else {

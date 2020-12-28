@@ -8,14 +8,15 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_categories"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/categories" />
-
-    <item
         android:id="@+id/navigation_history"
         android:icon="@drawable/ic_baseline_history_in_24"
         android:title="@string/history" />
+
+    <item
+        android:id="@+id/navigation_cart"
+        android:icon="@drawable/ic_baseline_shopping_cart_24"
+        android:title="@string/cart" />
+
 
     <item
         android:id="@+id/navigation_myaccount"
