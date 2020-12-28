@@ -71,6 +71,7 @@
 
 
         <TextView
+            android:id="@+id/txtOrders"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -96,6 +97,7 @@
             app:drawableStartCompat="@drawable/ic_address_24" />
 
         <TextView
+            android:id="@+id/txtHelp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -108,6 +110,7 @@
             app:drawableStartCompat="@drawable/ic_help_24" />
 
         <TextView
+            android:id="@+id/txtAbout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -128,6 +131,7 @@
             android:background="@color/divider" />
 
         <TextView
+            android:id="@+id/txtReferUs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -140,6 +144,7 @@
             app:drawableStartCompat="@drawable/ic_share_24" />
 
         <TextView
+            android:id="@+id/txtSendFeedBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -152,6 +157,7 @@
             app:drawableStartCompat="@drawable/ic_feedback_24" />
 
         <TextView
+            android:id="@+id/txtRateUs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"

@@ -94,7 +94,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
 
     private void itemsListData() {
         // init
-        itemsListViewModel.init(shopId, requireActivity());
+        itemsListViewModel.init(shopId,customerId, requireActivity());
 
         // Alert toast msg
         itemsListViewModel.getToastObserver().observe(getViewLifecycleOwner(), message -> {
@@ -219,7 +219,9 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
             binding.actionBottomCart.txtItemPrice.setText("\u20B9 " + grandTotal);
             binding.actionBottomCart.txtItemCount.setText(itemCount + " ITEMS");
             binding.actionBottomCart.getRoot().setVisibility(View.VISIBLE);
-            binding.actionBottomCart.txtViewCart.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.navigation_cart));
+            Bundle bundle=new Bundle();
+            bundle.putString("shop_id", String.valueOf(shopId));
+            binding.actionBottomCart.txtViewCart.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.navigation_cart,bundle));
         } else {
             binding.actionBottomCart.getRoot().setVisibility(View.GONE);
         }
@@ -235,6 +237,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         jsonObject.addProperty("customer_id", customerId);
         jsonObject.addProperty("item_id", itemId);
         jsonObject.addProperty("qty", 1);
+        jsonObject.addProperty("shop_id",shopId);
         Call<CartResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).getCartInsertList(jsonObject);
         call.enqueue(new Callback<CartResponse>() {
             @Override
@@ -312,7 +315,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
 
                     for (CartResponse.CartBean cartBean : cartBeanList) {
 
-                        if (cartBean.getItem_id().equalsIgnoreCase(String.valueOf(id))) {
+                        if (cartBean.getItemId().equalsIgnoreCase(String.valueOf(id))) {
                             Log.d(TAG, "onResponse: " +"true");
                         }
                     }

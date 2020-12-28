@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.buddy.basket.R;
 import com.buddy.basket.adapters.OrderHistoryListAdapter;
 import com.buddy.basket.databinding.FragmentHistoryBinding;
 import com.buddy.basket.helper.UserSessionManager;
@@ -31,6 +32,9 @@ public class HistoryFragment extends Fragment {
         orderHistoryViewModel = new ViewModelProvider(this).get(OrderHistoryViewModel.class);
         binding = FragmentHistoryBinding.inflate(inflater, container, false);
 
+        binding.actionLayout.textLocation.setText("Order History");
+        binding.actionLayout.textLocation.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
 
         UserSessionManager userSessionManager = new UserSessionManager(requireContext());
         HashMap<String, String> userDetails = userSessionManager.getUserDetails();
@@ -45,6 +49,7 @@ public class HistoryFragment extends Fragment {
                 adapter = new OrderHistoryListAdapter(catDetailsBeanList, getActivity());
                 binding.recyclerHistory.setAdapter(adapter);
                 binding.progressBar.setVisibility(View.GONE);
+                binding.recyclerHistory.setVisibility(View.VISIBLE);
                 binding.errorLayout.txtError.setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
             }else {

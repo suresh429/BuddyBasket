@@ -1,26 +1,15 @@
 package com.buddy.basket.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class AddressResponse {
 
-    /**
-     * addresses : [{"id":4,"customer_id":"5","addr1":"test","addr2":"test","pincode":"500072","landmark":"test","updated_at":"2020-12-13T15:35:48.000000Z","created_at":"2020-12-13T15:35:48.000000Z"},{"id":5,"customer_id":"5","addr1":"test","addr2":"test","pincode":"500072","landmark":"test","updated_at":"2020-12-13T16:01:22.000000Z","created_at":"2020-12-13T16:01:22.000000Z"}]
-     * status : true
-     */
 
+    @SerializedName("status")
     private String status;
-    /**
-     * id : 4
-     * customer_id : 5
-     * addr1 : test
-     * addr2 : test
-     * pincode : 500072
-     * landmark : test
-     * updated_at : 2020-12-13T15:35:48.000000Z
-     * created_at : 2020-12-13T15:35:48.000000Z
-     */
-
+    @SerializedName("addresses")
     private List<AddressesBean> addresses;
 
     public String getStatus() {
@@ -40,14 +29,26 @@ public class AddressResponse {
     }
 
     public static class AddressesBean {
+        @SerializedName("id")
         private int id;
-        private String customer_id;
+        @SerializedName("name")
+        private String name;
+        @SerializedName("phone")
+        private String phone;
+        @SerializedName("customer_id")
+        private String customerId;
+        @SerializedName("addr1")
         private String addr1;
+        @SerializedName("addr2")
         private String addr2;
+        @SerializedName("pincode")
         private String pincode;
+        @SerializedName("landmark")
         private String landmark;
-        private String updated_at;
-        private String created_at;
+        @SerializedName("updated_at")
+        private String updatedAt;
+        @SerializedName("created_at")
+        private String createdAt;
 
         public int getId() {
             return id;
@@ -57,12 +58,28 @@ public class AddressResponse {
             this.id = id;
         }
 
-        public String getCustomer_id() {
-            return customer_id;
+        public String getName() {
+            return name;
         }
 
-        public void setCustomer_id(String customer_id) {
-            this.customer_id = customer_id;
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getCustomerId() {
+            return customerId;
+        }
+
+        public void setCustomerId(String customerId) {
+            this.customerId = customerId;
         }
 
         public String getAddr1() {
@@ -97,20 +114,20 @@ public class AddressResponse {
             this.landmark = landmark;
         }
 
-        public String getUpdated_at() {
-            return updated_at;
+        public String getUpdatedAt() {
+            return updatedAt;
         }
 
-        public void setUpdated_at(String updated_at) {
-            this.updated_at = updated_at;
+        public void setUpdatedAt(String updatedAt) {
+            this.updatedAt = updatedAt;
         }
 
-        public String getCreated_at() {
-            return created_at;
+        public String getCreatedAt() {
+            return createdAt;
         }
 
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
         }
     }
 }

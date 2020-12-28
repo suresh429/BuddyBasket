@@ -58,6 +58,7 @@ public class ItemsListResponse {
         @SerializedName("updated_at")
         private String updatedAt;
 
+
         public int getId() {
             return id;
         }
@@ -169,5 +170,7 @@ public class ItemsListResponse {
         public void setUpdatedAt(String updatedAt) {
             this.updatedAt = updatedAt;
         }
+
+
     }
 }

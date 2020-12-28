@@ -17,7 +17,8 @@ public class PlaceOrderViewModel extends ViewModel {
     private MutableLiveData<PlaceOrderResponse> mutableLiveData;
 
 
-    public void initPlaceOrder(String customer_id,String total_amt, String customer_comments,String address_id, Context context) {
+    public void initPlaceOrder(String customer_id,String total_amt, String customer_comments,String address_id,
+                               String shop_id,Context context) {
         if (mutableLiveData != null) {
             return;
         }
@@ -29,6 +30,7 @@ public class PlaceOrderViewModel extends ViewModel {
         jsonObject.addProperty("total_amt", total_amt);
         jsonObject.addProperty("customer_comments", customer_comments);
         jsonObject.addProperty("address_id", address_id);
+        jsonObject.addProperty("shop_id", shop_id);
         mutableLiveData = repository.getPlaceOrderData(jsonObject);
         progressbarObservable = repository.getProgressbarObservable();
         toastMessageObserver = repository.getToastObserver();

@@ -33,7 +33,7 @@
     <string name="logout">Logout</string>
     <string name="select_locations">Select Locations</string>
     <string name="address_line_one">Address Line One</string>
-    <string name="address_line_two">Address Line Two  (optional)</string>
+    <string name="address_line_two">Address Line Two</string>
     <string name="landmark">LandMark</string>
     <string name="pincode">Pincode</string>
     <string name="add_address">Add Address</string>
@@ -42,6 +42,8 @@
     <string name="select">Select</string>
     <string name="edit">Edit</string>
     <string name="place_order">Place Order</string>
+    <string name="enter_phone">Enter Phone</string>
+    <string name="update_address">Update Address</string>
 
 
 </resources>

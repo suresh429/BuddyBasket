@@ -16,7 +16,7 @@ public class ItemsListViewModel extends ViewModel {
     private MutableLiveData<ItemsListResponse> mutableLiveData;
 
 
-    public void init(int id, Context context) {
+    public void init(int id,String customer_id, Context context) {
         if (mutableLiveData != null) {
             return;
         }
@@ -25,6 +25,7 @@ public class ItemsListViewModel extends ViewModel {
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("shop_id", id);
+        jsonObject.addProperty("customer_id", customer_id);
 
         mutableLiveData = repository.getItemsListData(jsonObject);
         progressbarObservable = repository.getProgressbarObservable();

@@ -36,7 +36,7 @@ public interface ApiInterface {
     Call<ShopsListResponse> getShopsList(@Body JsonObject jsonObject);
 
     @Headers("Content-Type: application/json")
-    @POST("items")
+    @POST("shop-items")
     Call<ItemsListResponse> getItemsList(@Body JsonObject jsonObject);
 
     @Headers("Content-Type: application/json")

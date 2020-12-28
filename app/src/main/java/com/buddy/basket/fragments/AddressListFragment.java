@@ -41,7 +41,7 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
 
     private FragmentAddressListBinding binding;
     AddressListAdapter adapter;
-    String customerId,type;
+    String customerId,from,shop_id;
 
     int grandTotal,itemCount;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -55,7 +55,8 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
         if (getArguments() != null){
             grandTotal=getArguments().getInt("grandTotal");
             itemCount=getArguments().getInt("itemCount");
-            type = getArguments().getString("TYPE");
+            from = getArguments().getString("FROM");
+            shop_id = getArguments().getString("shop_id");
         }
 
 
@@ -65,7 +66,14 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
                 Navigation.findNavController(v).popBackStack()
         );
 
-        binding.btnAddNewAddress.setOnClickListener(v -> Navigation.findNavController(binding.getRoot()).navigate(R.id.addAddressFragment));
+        binding.btnAddNewAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("FROM",from);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.addAddressFragment,bundle);
+            }
+        });
 
         AddressListData();
 
@@ -87,7 +95,7 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
                     List<AddressResponse.AddressesBean> addressesBeanList = response.body().getAddresses();
 
                     if (addressesBeanList.size() > 0){
-                        adapter = new AddressListAdapter(addressesBeanList,requireContext(),AddressListFragment.this,type);
+                        adapter = new AddressListAdapter(addressesBeanList,requireContext(),AddressListFragment.this,from);
                         binding.recyclerAddressList.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
 
@@ -120,6 +128,17 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
     @Override
     public void editClick(AddressResponse.AddressesBean product) {
 
+        Bundle bundle = new Bundle();
+        bundle.putString("name",product.getName());
+        bundle.putString("phone",product.getPhone());
+        bundle.putString("address1",product.getAddr1());
+        bundle.putString("address2",product.getAddr2());
+        bundle.putString("landmark",product.getLandmark());
+        bundle.putString("pincode",product.getPincode());
+        bundle.putInt("address_id",product.getId());
+        bundle.putString("shop_id",shop_id);
+        bundle.putString("FROM",from);
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.updateAddressFragment,bundle);
     }
 
     @Override
@@ -162,6 +181,7 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
         bundle.putInt("grandTotal",grandTotal);
         bundle.putInt("itemCount",itemCount);
         bundle.putInt("address_id",product.getId());
+        bundle.putString("shop_id",shop_id);
         Navigation.findNavController(binding.getRoot()).navigate(R.id.placeOrderFragment,bundle);
     }
 }

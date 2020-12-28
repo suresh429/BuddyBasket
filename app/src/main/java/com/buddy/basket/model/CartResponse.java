@@ -1,26 +1,16 @@
 package com.buddy.basket.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class CartResponse {
 
 
-    /**
-     * cart : [{"id":5,"customer_id":"5","item_id":"8","qty":"1","created_at":"2020-12-20T13:32:53.000000Z","updated_at":"2020-12-20T13:32:53.000000Z","item":{"id":8,"itemname":"Lays","slug":"lays","qty":"10","shop_id":"4","category_id":"18","subcategory_id":"11","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-12-19T14:08:20.000000Z"}}]
-     * status : true
-     */
 
+    @SerializedName("status")
     private String status;
-    /**
-     * id : 5
-     * customer_id : 5
-     * item_id : 8
-     * qty : 1
-     * created_at : 2020-12-20T13:32:53.000000Z
-     * updated_at : 2020-12-20T13:32:53.000000Z
-     * item : {"id":8,"itemname":"Lays","slug":"lays","qty":"10","shop_id":"4","category_id":"18","subcategory_id":"11","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-12-19T14:08:20.000000Z"}
-     */
-
+    @SerializedName("cart")
     private List<CartBean> cart;
 
     public String getStatus() {
@@ -40,29 +30,21 @@ public class CartResponse {
     }
 
     public static class CartBean {
+        @SerializedName("id")
         private int id;
-        private String customer_id;
-        private String item_id;
+        @SerializedName("customer_id")
+        private String customerId;
+        @SerializedName("item_id")
+        private String itemId;
+        @SerializedName("shop_id")
+        private String shopId;
+        @SerializedName("qty")
         private String qty;
-        private String created_at;
-        private String updated_at;
-        /**
-         * id : 8
-         * itemname : Lays
-         * slug : lays
-         * qty : 10
-         * shop_id : 4
-         * category_id : 18
-         * subcategory_id : 11
-         * price : 58.00
-         * description : Chips
-         * choices : veg
-         * image : storage/items/lays_20201127140933.jpg
-         * status : 1
-         * created_at : 2020-11-27T14:09:33.000000Z
-         * updated_at : 2020-12-19T14:08:20.000000Z
-         */
-
+        @SerializedName("created_at")
+        private String createdAt;
+        @SerializedName("updated_at")
+        private String updatedAt;
+        @SerializedName("item")
         private ItemBean item;
 
         public int getId() {
@@ -73,20 +55,28 @@ public class CartResponse {
             this.id = id;
         }
 
-        public String getCustomer_id() {
-            return customer_id;
+        public String getCustomerId() {
+            return customerId;
         }
 
-        public void setCustomer_id(String customer_id) {
-            this.customer_id = customer_id;
+        public void setCustomerId(String customerId) {
+            this.customerId = customerId;
         }
 
-        public String getItem_id() {
-            return item_id;
+        public String getItemId() {
+            return itemId;
         }
 
-        public void setItem_id(String item_id) {
-            this.item_id = item_id;
+        public void setItemId(String itemId) {
+            this.itemId = itemId;
+        }
+
+        public String getShopId() {
+            return shopId;
+        }
+
+        public void setShopId(String shopId) {
+            this.shopId = shopId;
         }
 
         public String getQty() {
@@ -97,20 +87,20 @@ public class CartResponse {
             this.qty = qty;
         }
 
-        public String getCreated_at() {
-            return created_at;
+        public String getCreatedAt() {
+            return createdAt;
         }
 
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
         }
 
-        public String getUpdated_at() {
-            return updated_at;
+        public String getUpdatedAt() {
+            return updatedAt;
         }
 
-        public void setUpdated_at(String updated_at) {
-            this.updated_at = updated_at;
+        public void setUpdatedAt(String updatedAt) {
+            this.updatedAt = updatedAt;
         }
 
         public ItemBean getItem() {
@@ -122,20 +112,34 @@ public class CartResponse {
         }
 
         public static class ItemBean {
+            @SerializedName("id")
             private int id;
+            @SerializedName("itemname")
             private String itemname;
+            @SerializedName("slug")
             private String slug;
+            @SerializedName("qty")
             private String qty;
-            private String shop_id;
-            private String category_id;
-            private String subcategory_id;
+            @SerializedName("shop_id")
+            private String shopId;
+            @SerializedName("category_id")
+            private String categoryId;
+            @SerializedName("subcategory_id")
+            private String subcategoryId;
+            @SerializedName("price")
             private String price;
+            @SerializedName("description")
             private String description;
+            @SerializedName("choices")
             private String choices;
+            @SerializedName("image")
             private String image;
+            @SerializedName("status")
             private String status;
-            private String created_at;
-            private String updated_at;
+            @SerializedName("created_at")
+            private String createdAt;
+            @SerializedName("updated_at")
+            private String updatedAt;
 
             public int getId() {
                 return id;
@@ -169,28 +173,28 @@ public class CartResponse {
                 this.qty = qty;
             }
 
-            public String getShop_id() {
-                return shop_id;
+            public String getShopId() {
+                return shopId;
             }
 
-            public void setShop_id(String shop_id) {
-                this.shop_id = shop_id;
+            public void setShopId(String shopId) {
+                this.shopId = shopId;
             }
 
-            public String getCategory_id() {
-                return category_id;
+            public String getCategoryId() {
+                return categoryId;
             }
 
-            public void setCategory_id(String category_id) {
-                this.category_id = category_id;
+            public void setCategoryId(String categoryId) {
+                this.categoryId = categoryId;
             }
 
-            public String getSubcategory_id() {
-                return subcategory_id;
+            public String getSubcategoryId() {
+                return subcategoryId;
             }
 
-            public void setSubcategory_id(String subcategory_id) {
-                this.subcategory_id = subcategory_id;
+            public void setSubcategoryId(String subcategoryId) {
+                this.subcategoryId = subcategoryId;
             }
 
             public String getPrice() {
@@ -233,20 +237,20 @@ public class CartResponse {
                 this.status = status;
             }
 
-            public String getCreated_at() {
-                return created_at;
+            public String getCreatedAt() {
+                return createdAt;
             }
 
-            public void setCreated_at(String created_at) {
-                this.created_at = created_at;
+            public void setCreatedAt(String createdAt) {
+                this.createdAt = createdAt;
             }
 
-            public String getUpdated_at() {
-                return updated_at;
+            public String getUpdatedAt() {
+                return updatedAt;
             }
 
-            public void setUpdated_at(String updated_at) {
-                this.updated_at = updated_at;
+            public void setUpdatedAt(String updatedAt) {
+                this.updatedAt = updatedAt;
             }
         }
     }

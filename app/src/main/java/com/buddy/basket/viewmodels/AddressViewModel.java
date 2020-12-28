@@ -33,7 +33,8 @@ public class AddressViewModel extends ViewModel {
 
     }
 
-    public void initInsertAddress(String customer_id, String addr1, String addr2, String landmark, String pincode, Context context) {
+    public void initInsertAddress(String customer_id, String addr1, String addr2, String landmark, String pincode,
+                                  String name,String phone,Context context) {
         if (mutableLiveData != null) {
             return;
         }
@@ -45,6 +46,8 @@ public class AddressViewModel extends ViewModel {
         jsonObject.addProperty("addr1", addr1);
         jsonObject.addProperty("addr2", addr2);
         jsonObject.addProperty("landmark", landmark);
+        jsonObject.addProperty("name", name);
+        jsonObject.addProperty("phone", phone);
         jsonObject.addProperty("pincode", pincode);
 
         mutableLiveData = repository.getInsertAddressData(jsonObject);
@@ -54,7 +57,8 @@ public class AddressViewModel extends ViewModel {
 
     }
 
-    public void initUpdateAddress(String customer_id, String id, String addr1, String addr2, String landmark, String pincode, Context context) {
+    public void initUpdateAddress(String customer_id, String id, String addr1, String addr2, String landmark,
+                                  String name,String phone,String pincode, Context context) {
         if (mutableLiveData != null) {
             return;
         }
@@ -67,6 +71,8 @@ public class AddressViewModel extends ViewModel {
         jsonObject.addProperty("addr1", addr1);
         jsonObject.addProperty("addr2", addr2);
         jsonObject.addProperty("landmark", landmark);
+        jsonObject.addProperty("name", name);
+        jsonObject.addProperty("phone", phone);
         jsonObject.addProperty("pincode", pincode);
 
         mutableLiveData = repository.getUpdateAddressData(jsonObject);

@@ -34,6 +34,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
 
         binding.txtLogout.setOnClickListener(this);
         binding.txtAddress.setOnClickListener(this);
+        binding.txtOrders.setOnClickListener(this);
+        binding.txtAbout.setOnClickListener(this);
+        binding.txtHelp.setOnClickListener(this);
+        binding.txtRateUs.setOnClickListener(this);
+        binding.txtReferUs.setOnClickListener(this);
+        binding.txtSendFeedBack.setOnClickListener(this);
 
         return binding.getRoot();
     }
@@ -49,8 +55,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         }
         else if (v.getId() == R.id.txtAddress) {
             Bundle bundle = new Bundle();
-            bundle.putString("TYPE","ACCOUNT");
+            bundle.putString("FROM","Account");
             Navigation.findNavController(v).navigate(R.id.addressListFragment,bundle);
+        }
+        else if (v.getId() == R.id.txtOrders) {
+            Navigation.findNavController(v).navigate(R.id.navigation_history);
         }
     }
 }

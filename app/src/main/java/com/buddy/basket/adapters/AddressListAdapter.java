@@ -21,13 +21,13 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
     List<AddressResponse.AddressesBean> modelList;
     Context mContext;
     AdapterListner adapterListner;
-    String type;
+    String from;
 
-    public AddressListAdapter(List<AddressResponse.AddressesBean> modelList, Context mContext, AdapterListner adapterListner, String type) {
+    public AddressListAdapter(List<AddressResponse.AddressesBean> modelList, Context mContext, AdapterListner adapterListner, String from) {
         this.modelList = modelList;
         this.mContext = mContext;
         this.adapterListner = adapterListner;
-        this.type = type;
+        this.from = from;
     }
 
     @NonNull
@@ -39,12 +39,14 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
     @Override
     public void onBindViewHolder(@NonNull AddressListAdapter.ViewHolder holder, int position) {
 
-        if (type.equalsIgnoreCase("ACCOUNT")){
+        if (from.equalsIgnoreCase("Account")){
             holder.rowItemBinding.btnSelect.setVisibility(View.GONE);
         }else {
             holder.rowItemBinding.btnSelect.setVisibility(View.VISIBLE);
         }
 
+        holder.rowItemBinding.txtMobile.setText(modelList.get(position).getPhone());
+        holder.rowItemBinding.txtName.setText(modelList.get(position).getName());
         holder.rowItemBinding.txtAddress.setText(modelList.get(position).getAddr1()+" , "+modelList.get(position).getAddr2()+" , "+modelList.get(position).getLandmark()+"\npincode : "+modelList.get(position).getPincode());
         holder.rowItemBinding.btnEdit.setOnClickListener(v -> adapterListner.editClick(modelList.get(position)));
         holder.rowItemBinding.btnDelete.setOnClickListener(v -> adapterListner.deleteClick(modelList.get(position)));

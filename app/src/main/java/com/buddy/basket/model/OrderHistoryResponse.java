@@ -1,30 +1,15 @@
 package com.buddy.basket.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class OrderHistoryResponse {
 
 
-    /**
-     * orders : [{"id":1,"customer_id":"5","total_amt":"116.00","address_id":"4","customer_comments":null,"status":"new","comments":null,"created_at":"2020-12-13T15:41:37.000000Z","updated_at":"2020-12-13T15:41:37.000000Z","order_item":[{"id":1,"order_id":"1","item_id":"8","qty":"1","price":"58.00","created_at":"2020-12-13T15:41:37.000000Z","updated_at":"2020-12-13T15:41:37.000000Z","item":{"id":8,"itemname":"Lays","slug":"lays","qty":"10","shop_id":"4","category_id":"18","subcategory_id":"11","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-12-19T14:08:20.000000Z"}}],"address":{"id":4,"customer_id":"5","addr1":"test","addr2":"test","pincode":"500072","landmark":"test","updated_at":"2020-12-13T15:35:48.000000Z","created_at":"2020-12-13T15:35:48.000000Z"}},{"id":2,"customer_id":"5","total_amt":"116.00","address_id":"5","customer_comments":null,"status":"new","comments":null,"created_at":"2020-12-13T16:05:58.000000Z","updated_at":"2020-12-13T16:05:58.000000Z","order_item":[{"id":2,"order_id":"2","item_id":"8","qty":"3","price":"58.00","created_at":"2020-12-13T16:05:58.000000Z","updated_at":"2020-12-13T16:05:58.000000Z","item":{"id":8,"itemname":"Lays","slug":"lays","qty":"10","shop_id":"4","category_id":"18","subcategory_id":"11","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-12-19T14:08:20.000000Z"}}],"address":{"id":5,"customer_id":"5","addr1":"test","addr2":"test","pincode":"500072","landmark":"test","updated_at":"2020-12-13T16:01:22.000000Z","created_at":"2020-12-13T16:01:22.000000Z"}},{"id":3,"customer_id":"5","total_amt":"116.00","address_id":"6","customer_comments":null,"status":"new","comments":null,"created_at":"2020-12-17T11:43:47.000000Z","updated_at":"2020-12-17T11:43:47.000000Z","order_item":[{"id":3,"order_id":"3","item_id":"8","qty":"3","price":"58.00","created_at":"2020-12-17T11:43:47.000000Z","updated_at":"2020-12-17T11:43:47.000000Z","item":{"id":8,"itemname":"Lays","slug":"lays","qty":"10","shop_id":"4","category_id":"18","subcategory_id":"11","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-12-19T14:08:20.000000Z"}}],"address":{"id":6,"customer_id":"5","addr1":"test","addr2":"test","pincode":"500072","landmark":"test","updated_at":"2020-12-17T11:47:46.000000Z","created_at":"2020-12-17T11:47:46.000000Z"}},{"id":4,"customer_id":"5","total_amt":"116.00","address_id":"4","customer_comments":null,"status":"new","comments":null,"created_at":"2020-12-17T11:45:46.000000Z","updated_at":"2020-12-17T11:45:46.000000Z","order_item":[{"id":4,"order_id":"4","item_id":"8","qty":"3","price":"58.00","created_at":"2020-12-17T11:45:46.000000Z","updated_at":"2020-12-17T11:45:46.000000Z","item":{"id":8,"itemname":"Lays","slug":"lays","qty":"10","shop_id":"4","category_id":"18","subcategory_id":"11","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-12-19T14:08:20.000000Z"}}],"address":{"id":4,"customer_id":"5","addr1":"test","addr2":"test","pincode":"500072","landmark":"test","updated_at":"2020-12-13T15:35:48.000000Z","created_at":"2020-12-13T15:35:48.000000Z"}},{"id":5,"customer_id":"5","total_amt":"116.00","address_id":"1","customer_comments":null,"status":"new","comments":null,"created_at":"2020-12-19T14:41:05.000000Z","updated_at":"2020-12-19T14:41:05.000000Z","order_item":[{"id":5,"order_id":"5","item_id":"8","qty":"1","price":"58.00","created_at":"2020-12-19T14:41:05.000000Z","updated_at":"2020-12-19T14:41:05.000000Z","item":{"id":8,"itemname":"Lays","slug":"lays","qty":"10","shop_id":"4","category_id":"18","subcategory_id":"11","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-12-19T14:08:20.000000Z"}}],"address":null}]
-     * status : true
-     */
-
+    @SerializedName("status")
     private String status;
-    /**
-     * id : 1
-     * customer_id : 5
-     * total_amt : 116.00
-     * address_id : 4
-     * customer_comments : null
-     * status : new
-     * comments : null
-     * created_at : 2020-12-13T15:41:37.000000Z
-     * updated_at : 2020-12-13T15:41:37.000000Z
-     * order_item : [{"id":1,"order_id":"1","item_id":"8","qty":"1","price":"58.00","created_at":"2020-12-13T15:41:37.000000Z","updated_at":"2020-12-13T15:41:37.000000Z","item":{"id":8,"itemname":"Lays","slug":"lays","qty":"10","shop_id":"4","category_id":"18","subcategory_id":"11","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-12-19T14:08:20.000000Z"}}]
-     * address : {"id":4,"customer_id":"5","addr1":"test","addr2":"test","pincode":"500072","landmark":"test","updated_at":"2020-12-13T15:35:48.000000Z","created_at":"2020-12-13T15:35:48.000000Z"}
-     */
-
+    @SerializedName("orders")
     private List<OrdersBean> orders;
 
     public String getStatus() {
@@ -44,39 +29,32 @@ public class OrderHistoryResponse {
     }
 
     public static class OrdersBean {
+        @SerializedName("id")
         private int id;
-        private String customer_id;
-        private String total_amt;
-        private String address_id;
-        private Object customer_comments;
+        @SerializedName("customer_id")
+        private String customerId;
+        @SerializedName("total_amt")
+        private String totalAmt;
+        @SerializedName("address_id")
+        private String addressId;
+        @SerializedName("shop_id")
+        private String shopId;
+        @SerializedName("customer_comments")
+        private Object customerComments;
+        @SerializedName("status")
         private String status;
+        @SerializedName("comments")
         private Object comments;
-        private String created_at;
-        private String updated_at;
-        /**
-         * id : 4
-         * customer_id : 5
-         * addr1 : test
-         * addr2 : test
-         * pincode : 500072
-         * landmark : test
-         * updated_at : 2020-12-13T15:35:48.000000Z
-         * created_at : 2020-12-13T15:35:48.000000Z
-         */
-
+        @SerializedName("created_at")
+        private String createdAt;
+        @SerializedName("updated_at")
+        private String updatedAt;
+        @SerializedName("address")
         private AddressBean address;
-        /**
-         * id : 1
-         * order_id : 1
-         * item_id : 8
-         * qty : 1
-         * price : 58.00
-         * created_at : 2020-12-13T15:41:37.000000Z
-         * updated_at : 2020-12-13T15:41:37.000000Z
-         * item : {"id":8,"itemname":"Lays","slug":"lays","qty":"10","shop_id":"4","category_id":"18","subcategory_id":"11","price":"58.00","description":"Chips","choices":"veg","image":"storage/items/lays_20201127140933.jpg","status":"1","created_at":"2020-11-27T14:09:33.000000Z","updated_at":"2020-12-19T14:08:20.000000Z"}
-         */
-
-        private List<OrderItemBean> order_item;
+        @SerializedName("shop")
+        private ShopBean shop;
+        @SerializedName("order_item")
+        private List<OrderItemBean> orderItem;
 
         public int getId() {
             return id;
@@ -86,36 +64,44 @@ public class OrderHistoryResponse {
             this.id = id;
         }
 
-        public String getCustomer_id() {
-            return customer_id;
+        public String getCustomerId() {
+            return customerId;
         }
 
-        public void setCustomer_id(String customer_id) {
-            this.customer_id = customer_id;
+        public void setCustomerId(String customerId) {
+            this.customerId = customerId;
         }
 
-        public String getTotal_amt() {
-            return total_amt;
+        public String getTotalAmt() {
+            return totalAmt;
         }
 
-        public void setTotal_amt(String total_amt) {
-            this.total_amt = total_amt;
+        public void setTotalAmt(String totalAmt) {
+            this.totalAmt = totalAmt;
         }
 
-        public String getAddress_id() {
-            return address_id;
+        public String getAddressId() {
+            return addressId;
         }
 
-        public void setAddress_id(String address_id) {
-            this.address_id = address_id;
+        public void setAddressId(String addressId) {
+            this.addressId = addressId;
         }
 
-        public Object getCustomer_comments() {
-            return customer_comments;
+        public String getShopId() {
+            return shopId;
         }
 
-        public void setCustomer_comments(Object customer_comments) {
-            this.customer_comments = customer_comments;
+        public void setShopId(String shopId) {
+            this.shopId = shopId;
+        }
+
+        public Object getCustomerComments() {
+            return customerComments;
+        }
+
+        public void setCustomerComments(Object customerComments) {
+            this.customerComments = customerComments;
         }
 
         public String getStatus() {
@@ -134,20 +120,20 @@ public class OrderHistoryResponse {
             this.comments = comments;
         }
 
-        public String getCreated_at() {
-            return created_at;
+        public String getCreatedAt() {
+            return createdAt;
         }
 
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
+        public void setCreatedAt(String createdAt) {
+            this.createdAt = createdAt;
         }
 
-        public String getUpdated_at() {
-            return updated_at;
+        public String getUpdatedAt() {
+            return updatedAt;
         }
 
-        public void setUpdated_at(String updated_at) {
-            this.updated_at = updated_at;
+        public void setUpdatedAt(String updatedAt) {
+            this.updatedAt = updatedAt;
         }
 
         public AddressBean getAddress() {
@@ -158,23 +144,43 @@ public class OrderHistoryResponse {
             this.address = address;
         }
 
-        public List<OrderItemBean> getOrder_item() {
-            return order_item;
+        public ShopBean getShop() {
+            return shop;
         }
 
-        public void setOrder_item(List<OrderItemBean> order_item) {
-            this.order_item = order_item;
+        public void setShop(ShopBean shop) {
+            this.shop = shop;
+        }
+
+        public List<OrderItemBean> getOrderItem() {
+            return orderItem;
+        }
+
+        public void setOrderItem(List<OrderItemBean> orderItem) {
+            this.orderItem = orderItem;
         }
 
         public static class AddressBean {
+            @SerializedName("id")
             private int id;
-            private String customer_id;
+            @SerializedName("name")
+            private String name;
+            @SerializedName("phone")
+            private String phone;
+            @SerializedName("customer_id")
+            private String customerId;
+            @SerializedName("addr1")
             private String addr1;
+            @SerializedName("addr2")
             private String addr2;
+            @SerializedName("pincode")
             private String pincode;
+            @SerializedName("landmark")
             private String landmark;
-            private String updated_at;
-            private String created_at;
+            @SerializedName("updated_at")
+            private String updatedAt;
+            @SerializedName("created_at")
+            private String createdAt;
 
             public int getId() {
                 return id;
@@ -184,12 +190,28 @@ public class OrderHistoryResponse {
                 this.id = id;
             }
 
-            public String getCustomer_id() {
-                return customer_id;
+            public String getName() {
+                return name;
             }
 
-            public void setCustomer_id(String customer_id) {
-                this.customer_id = customer_id;
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getPhone() {
+                return phone;
+            }
+
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
+
+            public String getCustomerId() {
+                return customerId;
+            }
+
+            public void setCustomerId(String customerId) {
+                this.customerId = customerId;
             }
 
             public String getAddr1() {
@@ -224,48 +246,204 @@ public class OrderHistoryResponse {
                 this.landmark = landmark;
             }
 
-            public String getUpdated_at() {
-                return updated_at;
+            public String getUpdatedAt() {
+                return updatedAt;
             }
 
-            public void setUpdated_at(String updated_at) {
-                this.updated_at = updated_at;
+            public void setUpdatedAt(String updatedAt) {
+                this.updatedAt = updatedAt;
             }
 
-            public String getCreated_at() {
-                return created_at;
+            public String getCreatedAt() {
+                return createdAt;
             }
 
-            public void setCreated_at(String created_at) {
-                this.created_at = created_at;
+            public void setCreatedAt(String createdAt) {
+                this.createdAt = createdAt;
+            }
+        }
+
+        public static class ShopBean {
+            @SerializedName("id")
+            private int id;
+            @SerializedName("shopname")
+            private String shopname;
+            @SerializedName("slug")
+            private String slug;
+            @SerializedName("description")
+            private String description;
+            @SerializedName("state_id")
+            private String stateId;
+            @SerializedName("city_id")
+            private String cityId;
+            @SerializedName("category_id")
+            private String categoryId;
+            @SerializedName("address")
+            private String address;
+            @SerializedName("phone")
+            private String phone;
+            @SerializedName("website")
+            private Object website;
+            @SerializedName("opentime")
+            private String opentime;
+            @SerializedName("closetime")
+            private String closetime;
+            @SerializedName("image")
+            private String image;
+            @SerializedName("status")
+            private String status;
+            @SerializedName("created_at")
+            private String createdAt;
+            @SerializedName("updated_at")
+            private String updatedAt;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getShopname() {
+                return shopname;
+            }
+
+            public void setShopname(String shopname) {
+                this.shopname = shopname;
+            }
+
+            public String getSlug() {
+                return slug;
+            }
+
+            public void setSlug(String slug) {
+                this.slug = slug;
+            }
+
+            public String getDescription() {
+                return description;
+            }
+
+            public void setDescription(String description) {
+                this.description = description;
+            }
+
+            public String getStateId() {
+                return stateId;
+            }
+
+            public void setStateId(String stateId) {
+                this.stateId = stateId;
+            }
+
+            public String getCityId() {
+                return cityId;
+            }
+
+            public void setCityId(String cityId) {
+                this.cityId = cityId;
+            }
+
+            public String getCategoryId() {
+                return categoryId;
+            }
+
+            public void setCategoryId(String categoryId) {
+                this.categoryId = categoryId;
+            }
+
+            public String getAddress() {
+                return address;
+            }
+
+            public void setAddress(String address) {
+                this.address = address;
+            }
+
+            public String getPhone() {
+                return phone;
+            }
+
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
+
+            public Object getWebsite() {
+                return website;
+            }
+
+            public void setWebsite(Object website) {
+                this.website = website;
+            }
+
+            public String getOpentime() {
+                return opentime;
+            }
+
+            public void setOpentime(String opentime) {
+                this.opentime = opentime;
+            }
+
+            public String getClosetime() {
+                return closetime;
+            }
+
+            public void setClosetime(String closetime) {
+                this.closetime = closetime;
+            }
+
+            public String getImage() {
+                return image;
+            }
+
+            public void setImage(String image) {
+                this.image = image;
+            }
+
+            public String getStatus() {
+                return status;
+            }
+
+            public void setStatus(String status) {
+                this.status = status;
+            }
+
+            public String getCreatedAt() {
+                return createdAt;
+            }
+
+            public void setCreatedAt(String createdAt) {
+                this.createdAt = createdAt;
+            }
+
+            public String getUpdatedAt() {
+                return updatedAt;
+            }
+
+            public void setUpdatedAt(String updatedAt) {
+                this.updatedAt = updatedAt;
             }
         }
 
         public static class OrderItemBean {
+            @SerializedName("id")
             private int id;
-            private String order_id;
-            private String item_id;
+            @SerializedName("order_id")
+            private String orderId;
+            @SerializedName("item_id")
+            private String itemId;
+            @SerializedName("shop_id")
+            private String shopId;
+            @SerializedName("qty")
             private String qty;
+            @SerializedName("price")
             private String price;
-            private String created_at;
-            private String updated_at;
-            /**
-             * id : 8
-             * itemname : Lays
-             * slug : lays
-             * qty : 10
-             * shop_id : 4
-             * category_id : 18
-             * subcategory_id : 11
-             * price : 58.00
-             * description : Chips
-             * choices : veg
-             * image : storage/items/lays_20201127140933.jpg
-             * status : 1
-             * created_at : 2020-11-27T14:09:33.000000Z
-             * updated_at : 2020-12-19T14:08:20.000000Z
-             */
-
+            @SerializedName("created_at")
+            private String createdAt;
+            @SerializedName("updated_at")
+            private String updatedAt;
+            @SerializedName("item")
             private ItemBean item;
 
             public int getId() {
@@ -276,20 +454,28 @@ public class OrderHistoryResponse {
                 this.id = id;
             }
 
-            public String getOrder_id() {
-                return order_id;
+            public String getOrderId() {
+                return orderId;
             }
 
-            public void setOrder_id(String order_id) {
-                this.order_id = order_id;
+            public void setOrderId(String orderId) {
+                this.orderId = orderId;
             }
 
-            public String getItem_id() {
-                return item_id;
+            public String getItemId() {
+                return itemId;
             }
 
-            public void setItem_id(String item_id) {
-                this.item_id = item_id;
+            public void setItemId(String itemId) {
+                this.itemId = itemId;
+            }
+
+            public String getShopId() {
+                return shopId;
+            }
+
+            public void setShopId(String shopId) {
+                this.shopId = shopId;
             }
 
             public String getQty() {
@@ -308,20 +494,20 @@ public class OrderHistoryResponse {
                 this.price = price;
             }
 
-            public String getCreated_at() {
-                return created_at;
+            public String getCreatedAt() {
+                return createdAt;
             }
 
-            public void setCreated_at(String created_at) {
-                this.created_at = created_at;
+            public void setCreatedAt(String createdAt) {
+                this.createdAt = createdAt;
             }
 
-            public String getUpdated_at() {
-                return updated_at;
+            public String getUpdatedAt() {
+                return updatedAt;
             }
 
-            public void setUpdated_at(String updated_at) {
-                this.updated_at = updated_at;
+            public void setUpdatedAt(String updatedAt) {
+                this.updatedAt = updatedAt;
             }
 
             public ItemBean getItem() {
@@ -333,20 +519,34 @@ public class OrderHistoryResponse {
             }
 
             public static class ItemBean {
+                @SerializedName("id")
                 private int id;
+                @SerializedName("itemname")
                 private String itemname;
+                @SerializedName("slug")
                 private String slug;
+                @SerializedName("qty")
                 private String qty;
-                private String shop_id;
-                private String category_id;
-                private String subcategory_id;
+                @SerializedName("shop_id")
+                private String shopId;
+                @SerializedName("category_id")
+                private String categoryId;
+                @SerializedName("subcategory_id")
+                private String subcategoryId;
+                @SerializedName("price")
                 private String price;
+                @SerializedName("description")
                 private String description;
+                @SerializedName("choices")
                 private String choices;
+                @SerializedName("image")
                 private String image;
+                @SerializedName("status")
                 private String status;
-                private String created_at;
-                private String updated_at;
+                @SerializedName("created_at")
+                private String createdAt;
+                @SerializedName("updated_at")
+                private String updatedAt;
 
                 public int getId() {
                     return id;
@@ -380,28 +580,28 @@ public class OrderHistoryResponse {
                     this.qty = qty;
                 }
 
-                public String getShop_id() {
-                    return shop_id;
+                public String getShopId() {
+                    return shopId;
                 }
 
-                public void setShop_id(String shop_id) {
-                    this.shop_id = shop_id;
+                public void setShopId(String shopId) {
+                    this.shopId = shopId;
                 }
 
-                public String getCategory_id() {
-                    return category_id;
+                public String getCategoryId() {
+                    return categoryId;
                 }
 
-                public void setCategory_id(String category_id) {
-                    this.category_id = category_id;
+                public void setCategoryId(String categoryId) {
+                    this.categoryId = categoryId;
                 }
 
-                public String getSubcategory_id() {
-                    return subcategory_id;
+                public String getSubcategoryId() {
+                    return subcategoryId;
                 }
 
-                public void setSubcategory_id(String subcategory_id) {
-                    this.subcategory_id = subcategory_id;
+                public void setSubcategoryId(String subcategoryId) {
+                    this.subcategoryId = subcategoryId;
                 }
 
                 public String getPrice() {
@@ -444,20 +644,20 @@ public class OrderHistoryResponse {
                     this.status = status;
                 }
 
-                public String getCreated_at() {
-                    return created_at;
+                public String getCreatedAt() {
+                    return createdAt;
                 }
 
-                public void setCreated_at(String created_at) {
-                    this.created_at = created_at;
+                public void setCreatedAt(String createdAt) {
+                    this.createdAt = createdAt;
                 }
 
-                public String getUpdated_at() {
-                    return updated_at;
+                public String getUpdatedAt() {
+                    return updatedAt;
                 }
 
-                public void setUpdated_at(String updated_at) {
-                    this.updated_at = updated_at;
+                public void setUpdatedAt(String updatedAt) {
+                    this.updatedAt = updatedAt;
                 }
             }
         }

@@ -12,11 +12,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@+id/action_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/recyclerHistory"
         android:padding="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
+        tools:itemCount="5"
         tools:listitem="@layout/history_list_item"/>
 
     <ProgressBar

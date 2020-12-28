@@ -37,6 +37,7 @@ public class OrderHistoryListAdapter extends RecyclerView.Adapter<OrderHistoryLi
 
     List<OrderHistoryResponse.OrdersBean> modelList;
 
+
     Context context;
     public OrderHistoryListAdapter(List<OrderHistoryResponse.OrdersBean> modelList, Context context) {
         this.modelList = modelList;
@@ -49,11 +50,12 @@ public class OrderHistoryListAdapter extends RecyclerView.Adapter<OrderHistoryLi
         return new ViewHolder(HistoryListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull OrderHistoryListAdapter.ViewHolder holder, int position) {
 
-        /*holder.rowItemBinding.txtRestuarntName.setText(modelList.get(position).getShopname());
-        holder.rowItemBinding.txtRestuarntLocation.setText(modelList.get(position).getAddress());*/
+        holder.rowItemBinding.txtRestuarntName.setText(modelList.get(position).getShop().getShopname());
+        holder.rowItemBinding.txtRestuarntLocation.setText(modelList.get(position).getShop().getAddress());
 
        /* @SuppressLint("SimpleDateFormat") SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat = new SimpleDateFormat("MMMM dd, yyyy");
@@ -69,10 +71,10 @@ public class OrderHistoryListAdapter extends RecyclerView.Adapter<OrderHistoryLi
         }*/
 
 
-        holder.rowItemBinding.txtAmount.setText("\u20b9"+modelList.get(position).getTotal_amt());
-        holder.rowItemBinding.txtDate.setText(modelList.get(position).getCreated_at());
-        /*Glide.with(context)
-                .load(IMAGE_HOME_URL+modelList.get(position).getImage())
+        holder.rowItemBinding.txtAmount.setText("\u20b9"+modelList.get(position).getTotalAmt());
+        holder.rowItemBinding.txtDate.setText(modelList.get(position).getCreatedAt());
+        Glide.with(context)
+                .load(IMAGE_HOME_URL+modelList.get(position).getShop().getImage())
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
                 .into(new CustomTarget<Drawable>() {
                     @Override
@@ -87,7 +89,7 @@ public class OrderHistoryListAdapter extends RecyclerView.Adapter<OrderHistoryLi
 
                     }
 
-                });*/
+                });
 
         holder.rowItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override

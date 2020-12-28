@@ -36,7 +36,7 @@ import retrofit2.Response;
 public class PlaceOrderFragment extends Fragment {
 
     private FragmentPlaceorderBinding binding;
-    String customerId;
+    String customerId,shop_id;
     int grandTotal,itemCount,address_id;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -51,6 +51,7 @@ public class PlaceOrderFragment extends Fragment {
         grandTotal=getArguments().getInt("grandTotal");
         itemCount=getArguments().getInt("itemCount");
         address_id=getArguments().getInt("address_id");
+        shop_id=getArguments().getString("shop_id");
 
 
         binding.actionLayout.txtActionBarTitle.setText("Place Order");
@@ -71,6 +72,7 @@ public class PlaceOrderFragment extends Fragment {
         jsonObject.addProperty("total_amt", grandTotal);
         jsonObject.addProperty("customer_comments", Objects.requireNonNull(binding.etComments.getText()).toString());
         jsonObject.addProperty("address_id", address_id);
+        jsonObject.addProperty("shop_id", shop_id);
         Call<PlaceOrderResponse> call = RetrofitService.createService(ApiInterface.class,requireContext()).getPlaceOrderList(jsonObject);
         call.enqueue(new Callback<PlaceOrderResponse>() {
             @Override

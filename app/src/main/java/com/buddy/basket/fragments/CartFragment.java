@@ -52,13 +52,13 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 
-public class CartFragment extends Fragment implements CartListAdapter.RestaurantItemInterface{
+public class CartFragment extends Fragment implements CartListAdapter.RestaurantItemInterface {
     int grandTotal = 0;
     int itemCount = 0;
     FragmentCartBinding binding;
     CartViewModel cartViewModel;
     CartListAdapter adapter;
-    private String customerId;
+    private String customerId, shop_id;
     private final List<CartModel> cartModelList = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -72,12 +72,15 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        UserSessionManager userSessionManager= new UserSessionManager(requireContext());
+        UserSessionManager userSessionManager = new UserSessionManager(requireContext());
         HashMap<String, String> userDetails = userSessionManager.getUserDetails();
         customerId = userDetails.get("id");
 
+
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
 
+        assert getArguments() != null;
+        shop_id = getArguments().getString("shop_id");
 
         binding.actionLayout.txtActionBarTitle.setText("Cart");
         binding.actionLayout.badgeCart.setVisibility(View.GONE);
@@ -117,16 +120,16 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
         // get home data
         cartViewModel.getRepository().observe(getViewLifecycleOwner(), homeResponse -> {
 
-            if (homeResponse.getStatus().equalsIgnoreCase("true")){
+            if (homeResponse.getStatus().equalsIgnoreCase("true")) {
 
                 List<CartResponse.CartBean> catDetailsBeanList = homeResponse.getCart();
                 //dataBeanArrayList.addAll(catDetailsBeanList);
-
+                cartModelList.clear();
                 for (CartResponse.CartBean product : catDetailsBeanList) {
-                    cartModelList.add(new CartModel(product.getId(), product.getCustomer_id(), product.getItem_id(), Integer.parseInt(product.getQty()), product.getItem().getItemname(),
-                            Integer.parseInt(product.getItem().getQty()),Double.parseDouble(product.getItem().getPrice()),product.getItem().getShop_id(),product.getItem().getCategory_id(),
-                            product.getItem().getSubcategory_id(),product.getItem().getImage(),product.getItem().getChoices(),product.getItem().getStatus()
-                            ));
+                    cartModelList.add(new CartModel(product.getId(), product.getCustomerId(), product.getItemId(), Integer.parseInt(product.getQty()), product.getItem().getItemname(),
+                            Integer.parseInt(product.getItem().getQty()), Double.parseDouble(product.getItem().getPrice()), product.getItem().getShopId(), product.getItem().getCategoryId(),
+                            product.getItem().getSubcategoryId(), product.getItem().getImage(), product.getItem().getChoices(), product.getItem().getStatus()
+                    ));
                 }
 
                 adapter = new CartListAdapter(cartModelList, getActivity(), this);
@@ -136,7 +139,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
                 adapter.notifyDataSetChanged();
                 calculateCartTotal();
 
-            }else {
+            } else {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.errorLayout.txtError.setVisibility(View.VISIBLE);
             }
@@ -149,20 +152,20 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
     @Override
     public void onMinusClick(int position, CartModel cartModel) {
         int i = cartModelList.indexOf(cartModel);
-        Log.d(TAG, "onMinusClick: "+ cartModel.getCart_qty());
+        Log.d(TAG, "onMinusClick: " + cartModel.getCart_qty());
         if (cartModel.getCart_qty() > 0) {
 
             CartModel updatedCartModel = new CartModel(
-                    cartModel.getCartId(), cartModel.getCustomerId(), cartModel.getItemId(), cartModel.getCart_qty()-1, cartModel.getItemName(),
-                    cartModel.getTotal_qty(),cartModel.getPrice(),cartModel.getShopId(),cartModel.getCategoryId(),
-                    cartModel.getSubCategoryId(),cartModel.getImage(),cartModel.getChoice(),cartModel.getStatus()
+                    cartModel.getCartId(), cartModel.getCustomerId(), cartModel.getItemId(), cartModel.getCart_qty() - 1, cartModel.getItemName(),
+                    cartModel.getTotal_qty(), cartModel.getPrice(), cartModel.getShopId(), cartModel.getCategoryId(),
+                    cartModel.getSubCategoryId(), cartModel.getImage(), cartModel.getChoice(), cartModel.getStatus()
             );
 
             cartModelList.remove(cartModel);
             cartModelList.add(i, updatedCartModel);
 
             adapter.notifyDataSetChanged();
-            Log.d(TAG, "onMinusClick1: "+ cartModel.getCart_qty());
+            Log.d(TAG, "onMinusClick1: " + cartModel.getCart_qty());
 
             updateCart(updatedCartModel);
 
@@ -175,9 +178,9 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
     public void onPlusClick(int position, CartModel cartModel) {
         int i = cartModelList.indexOf(cartModel);
         CartModel updatedCartModel = new CartModel(
-                cartModel.getCartId(), cartModel.getCustomerId(), cartModel.getItemId(), cartModel.getCart_qty()+1, cartModel.getItemName(),
-                cartModel.getTotal_qty(),cartModel.getPrice(),cartModel.getShopId(),cartModel.getCategoryId(),
-                cartModel.getSubCategoryId(),cartModel.getImage(),cartModel.getChoice(),cartModel.getStatus());
+                cartModel.getCartId(), cartModel.getCustomerId(), cartModel.getItemId(), cartModel.getCart_qty() + 1, cartModel.getItemName(),
+                cartModel.getTotal_qty(), cartModel.getPrice(), cartModel.getShopId(), cartModel.getCategoryId(),
+                cartModel.getSubCategoryId(), cartModel.getImage(), cartModel.getChoice(), cartModel.getStatus());
 
         cartModelList.remove(cartModel);
         cartModelList.add(i, updatedCartModel);
@@ -193,7 +196,6 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
     public void calculateCartTotal() {
 
 
-
         for (CartModel order : cartModelList) {
             grandTotal += order.getPrice() * order.getCart_qty();
 
@@ -204,16 +206,18 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
 
         if (grandTotal != 0) {
             binding.actionBottomCart.txtItemPrice.setText("\u20B9 " + grandTotal);
-            binding.actionBottomCart.txtItemCount.setText(itemCount +" ITEMS");
+            binding.actionBottomCart.txtItemCount.setText(itemCount + " ITEMS");
             binding.actionBottomCart.txtViewCart.setText("Check Out");
             binding.actionBottomCart.getRoot().setVisibility(View.VISIBLE);
             binding.actionBottomCart.txtViewCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    bundle.putInt("grandTotal",grandTotal);
-                    bundle.putInt("itemCount",itemCount);
-                    Navigation.findNavController(v).navigate(R.id.addressListFragment,bundle);
+                    bundle.putInt("grandTotal", grandTotal);
+                    bundle.putInt("itemCount", itemCount);
+                    bundle.putString("shop_id", shop_id);
+                    bundle.putString("FROM", "Cart");
+                    Navigation.findNavController(v).navigate(R.id.addressListFragment, bundle);
                 }
             });
         } else {
@@ -223,14 +227,13 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
     }
 
 
-
-    private void updateCart(CartModel cartModel){
+    private void updateCart(CartModel cartModel) {
         binding.progressBar.setVisibility(View.VISIBLE);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("customer_id", customerId);
         jsonObject.addProperty("item_id", cartModel.getItemId());
         jsonObject.addProperty("qty", cartModel.getCart_qty());
-        Call<CartResponse> call = RetrofitService.createService(ApiInterface.class,requireContext()).getCartUpdateList(jsonObject);
+        Call<CartResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).getCartUpdateList(jsonObject);
         call.enqueue(new Callback<CartResponse>() {
             @Override
             public void onResponse(@NonNull Call<CartResponse> call, @NonNull Response<CartResponse> response) {
@@ -238,7 +241,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
                 if (response.isSuccessful()) {
                     binding.progressBar.setVisibility(View.GONE);
 
-                    Toast.makeText(getContext(),"Item Updated",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Item Updated", Toast.LENGTH_SHORT).show();
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);

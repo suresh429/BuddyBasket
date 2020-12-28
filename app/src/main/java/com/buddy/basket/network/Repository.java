@@ -516,6 +516,7 @@ public class Repository {
             @Override
             public void onResponse(@NotNull Call<OrderHistoryResponse> call, @NotNull Response<OrderHistoryResponse> response) {
                 if (response.isSuccessful()) {
+
                     progressbarObservable.setValue(false);
                     homeData.setValue(response.body());
                 } else {

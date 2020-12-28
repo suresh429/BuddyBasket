@@ -17,7 +17,7 @@ public class CartViewModel extends ViewModel {
     private MutableLiveData<CartResponse> mutableLiveData;
 
 
-    public void initInsertCart(String customer_id,int item_id, int qty, Context context) {
+    public void initInsertCart(String customer_id,int item_id, int qty,String shop_id, Context context) {
         if (mutableLiveData != null) {
             return;
         }
@@ -28,6 +28,7 @@ public class CartViewModel extends ViewModel {
         jsonObject.addProperty("customer_id", customer_id);
         jsonObject.addProperty("item_id", item_id);
         jsonObject.addProperty("qty", qty);
+        jsonObject.addProperty("shop_id",shop_id);
         mutableLiveData = repository.getCartInsertData(jsonObject);
         progressbarObservable = repository.getProgressbarObservable();
         toastMessageObserver = repository.getToastObserver();
