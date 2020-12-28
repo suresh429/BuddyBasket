@@ -246,7 +246,14 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
                 if (response.isSuccessful()) {
                     binding.progressBar.setVisibility(View.GONE);
 
-                    Toast.makeText(getContext(), "Item Added to Cart", Toast.LENGTH_SHORT).show();
+                    CartResponse cartResponse = response.body();
+                    if (cartResponse.getStatus().equalsIgnoreCase("true")){
+                        Toast.makeText(getContext(), "Item Added to Cart", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getContext(), "Different Shop", Toast.LENGTH_SHORT).show();
+                    }
+
+
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);

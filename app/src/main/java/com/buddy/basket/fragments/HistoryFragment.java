@@ -49,7 +49,7 @@ public class HistoryFragment extends Fragment {
                 adapter = new OrderHistoryListAdapter(catDetailsBeanList, getActivity());
                 binding.recyclerHistory.setAdapter(adapter);
                 binding.progressBar.setVisibility(View.GONE);
-                binding.recyclerHistory.setVisibility(View.VISIBLE);
+               // binding.recyclerHistory.setVisibility(View.VISIBLE);
                 binding.errorLayout.txtError.setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
             }else {

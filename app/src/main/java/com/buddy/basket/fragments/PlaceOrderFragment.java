@@ -37,6 +37,7 @@ public class PlaceOrderFragment extends Fragment {
 
     private FragmentPlaceorderBinding binding;
     String customerId,shop_id;
+    Double deliveryCharge=30.00;
     int grandTotal,itemCount,address_id;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -58,8 +59,12 @@ public class PlaceOrderFragment extends Fragment {
         binding.actionLayout.badgeCart.setVisibility(View.GONE);
         binding.actionLayout.txtActionBarTitle.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
 
-        binding.txtTotalItems.setText(""+itemCount);
-        binding.txtTotalPrice.setText("\u20b9"+grandTotal);
+        binding.txtTotalCount.setText(""+itemCount);
+        binding.txtTotalItems.setText("\u20b9"+ String.format("%.2f", (double)grandTotal));
+        binding.txtDeliveryPrice.setText("\u20b9"+String.format("%.2f", deliveryCharge));
+
+        Double total = Double.valueOf(grandTotal + deliveryCharge);
+        binding.txtGrandTotal.setText("\u20b9"+String.format("%.2f", total));
         binding.btnPlaceOrder.setOnClickListener(v -> PlaceOrderData());
         return binding.getRoot();
 

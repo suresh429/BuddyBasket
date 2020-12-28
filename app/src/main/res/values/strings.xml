@@ -46,6 +46,7 @@
     <string name="update_address">Update Address</string>
     <string name="cart">Cart</string>
     <string name="no_data_available">No Data Available...</string>
+    <string name="delivery_charge">Delivery Charge</string>
 
 
 </resources>

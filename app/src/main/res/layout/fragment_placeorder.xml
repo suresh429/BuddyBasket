@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:background="@color/white">
 
     <include
         android:id="@+id/action_layout"
@@ -17,137 +17,180 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/action_layout"
+        android:background="@color/white"
         android:orientation="vertical"
-        android:padding="5dp"
-        >
+        android:padding="15dp">
 
-        <androidx.cardview.widget.CardView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/proxima_nova_regular"
+            android:text="Instructions"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etComments"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_outline_grey_bg"
+            android:gravity="start"
+            android:hint="Instructions for Delivery"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/proxima_nova_regular"
+            android:text="Order Details "
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginTop="35dp"/>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="3dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardUseCompatPadding="true">
+            android:layout_marginTop="5dp">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/itemsCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:layout_toStartOf="@+id/txtTotalCount"
+                android:fontFamily="@font/proxima_nova_regular"
+                android:text="Item Count"
+                android:textSize="16sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/proxima_nova_regular"
-                    android:text="Order Details "
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtTotalCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/proxima_nova_regular"
+                android:text="12"
+                android:textSize="14sp" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
+            <TextView
+                android:id="@+id/txtItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/txtTotalItems"
+                android:fontFamily="@font/proxima_nova_regular"
+                android:text="Item Total "
+                android:layout_below="@+id/itemsCount"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp" />
 
-                    <TextView
-                        android:id="@+id/txtItems"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toStartOf="@+id/txtTotalItems"
-                        android:fontFamily="@font/proxima_nova_regular"
-                        android:text="Total Items"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/txtTotalItems"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:fontFamily="@font/proxima_nova_regular"
-                        android:text="12"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/txtPrice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/txtItems"
-                        android:layout_marginTop="5dp"
-                        android:layout_toStartOf="@+id/txtTotalPrice"
-                        android:fontFamily="@font/proxima_nova_regular"
-                        android:text="Total Price"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/txtTotalPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/txtTotalItems"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/proxima_nova_regular"
-                        android:text="12"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
-
-                </RelativeLayout>
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etComments"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/rounded_outline_grey_bg"
-                    android:gravity="start"
-                    android:hint="Instructions for Delivery"
-                    android:paddingStart="10dp"
-                    tools:ignore="RtlSymmetry" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/txtTotalItems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/txtTotalCount"
+                android:fontFamily="@font/proxima_nova_regular"
+                android:text="12"
+                android:layout_marginTop="8dp"
+                android:textSize="14sp" />
 
 
-        <androidx.cardview.widget.CardView
+            <TextView
+                android:id="@+id/txtDelivery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtItems"
+                android:layout_marginTop="8dp"
+                android:layout_toStartOf="@+id/txtGrandTotal"
+                android:fontFamily="@font/proxima_nova_regular"
+                android:text="@string/delivery_charge"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtDeliveryPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtTotalItems"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/proxima_nova_regular"
+                android:text="12"
+                android:textSize="14sp" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/txtDelivery"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#e5e5e5" />
+
+            <TextView
+                android:id="@+id/grandTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view"
+                android:fontFamily="@font/proxima_nova_regular"
+                android:text="Grand Total"
+                android:textSize="18sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/txtGrandTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/proxima_nova_regular"
+                android:text="12"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/grandTotal"
+                android:layout_marginTop="10dp"
+                android:background="#e5e5e5" />
+
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/proxima_nova_regular"
+            android:text="Payment Mode "
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginTop="35dp"/>
+
+        <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="3dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardUseCompatPadding="true">
+            android:layout_marginTop="10dp">
 
-            <LinearLayout
+            <RadioButton
+                android:id="@+id/rbCash"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/proxima_nova_regular"
-                    android:text="Payment Mode "
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
-
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-
-                    <RadioButton
-                        android:id="@+id/rbCash"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="Cash On Delivery" />
-                </RadioGroup>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-
+                android:checked="true"
+                android:padding="15dp"
+                android:background="@drawable/rounded_outline_grey_bg"
+                android:text="Cash On Delivery" />
+        </RadioGroup>
     </LinearLayout>
-
 
     <Button
         android:id="@+id/btnPlaceOrder"

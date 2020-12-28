@@ -31,6 +31,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         binding = FragmentMyaccountBinding.inflate(inflater, container, false);
 
         session =new  UserSessionManager(requireContext());
+        String name = session.getUserDetails().get("name");
+        String mobile = session.getUserDetails().get("mobile");
+
+        binding.txtName.setText(name);
+        binding.txtPhone.setText(mobile);
 
         binding.txtLogout.setOnClickListener(this);
         binding.txtAddress.setOnClickListener(this);
