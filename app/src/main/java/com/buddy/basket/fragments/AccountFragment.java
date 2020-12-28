@@ -45,7 +45,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         binding.txtRateUs.setOnClickListener(this);
         binding.txtReferUs.setOnClickListener(this);
         binding.txtSendFeedBack.setOnClickListener(this);
-
         return binding.getRoot();
     }
 

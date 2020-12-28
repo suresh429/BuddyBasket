@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.buddy.basket.R;
+import com.buddy.basket.activities.HomeActivity;
 import com.buddy.basket.adapters.OrderHistoryListAdapter;
 import com.buddy.basket.databinding.FragmentHistoryBinding;
 import com.buddy.basket.helper.UserSessionManager;
@@ -39,6 +40,7 @@ public class HistoryFragment extends Fragment {
         UserSessionManager userSessionManager = new UserSessionManager(requireContext());
         HashMap<String, String> userDetails = userSessionManager.getUserDetails();
         customerId = userDetails.get("id");
+
 
         orderHistoryViewModel.initOrderHistory(customerId, requireActivity());
         // get home data

@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.buddy.basket.R;
+import com.buddy.basket.activities.HomeActivity;
 import com.buddy.basket.activities.LoginActivity;
 import com.buddy.basket.adapters.CartListAdapter;
 import com.buddy.basket.adapters.ItemsListAdapter;
@@ -89,6 +90,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
         binding.actionLayout.textLocation.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
         cartListData();
+
     }
 
     private void cartListData() {
@@ -173,6 +175,8 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
             updateCart(updatedCartModel);
 
             calculateCartTotal();
+        }else {
+            ((HomeActivity) requireActivity()).cartCount();
         }
 
     }

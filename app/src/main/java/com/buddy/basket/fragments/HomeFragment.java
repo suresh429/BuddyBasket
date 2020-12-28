@@ -80,8 +80,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
 
 
         citiesList();
-
         homeData();
+       /* ((HomeActivity) requireActivity()).cartCount();*/
 
 
         return binding.getRoot();
