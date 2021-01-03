@@ -62,7 +62,7 @@
                 android:layout_height="80dp"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/circleshape"
-                android:src="@drawable/logo" />
+                android:src="@drawable/splash_logo" />
         </RelativeLayout>
 
         <View
