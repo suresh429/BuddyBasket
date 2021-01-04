@@ -204,6 +204,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Intent intentLogin = new Intent(LoginActivity.this, HomeActivity.class);
                             intentLogin.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intentLogin);
+                            finish();
 
                         } else {
                             Util.snackBar(binding.getRoot().getRootView(), "Invalid credentials !", Color.WHITE);

@@ -54,18 +54,23 @@ import static android.content.ContentValues.TAG;
 
 
 public class CartFragment extends Fragment implements CartListAdapter.RestaurantItemInterface {
-    int grandTotal = 0;
-    int itemCount = 0;
+
     FragmentCartBinding binding;
+    CartListAdapter.RestaurantItemInterface restaurantItemInterface;
     CartViewModel cartViewModel;
     CartListAdapter adapter;
     private String customerId, shop_id;
     private final List<CartModel> cartModelList = new ArrayList<>();
 
+    public static final String TAG = "CART_DATA";
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         //View root = inflater.inflate(R.layout.fragment_restaurants, container, false);
         binding = FragmentCartBinding.inflate(inflater, container, false);
+
+        restaurantItemInterface = this;
+
         return binding.getRoot();
     }
 
@@ -94,7 +99,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
     }
 
     private void cartListData() {
-        // init
+       /* // init
         cartViewModel.initViewCart(customerId, requireActivity());
 
         // Alert toast msg
@@ -150,14 +155,71 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
             }
 
 
+        });*/
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("customer_id", customerId);
+        Call<CartResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).getCartViewList(jsonObject);
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<CartResponse> call, @NonNull Response<CartResponse> response) {
+
+                if (response.isSuccessful()) {
+                    binding.progressBar.setVisibility(View.GONE);
+                    CartResponse homeResponse = response.body();
+
+                    if (homeResponse.getStatus().equalsIgnoreCase("true")) {
+
+                        List<CartResponse.CartBean> catDetailsBeanList = homeResponse.getCart();
+                        //dataBeanArrayList.addAll(catDetailsBeanList);
+                        cartModelList.clear();
+                        for (CartResponse.CartBean product : catDetailsBeanList) {
+                            cartModelList.add(new CartModel(product.getId(), product.getCustomerId(), product.getItemId(), Integer.parseInt(product.getQty()), product.getItem().getItemname(),
+                                    Integer.parseInt(product.getItem().getQty()), Double.parseDouble(product.getItem().getPrice()), product.getItem().getShopId(), product.getItem().getCategoryId(),
+                                    product.getItem().getSubcategoryId(), product.getItem().getImage(), product.getItem().getChoices(), product.getItem().getStatus()
+                            ));
+                        }
+
+                        adapter = new CartListAdapter(cartModelList, getActivity(), restaurantItemInterface);
+                        binding.recyclerHomeList.setAdapter(adapter);
+                        binding.progressBar.setVisibility(View.GONE);
+                        binding.errorLayout.txtError.setVisibility(View.GONE);
+                        adapter.notifyDataSetChanged();
+                        calculateCartTotal();
+
+                    } else {
+                        binding.progressBar.setVisibility(View.GONE);
+                        binding.recyclerHomeList.setVisibility(View.GONE);
+                        binding.errorLayout.txtError.setVisibility(View.VISIBLE);
+                        binding.errorLayout.txtError.setText("Empty Cart");
+                    }
+
+
+                } else if (response.errorBody() != null) {
+                    binding.progressBar.setVisibility(View.GONE);
+                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
+                    //Util.toast(context, "Session expired");
+                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
+                    */
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
+                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.progressBar.setVisibility(View.GONE);
+            }
         });
+
+        ((HomeActivity) requireActivity()).cartCount();
 
     }
 
     @Override
     public void onMinusClick(int position, CartModel cartModel) {
         int i = cartModelList.indexOf(cartModel);
-        Log.d(TAG, "onMinusClick: " + cartModel.getCart_qty());
+
         if (cartModel.getCart_qty() > 0) {
 
             CartModel updatedCartModel = new CartModel(
@@ -165,18 +227,16 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
                     cartModel.getTotal_qty(), cartModel.getPrice(), cartModel.getShopId(), cartModel.getCategoryId(),
                     cartModel.getSubCategoryId(), cartModel.getImage(), cartModel.getChoice(), cartModel.getStatus()
             );
-
+            Log.d(TAG, "onMinusClick: " + updatedCartModel.getCart_qty());
             cartModelList.remove(cartModel);
             cartModelList.add(i, updatedCartModel);
 
             adapter.notifyDataSetChanged();
-            Log.d(TAG, "onMinusClick1: " + cartModel.getCart_qty());
+
 
             updateCart(updatedCartModel);
 
             calculateCartTotal();
-        }else {
-            ((HomeActivity) requireActivity()).cartCount();
         }
 
     }
@@ -188,7 +248,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
                 cartModel.getCartId(), cartModel.getCustomerId(), cartModel.getItemId(), cartModel.getCart_qty() + 1, cartModel.getItemName(),
                 cartModel.getTotal_qty(), cartModel.getPrice(), cartModel.getShopId(), cartModel.getCategoryId(),
                 cartModel.getSubCategoryId(), cartModel.getImage(), cartModel.getChoice(), cartModel.getStatus());
-
+        Log.d(TAG, "onPlusClick: " + updatedCartModel.getCart_qty());
         cartModelList.remove(cartModel);
         cartModelList.add(i, updatedCartModel);
 
@@ -201,27 +261,32 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
 
     // total Amount
     public void calculateCartTotal() {
-
+        int grandTotal = 0;
+        int itemCount = 0;
 
         for (CartModel order : cartModelList) {
+            Log.d(TAG, "calculateCartTotal: " + order.getPrice());
+            Log.d(TAG, "calculateCartTotal: " + order.getCart_qty());
             grandTotal += order.getPrice() * order.getCart_qty();
+            Log.d(TAG, "calculateCartTotal: " + grandTotal);
             shop_id = order.getShopId();
 
-            if (order.getCart_qty() > 0) {
+           /* if (order.getCart_qty() > 0) {
                 itemCount += order.getCart_qty();
-            }
+            }*/
         }
 
         if (grandTotal != 0) {
             binding.actionBottomCart.txtItemPrice.setText("\u20B9 " + grandTotal);
-            binding.actionBottomCart.txtItemCount.setText(itemCount + " ITEMS");
+            binding.actionBottomCart.txtItemCount.setText(cartModelList.size() + " ITEMS");
             binding.actionBottomCart.txtViewCart.setText("Check Out");
             binding.actionBottomCart.getRoot().setVisibility(View.VISIBLE);
+            int finalGrandTotal = grandTotal;
             binding.actionBottomCart.txtViewCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    bundle.putInt("grandTotal", grandTotal);
+                    bundle.putInt("grandTotal", finalGrandTotal);
                     bundle.putInt("itemCount", itemCount);
                     bundle.putString("shop_id", shop_id);
                     bundle.putString("FROM", "Cart");
@@ -236,7 +301,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
 
 
     private void updateCart(CartModel cartModel) {
-        binding.progressBar.setVisibility(View.VISIBLE);
+        // binding.progressBar.setVisibility(View.VISIBLE);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("customer_id", customerId);
         jsonObject.addProperty("item_id", cartModel.getItemId());
@@ -249,7 +314,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
                 if (response.isSuccessful()) {
                     binding.progressBar.setVisibility(View.GONE);
 
-                    Toast.makeText(getContext(), "Item Updated", Toast.LENGTH_SHORT).show();
+                    cartListData();
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);

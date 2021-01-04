@@ -27,7 +27,6 @@
                 android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-
                 android:textStyle="bold" />
 
             <TextView
@@ -38,6 +37,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_toStartOf="@+id/imgProfile"
                 android:alpha="0.8"
+                android:layout_centerHorizontal="true"
                 android:text="buddy@gmail.com"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -58,11 +58,11 @@
 
             <ImageView
                 android:id="@+id/imgProfile"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/circleshape"
-                android:src="@drawable/splash_logo" />
+                android:src="@drawable/buddy_logo" />
         </RelativeLayout>
 
         <View

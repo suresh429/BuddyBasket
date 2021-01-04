@@ -60,6 +60,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             holder.rowItemBinding.productMinus.setVisibility(View.GONE);
             holder.rowItemBinding.productPlus.setVisibility(View.GONE);
             Log.d(TAG, "onBindViewHolder: " + modelList.get(position).getCart_qty());
+
         } else {
             holder.rowItemBinding.productQuantity.setText("" + modelList.get(position).getCart_qty());
             holder.rowItemBinding.productMinus.setVisibility(View.VISIBLE);
@@ -124,4 +125,6 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         void onPlusClick(int position, CartModel itemDetailsResponse);
 
     }
+
+
 }

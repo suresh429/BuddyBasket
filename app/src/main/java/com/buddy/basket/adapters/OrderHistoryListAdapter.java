@@ -24,6 +24,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -95,9 +96,11 @@ public class OrderHistoryListAdapter extends RecyclerView.Adapter<OrderHistoryLi
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("shopId", modelList.get(position).getId());
+                bundle.putSerializable("shopListArray", (Serializable) modelList);
+                bundle.putSerializable("orderListArray", (Serializable) modelList.get(position).getOrderItem());
+                bundle.putInt("position", position);
 
-                //Navigation.findNavController(v).navigate(R.id.restaurantsItemsListFragment,bundle);
+                Navigation.findNavController(v).navigate(R.id.orderSummaryFragment,bundle);
             }
         });
     }

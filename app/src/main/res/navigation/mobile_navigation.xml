@@ -41,7 +41,11 @@
         android:id="@+id/navigation_history"
         android:name="com.buddy.basket.fragments.HistoryFragment"
         android:label="@string/history"
-        tools:layout="@layout/fragment_history"/>
+        tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/action_navigation_history_to_orderSummaryFragment"
+            app:destination="@id/orderSummaryFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_cart"
@@ -110,4 +114,8 @@
         android:id="@+id/updateAddressFragment"
         android:name="com.buddy.basket.fragments.UpdateAddressFragment"
         android:label="UpdateAddressFragment" />
+    <fragment
+        android:id="@+id/orderSummaryFragment"
+        android:name="com.buddy.basket.fragments.OrderSummaryFragment"
+        android:label="OrderSummaryFragment" />
 </navigation>
