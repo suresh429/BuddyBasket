@@ -1,16 +1,36 @@
 package com.buddy.basket.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class OrderHistoryResponse {
+public class OrderHistoryResponse implements Parcelable {
 
 
     @SerializedName("status")
     private String status;
     @SerializedName("orders")
-    private List<OrdersBean> orders;
+    private ArrayList<OrdersBean> orders;
+
+    protected OrderHistoryResponse(Parcel in) {
+        status = in.readString();
+    }
+
+    public static final Creator<OrderHistoryResponse> CREATOR = new Creator<OrderHistoryResponse>() {
+        @Override
+        public OrderHistoryResponse createFromParcel(Parcel in) {
+            return new OrderHistoryResponse(in);
+        }
+
+        @Override
+        public OrderHistoryResponse[] newArray(int size) {
+            return new OrderHistoryResponse[size];
+        }
+    };
 
     public String getStatus() {
         return status;
@@ -20,15 +40,25 @@ public class OrderHistoryResponse {
         this.status = status;
     }
 
-    public List<OrdersBean> getOrders() {
+    public ArrayList<OrdersBean> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<OrdersBean> orders) {
+    public void setOrders(ArrayList<OrdersBean> orders) {
         this.orders = orders;
     }
 
-    public static class OrdersBean {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(status);
+    }
+
+    public static class OrdersBean implements Parcelable {
         @SerializedName("id")
         private int id;
         @SerializedName("customer_id")
@@ -54,7 +84,30 @@ public class OrderHistoryResponse {
         @SerializedName("shop")
         private ShopBean shop;
         @SerializedName("order_item")
-        private List<OrderItemBean> orderItem;
+        private ArrayList<OrderItemBean> orderItem;
+
+        protected OrdersBean(Parcel in) {
+            id = in.readInt();
+            customerId = in.readString();
+            totalAmt = in.readString();
+            addressId = in.readString();
+            shopId = in.readString();
+            status = in.readString();
+            createdAt = in.readString();
+            updatedAt = in.readString();
+        }
+
+        public static final Creator<OrdersBean> CREATOR = new Creator<OrdersBean>() {
+            @Override
+            public OrdersBean createFromParcel(Parcel in) {
+                return new OrdersBean(in);
+            }
+
+            @Override
+            public OrdersBean[] newArray(int size) {
+                return new OrdersBean[size];
+            }
+        };
 
         public int getId() {
             return id;
@@ -152,12 +205,29 @@ public class OrderHistoryResponse {
             this.shop = shop;
         }
 
-        public List<OrderItemBean> getOrderItem() {
+        public ArrayList<OrderItemBean> getOrderItem() {
             return orderItem;
         }
 
-        public void setOrderItem(List<OrderItemBean> orderItem) {
+        public void setOrderItem(ArrayList<OrderItemBean> orderItem) {
             this.orderItem = orderItem;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(id);
+            dest.writeString(customerId);
+            dest.writeString(totalAmt);
+            dest.writeString(addressId);
+            dest.writeString(shopId);
+            dest.writeString(status);
+            dest.writeString(createdAt);
+            dest.writeString(updatedAt);
         }
 
         public static class AddressBean {
@@ -426,7 +496,7 @@ public class OrderHistoryResponse {
             }
         }
 
-        public static class OrderItemBean {
+        public static class OrderItemBean implements Parcelable {
             @SerializedName("id")
             private int id;
             @SerializedName("order_id")
@@ -445,6 +515,29 @@ public class OrderHistoryResponse {
             private String updatedAt;
             @SerializedName("item")
             private ItemBean item;
+
+            protected OrderItemBean(Parcel in) {
+                id = in.readInt();
+                orderId = in.readString();
+                itemId = in.readString();
+                shopId = in.readString();
+                qty = in.readString();
+                price = in.readString();
+                createdAt = in.readString();
+                updatedAt = in.readString();
+            }
+
+            public static final Creator<OrderItemBean> CREATOR = new Creator<OrderItemBean>() {
+                @Override
+                public OrderItemBean createFromParcel(Parcel in) {
+                    return new OrderItemBean(in);
+                }
+
+                @Override
+                public OrderItemBean[] newArray(int size) {
+                    return new OrderItemBean[size];
+                }
+            };
 
             public int getId() {
                 return id;
@@ -516,6 +609,23 @@ public class OrderHistoryResponse {
 
             public void setItem(ItemBean item) {
                 this.item = item;
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(id);
+                dest.writeString(orderId);
+                dest.writeString(itemId);
+                dest.writeString(shopId);
+                dest.writeString(qty);
+                dest.writeString(price);
+                dest.writeString(createdAt);
+                dest.writeString(updatedAt);
             }
 
             public static class ItemBean {

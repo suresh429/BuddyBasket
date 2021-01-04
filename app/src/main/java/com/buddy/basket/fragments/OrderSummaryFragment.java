@@ -30,6 +30,7 @@ import com.bumptech.glide.request.transition.Transition;
 import java.sql.ClientInfoStatus;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static com.buddy.basket.fragments.CartFragment.TAG;
 import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
@@ -43,25 +44,21 @@ public class OrderSummaryFragment extends Fragment {
     int position;
     List<OrderHistoryResponse.OrdersBean> ordersBeanList;
     List<OrderHistoryResponse.OrdersBean.OrderItemBean> orderItemBeanList;
-
-
-
-
     @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         orderHistoryViewModel = new ViewModelProvider(this).get(OrderHistoryViewModel.class);
         binding = FragmentOrderSummaryBinding.inflate(inflater, container, false);
 
-        binding.actionLayout.txtActionBarTitle.setText("Order Summery");
+        binding.actionLayout.txtActionBarTitle.setText("Order Summary");
         binding.actionLayout.badgeCart.setVisibility(View.GONE);
         binding.actionLayout.txtActionBarTitle.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
 
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            ordersBeanList = (List<OrderHistoryResponse.OrdersBean>) bundle.getSerializable("shopListArray");
-            orderItemBeanList = (List<OrderHistoryResponse.OrdersBean.OrderItemBean>) bundle.getSerializable("orderListArray");
+            ordersBeanList =  bundle.getParcelableArrayList("shopListArray");
+            orderItemBeanList =  bundle.getParcelableArrayList("orderListArray");
             position = bundle.getInt("position");
         }
 
@@ -74,7 +71,7 @@ public class OrderSummaryFragment extends Fragment {
 
         binding.txtRestuarntName.setText(ordersBeanList.get(0).getShop().getShopname());
         binding.txtRestuarntLocation.setText(ordersBeanList.get(0).getShop().getAddress());
-        Glide.with(getActivity())
+        Glide.with(requireActivity())
                 .load(IMAGE_HOME_URL + ordersBeanList.get(0).getShop().getImage())
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
                 .into(new CustomTarget<Drawable>() {

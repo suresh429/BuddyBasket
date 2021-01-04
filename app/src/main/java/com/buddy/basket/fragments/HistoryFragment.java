@@ -17,6 +17,7 @@ import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.model.OrderHistoryResponse;
 import com.buddy.basket.viewmodels.OrderHistoryViewModel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class HistoryFragment extends Fragment {
         orderHistoryViewModel.getRepository().observe(getViewLifecycleOwner(), homeResponse -> {
 
             if (homeResponse.getStatus().equalsIgnoreCase("true")){
-                List<OrderHistoryResponse.OrdersBean> catDetailsBeanList = homeResponse.getOrders();
+                ArrayList<OrderHistoryResponse.OrdersBean> catDetailsBeanList = homeResponse.getOrders();
                 adapter = new OrderHistoryListAdapter(catDetailsBeanList, getActivity());
                 binding.recyclerHistory.setAdapter(adapter);
                 binding.progressBar.setVisibility(View.GONE);

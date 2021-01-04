@@ -1,5 +1,6 @@
 package com.buddy.basket.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +41,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         return new ViewHolder(RestaurantsItemsListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull CartListAdapter.ViewHolder holder, int position) {
 

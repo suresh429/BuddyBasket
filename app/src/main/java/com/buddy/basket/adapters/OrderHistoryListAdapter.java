@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,11 +38,9 @@ import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 public class OrderHistoryListAdapter extends RecyclerView.Adapter<OrderHistoryListAdapter.ViewHolder> {
 
-    List<OrderHistoryResponse.OrdersBean> modelList;
-
-
+    ArrayList<OrderHistoryResponse.OrdersBean> modelList;
     Context context;
-    public OrderHistoryListAdapter(List<OrderHistoryResponse.OrdersBean> modelList, Context context) {
+    public OrderHistoryListAdapter(ArrayList<OrderHistoryResponse.OrdersBean> modelList, Context context) {
         this.modelList = modelList;
         this.context = context;
     }
@@ -96,8 +96,9 @@ public class OrderHistoryListAdapter extends RecyclerView.Adapter<OrderHistoryLi
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("shopListArray", (Serializable) modelList);
-                bundle.putSerializable("orderListArray", (Serializable) modelList.get(position).getOrderItem());
+
+                bundle.putParcelableArrayList("shopListArray", modelList);
+                bundle.putParcelableArrayList("orderListArray",  modelList.get(position).getOrderItem());
                 bundle.putInt("position", position);
 
                 Navigation.findNavController(v).navigate(R.id.orderSummaryFragment,bundle);

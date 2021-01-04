@@ -1,7 +1,9 @@
 package com.buddy.basket.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.buddy.basket.fragments.CartFragment.TAG;
+
 
 public class PlaceOrderFragment extends Fragment {
 
@@ -40,6 +44,7 @@ public class PlaceOrderFragment extends Fragment {
     Double deliveryCharge=30.00;
     int grandTotal,itemCount,address_id;
 
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPlaceorderBinding.inflate(inflater, container, false);
@@ -54,7 +59,6 @@ public class PlaceOrderFragment extends Fragment {
         address_id=getArguments().getInt("address_id");
         shop_id=getArguments().getString("shop_id");
 
-
         binding.actionLayout.txtActionBarTitle.setText("Place Order");
         binding.actionLayout.badgeCart.setVisibility(View.GONE);
         binding.actionLayout.txtActionBarTitle.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
@@ -63,7 +67,7 @@ public class PlaceOrderFragment extends Fragment {
         binding.txtTotalItems.setText("\u20b9"+ String.format("%.2f", (double)grandTotal));
         binding.txtDeliveryPrice.setText("\u20b9"+String.format("%.2f", deliveryCharge));
 
-        Double total = Double.valueOf(grandTotal + deliveryCharge);
+        Double total = grandTotal + deliveryCharge;
         binding.txtGrandTotal.setText("\u20b9"+String.format("%.2f", total));
         binding.btnPlaceOrder.setOnClickListener(v -> PlaceOrderData());
         return binding.getRoot();

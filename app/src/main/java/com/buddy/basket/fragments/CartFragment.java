@@ -1,5 +1,6 @@
 package com.buddy.basket.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -162,6 +163,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
         jsonObject.addProperty("customer_id", customerId);
         Call<CartResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).getCartViewList(jsonObject);
         call.enqueue(new Callback<CartResponse>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<CartResponse> call, @NonNull Response<CartResponse> response) {
 
@@ -169,6 +171,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
                     binding.progressBar.setVisibility(View.GONE);
                     CartResponse homeResponse = response.body();
 
+                    assert homeResponse != null;
                     if (homeResponse.getStatus().equalsIgnoreCase("true")) {
 
                         List<CartResponse.CartBean> catDetailsBeanList = homeResponse.getCart();
@@ -260,6 +263,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
     }
 
     // total Amount
+    @SuppressLint("SetTextI18n")
     public void calculateCartTotal() {
         int grandTotal = 0;
         int itemCount = 0;
@@ -271,9 +275,9 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
             Log.d(TAG, "calculateCartTotal: " + grandTotal);
             shop_id = order.getShopId();
 
-           /* if (order.getCart_qty() > 0) {
+            if (order.getCart_qty() > 0) {
                 itemCount += order.getCart_qty();
-            }*/
+            }
         }
 
         if (grandTotal != 0) {
@@ -282,12 +286,13 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
             binding.actionBottomCart.txtViewCart.setText("Check Out");
             binding.actionBottomCart.getRoot().setVisibility(View.VISIBLE);
             int finalGrandTotal = grandTotal;
+            int finalItemCount = itemCount;
             binding.actionBottomCart.txtViewCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("grandTotal", finalGrandTotal);
-                    bundle.putInt("itemCount", itemCount);
+                    bundle.putInt("itemCount", finalItemCount);
                     bundle.putString("shop_id", shop_id);
                     bundle.putString("FROM", "Cart");
                     Navigation.findNavController(v).navigate(R.id.addressListFragment, bundle);
