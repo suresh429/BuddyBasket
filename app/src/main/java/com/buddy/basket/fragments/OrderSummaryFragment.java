@@ -69,10 +69,10 @@ public class OrderSummaryFragment extends Fragment {
         binding.recyclerHistory.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        binding.txtRestuarntName.setText(ordersBeanList.get(0).getShop().getShopname());
-        binding.txtRestuarntLocation.setText(ordersBeanList.get(0).getShop().getAddress());
+        binding.txtRestuarntName.setText(ordersBeanList.get(position).getShop().getShopname());
+        binding.txtRestuarntLocation.setText(ordersBeanList.get(position).getShop().getAddress());
         Glide.with(requireActivity())
-                .load(IMAGE_HOME_URL + ordersBeanList.get(0).getShop().getImage())
+                .load(IMAGE_HOME_URL + ordersBeanList.get(position).getShop().getImage())
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
                 .into(new CustomTarget<Drawable>() {
                     @Override

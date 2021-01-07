@@ -42,6 +42,7 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
     private FragmentAddressListBinding binding;
     AddressListAdapter adapter;
     String customerId,from,shop_id;
+    AddressListAdapter.AdapterListner adapterListner;
 
     int grandTotal,itemCount;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -51,6 +52,8 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
         UserSessionManager userSessionManager= new UserSessionManager(requireContext());
         HashMap<String, String> userDetails = userSessionManager.getUserDetails();
         customerId = userDetails.get("id");
+
+        adapterListner = this;
 
         if (getArguments() != null){
             grandTotal=getArguments().getInt("grandTotal");
@@ -95,12 +98,21 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
                     List<AddressResponse.AddressesBean> addressesBeanList = response.body().getAddresses();
 
                     if (addressesBeanList.size() > 0){
-                        adapter = new AddressListAdapter(addressesBeanList,requireContext(),AddressListFragment.this,from);
-                        binding.recyclerAddressList.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
 
-                        binding.errorLayout.txtError.setVisibility(View.GONE);
-                        binding.recyclerAddressList.setVisibility(View.VISIBLE);
+                        try {
+
+                            adapter = new AddressListAdapter(addressesBeanList,requireContext(),adapterListner,from);
+                            binding.recyclerAddressList.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+
+                            binding.errorLayout.txtError.setVisibility(View.GONE);
+                            binding.recyclerAddressList.setVisibility(View.VISIBLE);
+
+                        } catch (IllegalArgumentException | IllegalStateException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+
                     }else {
                         /*Navigation.findNavController(binding.getRoot()).navigate(R.id.addAddressFragment);*/
                         binding.errorLayout.txtError.setVisibility(View.VISIBLE);

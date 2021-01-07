@@ -1,8 +1,15 @@
 package com.buddy.basket.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -36,12 +44,14 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
+import static android.icu.lang.UProperty.INT_START;
 
 
 public class ItemsListFragment extends Fragment implements ItemsListAdapter.RestaurantItemInterface {
@@ -200,7 +210,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         itemsListAdapter.notifyDataSetChanged();
         calculateCartTotal();
 
-        addCart(customerId, itemDetailsResponse.getId(), 1);
+        addCart(customerId, itemDetailsResponse.getId());
     }
 
     // total Amount
@@ -229,7 +239,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
 
     }
 
-    private void addCart(String customerId, int itemId, int qty) {
+    private void addCart(String customerId, int itemId) {
 
 
         binding.progressBar.setVisibility(View.VISIBLE);
@@ -248,6 +258,68 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
 
                     CartResponse cartResponse = response.body();
                     if (cartResponse.getStatus().equalsIgnoreCase("true")){
+                        Toast.makeText(getContext(), "Item Added to Cart", Toast.LENGTH_SHORT).show();
+                    }else {
+                        clearCartDialog(customerId, itemId);
+                    }
+
+
+
+                } else if (response.errorBody() != null) {
+                    binding.progressBar.setVisibility(View.GONE);
+                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
+                    //Util.toast(context, "Session expired");
+                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
+                    */
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
+                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void clearCartDialog(String customerId, int itemId){
+
+        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(Html.fromHtml("<b>"+"Replace cart item?"+"<b>"));
+        builder.setMessage(Html.fromHtml("Do you want to clear the cart and Add items from "+"<b>"+ shopName+"<b>"+" ?"));
+
+        // add the buttons
+        builder.setPositiveButton("YES", (dialog, which) -> emptyCartAndReInsert(customerId,itemId));
+        builder.setNegativeButton("NO", (dialog, which) -> {
+            dialog.dismiss();
+            itemsListData();
+            binding.actionBottomCart.getRoot().setVisibility(View.GONE);
+        });
+
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void emptyCartAndReInsert(String customerId, int itemId) {
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("customer_id", customerId);
+        jsonObject.addProperty("item_id", itemId);
+        jsonObject.addProperty("qty", 1);
+        jsonObject.addProperty("shop_id",shopId);
+        Call<CartResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).emptyAndInsertList(jsonObject);
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<CartResponse> call, @NonNull Response<CartResponse> response) {
+
+                if (response.isSuccessful()) {
+                    binding.progressBar.setVisibility(View.GONE);
+
+                    CartResponse cartResponse = response.body();
+                    if (Objects.requireNonNull(cartResponse).getStatus().equalsIgnoreCase("true")){
                         Toast.makeText(getContext(), "Item Added to Cart", Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(getContext(), "Different Shop", Toast.LENGTH_SHORT).show();

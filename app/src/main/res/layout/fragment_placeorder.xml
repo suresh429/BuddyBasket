@@ -131,7 +131,7 @@
                 android:layout_below="@+id/txtDelivery"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="#e5e5e5" />
+                android:background="@color/divider" />
 
             <TextView
                 android:id="@+id/grandTotal"
@@ -159,7 +159,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/grandTotal"
                 android:layout_marginTop="10dp"
-                android:background="#e5e5e5" />
+                android:background="@color/divider" />
 
         </RelativeLayout>
 

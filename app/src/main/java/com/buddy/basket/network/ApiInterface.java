@@ -61,6 +61,10 @@ public interface ApiInterface {
     Call<CartResponse> getCartInsertList(@Body JsonObject jsonObject);
 
     @Headers("Content-Type: application/json")
+    @POST("empty-cart-and-insert-new-item")
+    Call<CartResponse> emptyAndInsertList(@Body JsonObject jsonObject);
+
+    @Headers("Content-Type: application/json")
     @POST("cart/update-item")
     Call<CartResponse> getCartUpdateList(@Body JsonObject jsonObject);
 
