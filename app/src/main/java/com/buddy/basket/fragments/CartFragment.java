@@ -38,6 +38,7 @@ import com.buddy.basket.network.RetrofitService;
 import com.buddy.basket.viewmodels.CartUpdateViewModel;
 import com.buddy.basket.viewmodels.CartViewModel;
 import com.buddy.basket.viewmodels.ItemsListViewModel;
+import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -52,6 +53,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
+import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 
 public class CartFragment extends Fragment implements CartListAdapter.RestaurantItemInterface {
@@ -79,17 +81,19 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
+
         UserSessionManager userSessionManager = new UserSessionManager(requireContext());
         HashMap<String, String> userDetails = userSessionManager.getUserDetails();
         customerId = userDetails.get("id");
 
 
-        cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
-
-
-       /* if (getArguments() != null){
-            shop_id = getArguments().getString("shop_id");
-        }*/
+        binding.txtShopName.setText(userSessionManager.getShopDetails().get("shopName"));
+        binding.txtAddreess.setText(userSessionManager.getShopDetails().get("shopLocation"));
+        binding.txtTime.setText(userSessionManager.getShopDetails().get("shopOpenTime") + " - " + userSessionManager.getShopDetails().get("shopCloseTime"));
+        binding.txtMobile.setText(userSessionManager.getShopDetails().get("shopContact"));
+        binding.txtDescription.setText(userSessionManager.getShopDetails().get("shopDescription"));
+        Glide.with(requireContext()).load(IMAGE_HOME_URL + userSessionManager.getShopDetails().get("shopImage")).error(R.drawable.placeholder).into(binding.imgShop);
 
 
         binding.actionLayout.textLocation.setText("Cart");

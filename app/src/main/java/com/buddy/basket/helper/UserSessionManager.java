@@ -31,6 +31,14 @@ public class UserSessionManager {
     public static final String KEY_CITY_ID = "cityId";
     public static final String KEY_CITY_NAME = "cityName";
 
+    public static final String KEY_SHOP_NAME = "shopName";
+    public static final String KEY_SHOP_IMAGE = "shopImage";
+    public static final String KEY_SHOP_LOCATION = "shopLocation";
+    public static final String KEY_SHOP_DESCRIPTION = "shopDescription";
+    public static final String KEY_SHOP_OPEN_TIME = "shopOpenTime";
+    public static final String KEY_SHOP_CLOSE_TIME = "shopCloseTime";
+    public static final String KEY_SHOP_CONTACT = "shopContact";
+
 
     @SuppressLint("CommitPrefEdits")
     public UserSessionManager(Context context) {
@@ -55,10 +63,21 @@ public class UserSessionManager {
         editor.commit();
     }
 
+    public  void saveShopDetails(String shopName, String shopImage,String shopLocation, String shopDescription,String shopOpenTime, String shopCloseTime,String shopContact) {
+        editor.putString(KEY_SHOP_NAME, shopName);
+        editor.putString(KEY_SHOP_IMAGE, shopImage);
+        editor.putString(KEY_SHOP_LOCATION, shopLocation);
+        editor.putString(KEY_SHOP_DESCRIPTION, shopDescription);
+        editor.putString(KEY_SHOP_OPEN_TIME, shopOpenTime);
+        editor.putString(KEY_SHOP_CLOSE_TIME, shopCloseTime);
+        editor.putString(KEY_SHOP_CONTACT, shopContact);
+        editor.commit();
+    }
+
+
     public boolean isLoggedIn() {
         return pref.getBoolean(KEY_IS_LOGGED_IN, false);
     }
-
 
 
     public void clearSession() {
@@ -79,6 +98,19 @@ public class UserSessionManager {
         location.put("cityId", pref.getString(KEY_CITY_ID, null));
         location.put("cityName", pref.getString(KEY_CITY_NAME, null));
         return location;
+    }
+
+    public HashMap<String,String> getShopDetails() {
+        HashMap<String, String> shopData = new HashMap<>();
+        shopData.put(KEY_SHOP_NAME, pref.getString(KEY_SHOP_NAME, null));
+        shopData.put(KEY_SHOP_LOCATION, pref.getString(KEY_SHOP_LOCATION, null));
+        shopData.put(KEY_SHOP_DESCRIPTION, pref.getString(KEY_SHOP_DESCRIPTION, null));
+        shopData.put(KEY_SHOP_IMAGE, pref.getString(KEY_SHOP_IMAGE, null));
+        shopData.put(KEY_SHOP_OPEN_TIME, pref.getString(KEY_SHOP_OPEN_TIME, null));
+        shopData.put(KEY_SHOP_CLOSE_TIME, pref.getString(KEY_SHOP_CLOSE_TIME, null));
+        shopData.put(KEY_SHOP_CONTACT, pref.getString(KEY_SHOP_CONTACT, null));
+
+        return shopData;
     }
 
 

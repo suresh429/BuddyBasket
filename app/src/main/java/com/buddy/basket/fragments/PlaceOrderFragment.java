@@ -25,6 +25,7 @@ import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.model.PlaceOrderResponse;
 import com.buddy.basket.network.ApiInterface;
 import com.buddy.basket.network.RetrofitService;
+import com.bumptech.glide.Glide;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
@@ -35,6 +36,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.buddy.basket.fragments.CartFragment.TAG;
+import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 
 public class PlaceOrderFragment extends Fragment {
@@ -58,6 +60,14 @@ public class PlaceOrderFragment extends Fragment {
         itemCount=getArguments().getInt("itemCount");
         address_id=getArguments().getInt("address_id");
         shop_id=getArguments().getString("shop_id");
+
+        binding.txtShopName.setText(userSessionManager.getShopDetails().get("shopName"));
+        binding.txtAddreess.setText(userSessionManager.getShopDetails().get("shopLocation"));
+        binding.txtTime.setText(userSessionManager.getShopDetails().get("shopOpenTime") + " - " + userSessionManager.getShopDetails().get("shopCloseTime"));
+        binding.txtMobile.setText(userSessionManager.getShopDetails().get("shopContact"));
+        binding.txtDescription.setText(userSessionManager.getShopDetails().get("shopDescription"));
+        Glide.with(requireContext()).load(IMAGE_HOME_URL + userSessionManager.getShopDetails().get("shopImage")).error(R.drawable.placeholder).into(binding.imgShop);
+
 
         binding.actionLayout.txtActionBarTitle.setText("Place Order");
         binding.actionLayout.badgeCart.setVisibility(View.GONE);

@@ -38,6 +38,7 @@ import com.buddy.basket.network.ApiInterface;
 import com.buddy.basket.network.RetrofitService;
 import com.buddy.basket.viewmodels.CartViewModel;
 import com.buddy.basket.viewmodels.ItemsListViewModel;
+import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonObject;
 
@@ -52,6 +53,7 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 import static android.icu.lang.UProperty.INT_START;
+import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 
 public class ItemsListFragment extends Fragment implements ItemsListAdapter.RestaurantItemInterface {
@@ -63,9 +65,9 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
     CartViewModel cartViewModel;
     FragmentItemsListBinding binding;
     ItemsListAdapter itemsListAdapter;
+    UserSessionManager userSessionManager;
 
-
-    String shopName, customerId;
+    String shopName, customerId, shopImage, shopLocation, shopDescription, shopOpenTime, shopCloseTime, shopContact;
     int shopId;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -74,7 +76,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         //View root = inflater.inflate(R.layout.fragment_restaurants, container, false);
         binding = FragmentItemsListBinding.inflate(inflater, container, false);
 
-        UserSessionManager userSessionManager = new UserSessionManager(requireContext());
+        userSessionManager = new UserSessionManager(requireContext());
         HashMap<String, String> userDetails = userSessionManager.getUserDetails();
         customerId = userDetails.get("id");
 
@@ -87,12 +89,20 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         assert bundle != null;
         shopId = bundle.getInt("shopId");
         shopName = bundle.getString("shopName");
+        shopImage = bundle.getString("shopImage");
+        shopLocation = bundle.getString("shopLocation");
+        shopDescription = bundle.getString("shopDescription");
+        shopOpenTime = bundle.getString("shopOpenTime");
+        shopCloseTime = bundle.getString("shopCloseTime");
+        shopContact = bundle.getString("shopContact");
 
 
-      /*  binding.txtRestaruantName.setText(name);
-        binding.txtAddreess.setText(address);
-        binding.txtAvgPrepTime.setText(time);
-        binding.txtKnownFor.setText(type);*/
+        binding.txtShopName.setText(shopName);
+        binding.txtAddreess.setText(shopLocation);
+        binding.txtTime.setText(shopOpenTime + " - " + shopCloseTime);
+        binding.txtMobile.setText(shopContact);
+        binding.txtDescription.setText(shopDescription);
+        Glide.with(requireContext()).load(IMAGE_HOME_URL + shopImage).error(R.drawable.placeholder).into(binding.imgShop);
 
         binding.actionLayout.txtActionBarTitle.setText(shopName);
         binding.actionLayout.badgeCart.setVisibility(View.GONE);
@@ -104,7 +114,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
 
     private void itemsListData() {
         // init
-        itemsListViewModel.init(shopId,customerId, requireActivity());
+        itemsListViewModel.init(shopId, customerId, requireActivity());
 
         // Alert toast msg
         itemsListViewModel.getToastObserver().observe(getViewLifecycleOwner(), message -> {
@@ -229,9 +239,13 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
             binding.actionBottomCart.txtItemPrice.setText("\u20B9 " + grandTotal);
             binding.actionBottomCart.txtItemCount.setText(itemCount + " ITEMS");
             binding.actionBottomCart.getRoot().setVisibility(View.VISIBLE);
-            Bundle bundle=new Bundle();
+            Bundle bundle = new Bundle();
             bundle.putString("shop_id", String.valueOf(shopId));
-            binding.actionBottomCart.txtViewCart.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.navigation_cart,bundle));
+
+            // save shop data
+            userSessionManager.saveShopDetails(shopName, shopImage, shopLocation, shopDescription, shopOpenTime, shopCloseTime, shopContact);
+
+            binding.actionBottomCart.txtViewCart.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.navigation_cart, bundle));
         } else {
             binding.actionBottomCart.getRoot().setVisibility(View.GONE);
         }
@@ -247,7 +261,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         jsonObject.addProperty("customer_id", customerId);
         jsonObject.addProperty("item_id", itemId);
         jsonObject.addProperty("qty", 1);
-        jsonObject.addProperty("shop_id",shopId);
+        jsonObject.addProperty("shop_id", shopId);
         Call<CartResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).getCartInsertList(jsonObject);
         call.enqueue(new Callback<CartResponse>() {
             @Override
@@ -257,12 +271,11 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
                     binding.progressBar.setVisibility(View.GONE);
 
                     CartResponse cartResponse = response.body();
-                    if (cartResponse.getStatus().equalsIgnoreCase("true")){
+                    if (cartResponse.getStatus().equalsIgnoreCase("true")) {
                         Toast.makeText(getContext(), "Item Added to Cart", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         clearCartDialog(customerId, itemId);
                     }
-
 
 
                 } else if (response.errorBody() != null) {
@@ -282,15 +295,15 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         });
     }
 
-    private void clearCartDialog(String customerId, int itemId){
+    private void clearCartDialog(String customerId, int itemId) {
 
         // setup the alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle(Html.fromHtml("<b>"+"Replace cart item?"+"<b>"));
-        builder.setMessage(Html.fromHtml("Do you want to clear the cart and Add items from "+"<b>"+ shopName+"<b>"+" ?"));
+        builder.setTitle(Html.fromHtml("<b>" + "Replace cart item?" + "<b>"));
+        builder.setMessage(Html.fromHtml("Do you want to clear the cart and Add items from " + "<b>" + shopName + "<b>" + " ?"));
 
         // add the buttons
-        builder.setPositiveButton("YES", (dialog, which) -> emptyCartAndReInsert(customerId,itemId));
+        builder.setPositiveButton("YES", (dialog, which) -> emptyCartAndReInsert(customerId, itemId));
         builder.setNegativeButton("NO", (dialog, which) -> {
             dialog.dismiss();
             itemsListData();
@@ -309,7 +322,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         jsonObject.addProperty("customer_id", customerId);
         jsonObject.addProperty("item_id", itemId);
         jsonObject.addProperty("qty", 1);
-        jsonObject.addProperty("shop_id",shopId);
+        jsonObject.addProperty("shop_id", shopId);
         Call<CartResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).emptyAndInsertList(jsonObject);
         call.enqueue(new Callback<CartResponse>() {
             @Override
@@ -319,12 +332,11 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
                     binding.progressBar.setVisibility(View.GONE);
 
                     CartResponse cartResponse = response.body();
-                    if (Objects.requireNonNull(cartResponse).getStatus().equalsIgnoreCase("true")){
+                    if (Objects.requireNonNull(cartResponse).getStatus().equalsIgnoreCase("true")) {
                         Toast.makeText(getContext(), "Item Added to Cart", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         Toast.makeText(getContext(), "Different Shop", Toast.LENGTH_SHORT).show();
                     }
-
 
 
                 } else if (response.errorBody() != null) {
@@ -395,7 +407,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
                     for (CartResponse.CartBean cartBean : cartBeanList) {
 
                         if (cartBean.getItemId().equalsIgnoreCase(String.valueOf(id))) {
-                            Log.d(TAG, "onResponse: " +"true");
+                            Log.d(TAG, "onResponse: " + "true");
                         }
                     }
 

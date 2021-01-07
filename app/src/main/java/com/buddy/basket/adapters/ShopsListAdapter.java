@@ -80,6 +80,12 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
                 Bundle bundle = new Bundle();
                 bundle.putInt("shopId", modelList.get(position).getId());
                 bundle.putString("shopName", modelList.get(position).getShopname());
+                bundle.putString("shopImage", modelList.get(position).getImage());
+                bundle.putString("shopLocation", modelList.get(position).getAddress());
+                bundle.putString("shopDescription", modelList.get(position).getDescription());
+                bundle.putString("shopOpenTime", modelList.get(position).getOpentime());
+                bundle.putString("shopCloseTime", modelList.get(position).getClosetime());
+                bundle.putString("shopContact", modelList.get(position).getPhone());
 
                 Navigation.findNavController(v).navigate(R.id.restaurantsItemsListFragment,bundle);
             }
