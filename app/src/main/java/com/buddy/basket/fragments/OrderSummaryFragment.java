@@ -89,10 +89,13 @@ public class OrderSummaryFragment extends Fragment {
 
                 });
 
+
         binding.txtOrderStatus.setText("This Order was "+ordersBeanList.get(position).getStatus());
-        binding.txtItemTotalPrice.setText("\u20b9"+ordersBeanList.get(position).getOrderItem().get(0).getPrice());
-        binding.txtDeliveryPrice.setText("\u20b9"+"20");
-        binding.txtGrandTotalAmount.setText("\u20b9"+ordersBeanList.get(position).getTotalAmt());
+        binding.txtItemTotalPrice.setText("\u20b9"+ordersBeanList.get(position).getTotalAmt());
+        binding.txtDeliveryPrice.setText("\u20b9"+String.format("%.2f", 20.00));
+
+        double total = Double.parseDouble(ordersBeanList.get(position).getTotalAmt()) + 20;
+        binding.txtGrandTotalAmount.setText("\u20b9"+String.format("%.2f", total));
         binding.txtOrderNumber.setText(""+ordersBeanList.get(position).getId());
         binding.txtOrderMode.setText("Cash on Delivery");
         binding.txtOrderPhone.setText(ordersBeanList.get(position).getAddress().getPhone());

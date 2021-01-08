@@ -52,7 +52,8 @@ public class OrderItemListAdapter extends RecyclerView.Adapter<OrderItemListAdap
         holder.rowItemBinding.txtItem.setText(ordersBean.getItem().getItemname());
         holder.rowItemBinding.txtItemQty.setText(ordersBean.getQty());
         holder.rowItemBinding.txtItemPrice.setText(ordersBean.getItem().getPrice());
-        holder.rowItemBinding.txtItemTotalPrice.setText("\u20b9"+ordersBean.getPrice());
+        double totalPrice = Double.parseDouble(ordersBean.getPrice())*Double.parseDouble(ordersBean.getQty());
+        holder.rowItemBinding.txtItemTotalPrice.setText("\u20b9"+String.format("%.2f", totalPrice));
     }
 
     @Override

@@ -43,7 +43,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.View
     public void onBindViewHolder(@NonNull ItemsListAdapter.ViewHolder holder, int position) {
 
         holder.rowItemBinding.txtItemName.setText(modelList.get(position).getItemname());
-        holder.rowItemBinding.txtItemPrice.setText("\u20B9"+modelList.get(position).getPrice());
+        holder.rowItemBinding.txtItemPrice.setText("\u20B9"+String.format("%.2f", modelList.get(position).getPrice()));
         holder.rowItemBinding.txtItemCategory.setText(modelList.get(position).getDescription());
 
         if (modelList.get(position).getChoices().equalsIgnoreCase("veg")){

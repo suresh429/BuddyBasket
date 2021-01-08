@@ -192,12 +192,14 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
                         binding.recyclerHomeList.setAdapter(adapter);
                         binding.progressBar.setVisibility(View.GONE);
                         binding.errorLayout.txtError.setVisibility(View.GONE);
+                        binding.shopLayout.setVisibility(View.VISIBLE);
                         adapter.notifyDataSetChanged();
                         calculateCartTotal();
 
                     } else {
                         binding.progressBar.setVisibility(View.GONE);
                         binding.recyclerHomeList.setVisibility(View.GONE);
+                        binding.shopLayout.setVisibility(View.GONE);
                         binding.errorLayout.txtError.setVisibility(View.VISIBLE);
                         binding.errorLayout.txtError.setText("Empty Cart");
                     }

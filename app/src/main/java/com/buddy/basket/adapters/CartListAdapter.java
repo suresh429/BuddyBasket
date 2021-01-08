@@ -46,7 +46,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     public void onBindViewHolder(@NonNull CartListAdapter.ViewHolder holder, int position) {
 
         holder.rowItemBinding.txtItemName.setText(modelList.get(position).getItemName());
-        holder.rowItemBinding.txtItemPrice.setText("\u20B9"+modelList.get(position).getPrice());
+        holder.rowItemBinding.txtItemPrice.setText("\u20B9"+String.format("%.2f", modelList.get(position).getPrice()));
         holder.rowItemBinding.txtItemCategory.setText(modelList.get(position).getItemName());
 
         if (modelList.get(position).getChoice().equalsIgnoreCase("veg")){
