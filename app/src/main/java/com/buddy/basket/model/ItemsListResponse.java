@@ -35,7 +35,7 @@ public class ItemsListResponse implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean  {
         @SerializedName("id")
         private int id;
         @SerializedName("itemname")
@@ -64,7 +64,17 @@ public class ItemsListResponse implements Serializable {
         private String createdAt;
         @SerializedName("updated_at")
         private String updatedAt;
+        @SerializedName("cart")
+        private JsonElement cart;
 
+
+        public JsonElement getCart() {
+            return cart;
+        }
+
+        public void setCart(JsonElement cart) {
+            this.cart = cart;
+        }
 
         public int getId() {
             return id;

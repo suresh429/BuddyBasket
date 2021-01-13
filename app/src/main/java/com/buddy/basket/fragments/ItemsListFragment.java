@@ -31,8 +31,22 @@ import com.buddy.basket.viewmodels.CartViewModel;
 import com.buddy.basket.viewmodels.ItemsListViewModel;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,9 +70,10 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
     FragmentItemsListBinding binding;
     ItemsListAdapter itemsListAdapter;
     UserSessionManager userSessionManager;
+    ItemsListAdapter.RestaurantItemInterface restaurantItemInterface;
 
     String shopName, customerId, shopImage, shopLocation, shopDescription, shopOpenTime, shopCloseTime, shopContact;
-    int shopId;
+    int shopId,qty;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -72,6 +87,8 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
 
         itemsListViewModel = new ViewModelProvider(this).get(ItemsListViewModel.class);
         cartViewModel = new ViewModelProvider(this).get(CartViewModel.class);
+
+        restaurantItemInterface = this;
 
         //hideBottomNav();
 
@@ -103,7 +120,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
     }
 
     private void itemsListData() {
-        // init
+       /* // init
         itemsListViewModel.init(shopId, customerId, requireActivity());
 
         // Alert toast msg
@@ -136,6 +153,21 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
             if (homeResponse.getStatus().equalsIgnoreCase("true")) {
 
                 List<ItemsListResponse.DataBean> catDetailsBeanList = homeResponse.getData();
+
+                for (ItemsListResponse.DataBean dataBean : catDetailsBeanList) {
+
+                    if (dataBean.getCart() instanceof JsonObject) {
+                        Type type = new TypeToken<ItemsListResponse.DataBean>() {
+                        }.getType();
+                        ItemsListResponse.DataBean item = new Gson().fromJson(dataBean.getCart(), type);
+                        Log.d(TAG, "itemsListData: " + item.getCart());
+                    } else {
+                        Type type = new TypeToken<List<ItemsListResponse.DataBean>>() {
+                        }.getType();
+                        List<ItemsListResponse.DataBean> items = new Gson().fromJson(dataBean.getCart(), type);
+                        Log.d(TAG, "itemsListData: " + items.get(0).getCart());
+                    }
+                }
                 dataBeanArrayList.addAll(catDetailsBeanList);
 
                 itemDetailsResponseList.clear();
@@ -158,9 +190,75 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
             }
 
 
+        });*/
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("shop_id", shopId);
+        jsonObject.addProperty("customer_id", customerId);
+
+        Call<ItemsListResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).getItemsList(jsonObject);
+        call.enqueue(new Callback<ItemsListResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<ItemsListResponse> call, @NotNull Response<ItemsListResponse> response) {
+                if (response.isSuccessful()) {
+
+
+                    binding.progressBar.setVisibility(View.GONE);
+                    ItemsListResponse itemsListResponse = response.body();
+
+                    assert itemsListResponse != null;
+                    if (itemsListResponse.getStatus().equalsIgnoreCase("true")) {
+
+                        List<ItemsListResponse.DataBean> catDetailsBeanList = itemsListResponse.getData();
+                        dataBeanArrayList.addAll(catDetailsBeanList);
+
+                        itemDetailsResponseList.clear();
+                        for (ItemsListResponse.DataBean product : catDetailsBeanList) {
+
+                            if (product.getCart() instanceof JsonObject) {
+                                JsonElement item1 = product.getCart();
+
+                                qty=item1.getAsJsonObject().get("qty").getAsInt();
+
+                            } else if (product.getCart() instanceof JsonArray){
+                                Type type = new TypeToken<List<ItemsListResponse.DataBean>>() {}.getType();
+                                List<ItemsListResponse.DataBean> items = new Gson().fromJson(product.getCart(), type);
+
+                                qty =items.size();
+                            }
+
+                            itemDetailsResponseList.add(new ItemDetailsResponse(product.getId(), product.getItemname(), product.getSlug(), qty, product.getShopId(), product.getCategoryId(),
+                                    product.getSubcategoryId(), Double.parseDouble(product.getPrice()), product.getDescription(), product.getChoices(), product.getImage(), product.getStatus(), product.getCreatedAt(), product.getUpdatedAt()));
+
+                        }
+
+
+                        itemsListAdapter = new ItemsListAdapter(itemDetailsResponseList, requireActivity(), restaurantItemInterface);
+                        binding.recyclerHomeList.setAdapter(itemsListAdapter);
+                        binding.progressBar.setVisibility(View.GONE);
+                        binding.errorLayout.txtError.setVisibility(View.GONE);
+                        itemsListAdapter.notifyDataSetChanged();
+                        calculateCartTotal();
+
+                    }
+                } else {
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.errorLayout.txtError.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ItemsListResponse> call, @NotNull Throwable t) {
+                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.progressBar.setVisibility(View.GONE);
+            }
         });
 
+
     }
+
 
     @Override
     public void onMinusClick(int position, ItemDetailsResponse itemDetailsResponse) {

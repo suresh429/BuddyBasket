@@ -54,6 +54,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.View
 
         Glide.with(context).load(IMAGE_HOME_URL+modelList.get(position).getImage()).into(holder.rowItemBinding.imgItem);
 
+
         if (modelList.get(position).getQty() == 0) {
             holder.rowItemBinding.productQuantity.setText("ADD");
             holder.rowItemBinding.productMinus.setVisibility(View.GONE);
