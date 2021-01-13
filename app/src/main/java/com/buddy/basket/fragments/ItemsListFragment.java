@@ -1,15 +1,8 @@
 package com.buddy.basket.fragments;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,14 +16,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.buddy.basket.R;
-import com.buddy.basket.activities.HomeActivity;
 import com.buddy.basket.adapters.ItemsListAdapter;
 
 
 import com.buddy.basket.databinding.FragmentItemsListBinding;
 import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.helper.Util;
-import com.buddy.basket.model.CartModel;
 import com.buddy.basket.model.CartResponse;
 import com.buddy.basket.model.ItemDetailsResponse;
 import com.buddy.basket.model.ItemsListResponse;
@@ -52,7 +43,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
-import static android.icu.lang.UProperty.INT_START;
 import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 
@@ -153,7 +143,6 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
                     itemDetailsResponseList.add(new ItemDetailsResponse(product.getId(), product.getItemname(), product.getSlug(), 0, product.getShopId(), product.getCategoryId(),
                             product.getSubcategoryId(), Double.parseDouble(product.getPrice()), product.getDescription(), product.getChoices(), product.getImage(), product.getStatus(), product.getCreatedAt(), product.getUpdatedAt()));
 
-                    itemCheck(product.getId());
                 }
 
 
@@ -389,49 +378,5 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
         });
     }
 
-    private void itemCheck(int id) {
-        binding.progressBar.setVisibility(View.VISIBLE);
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("customer_id", customerId);
-        Call<CartResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).getCartViewList(jsonObject);
-        call.enqueue(new Callback<CartResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<CartResponse> call, @NonNull Response<CartResponse> response) {
 
-                if (response.isSuccessful()) {
-                    binding.progressBar.setVisibility(View.GONE);
-
-                    assert response.body() != null;
-                    List<CartResponse.CartBean> cartBeanList = response.body().getCart();
-
-                    for (CartResponse.CartBean cartBean : cartBeanList) {
-
-                        if (cartBean.getItemId().equalsIgnoreCase(String.valueOf(id))) {
-                            Log.d(TAG, "onResponse: " + "true");
-                        }
-                    }
-
-                   /* itemsListAdapter = new ItemsListAdapter(itemDetailsResponseList, getActivity(), this);
-                    binding.recyclerHomeList.setAdapter(itemsListAdapter);
-                    binding.progressBar.setVisibility(View.GONE);
-                    binding.errorLayout.txtError.setVisibility(View.GONE);
-                    itemsListAdapter.notifyDataSetChanged();*/
-
-
-                } else if (response.errorBody() != null) {
-                    binding.progressBar.setVisibility(View.GONE);
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                binding.progressBar.setVisibility(View.GONE);
-            }
-        });
-    }
 }

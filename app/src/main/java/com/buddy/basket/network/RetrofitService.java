@@ -2,9 +2,20 @@ package com.buddy.basket.network;
 
 import android.content.Context;
 
+import com.buddy.basket.fragments.ItemsListFragment;
+import com.buddy.basket.model.ItemsListResponse;
+import com.buddy.basket.model.ResponseWrapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -18,6 +29,7 @@ public class RetrofitService {
    public static String IMAGE_HOME_URL ="https://www.buddybasket.in/public/";
 
    public static Retrofit retrofit = null;
+
 
     public static <S> S createService(Class<S> serviceClass,Context context) {
         if (retrofit == null) {
@@ -56,4 +68,6 @@ public class RetrofitService {
         }
         return retrofit.create(serviceClass);
     }
+
+
 }

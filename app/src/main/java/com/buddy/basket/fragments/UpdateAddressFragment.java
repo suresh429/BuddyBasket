@@ -33,8 +33,8 @@ import retrofit2.Response;
 public class UpdateAddressFragment extends Fragment implements View.OnClickListener {
 
     private FragmentUpdateAddressBinding binding;
-    int addressId;
-    String customerId,from,name,phone,address1,address2,landmark,pincode;
+    int addressId,grandTotal,deliveryCharge,itemCount;
+    String customerId,from,name,phone,address1,address2,landmark,pincode,shop_id;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -53,6 +53,11 @@ public class UpdateAddressFragment extends Fragment implements View.OnClickListe
         landmark =getArguments().getString("landmark");
         pincode =getArguments().getString("pincode");
         from = getArguments().getString("FROM");
+        grandTotal=getArguments().getInt("grandTotal");
+        itemCount=getArguments().getInt("itemCount");
+        shop_id=getArguments().getString("shop_id");
+        deliveryCharge = getArguments().getInt("DeliveryCharge");
+
 
         binding.actionLayout.txtActionBarTitle.setText("Update Address");
         binding.actionLayout.badgeCart.setVisibility(View.GONE);
@@ -118,6 +123,9 @@ public class UpdateAddressFragment extends Fragment implements View.OnClickListe
                     // Navigation.findNavController(binding.getRoot()).navigate(R.id.addressListFragment);
                     Bundle bundle = new Bundle();
                     bundle.putString("FROM",from);
+                    bundle.putInt("grandTotal",grandTotal);
+                    bundle.putInt("itemCount",itemCount);
+                    bundle.putInt("DeliveryCharge",deliveryCharge);
                     NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.addressListFragment, true).build();
                     Navigation.findNavController(binding.getRoot()).navigate(R.id.addressListFragment, bundle, navOptions);
 

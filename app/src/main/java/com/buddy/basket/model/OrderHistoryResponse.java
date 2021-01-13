@@ -69,6 +69,8 @@ public class OrderHistoryResponse implements Parcelable {
         private String addressId;
         @SerializedName("shop_id")
         private String shopId;
+        @SerializedName("delivery_charges")
+        private String deliveryCharges;
         @SerializedName("customer_comments")
         private Object customerComments;
         @SerializedName("status")
@@ -149,6 +151,13 @@ public class OrderHistoryResponse implements Parcelable {
             this.shopId = shopId;
         }
 
+        public String getDeliveryCharges() {
+            return deliveryCharges;
+        }
+
+        public void setDeliveryCharges(String deliveryCharges) {
+            this.deliveryCharges = deliveryCharges;
+        }
         public Object getCustomerComments() {
             return customerComments;
         }

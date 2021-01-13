@@ -14,8 +14,9 @@ public class CartModel {
     private String image;
     private String choice;
     private String status;
+    private int deliveryCharge;
 
-    public CartModel(int cartId, String customerId, String itemId, int cart_qty, String  itemName, int total_qty, double price, String shopId, String categoryId, String subCategoryId, String image, String choice, String status) {
+    public CartModel(int cartId, String customerId, String itemId, int cart_qty, String  itemName, int total_qty, double price, String shopId, String categoryId, String subCategoryId, String image, String choice, String status,int deliveryCharge) {
         this.cartId = cartId;
         this.customerId = customerId;
         this.itemId = itemId;
@@ -29,6 +30,7 @@ public class CartModel {
         this.image = image;
         this.choice = choice;
         this.status = status;
+        this.deliveryCharge = deliveryCharge;
     }
 
     public int getCartId() {
@@ -133,5 +135,13 @@ public class CartModel {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getDeliveryCharge() {
+        return deliveryCharge;
+    }
+
+    public void setDeliveryCharge(int deliveryCharge) {
+        this.deliveryCharge = deliveryCharge;
     }
 }

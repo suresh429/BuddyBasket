@@ -184,7 +184,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
                         for (CartResponse.CartBean product : catDetailsBeanList) {
                             cartModelList.add(new CartModel(product.getId(), product.getCustomerId(), product.getItemId(), Integer.parseInt(product.getQty()), product.getItem().getItemname(),
                                     Integer.parseInt(product.getItem().getQty()), Double.parseDouble(product.getItem().getPrice()), product.getItem().getShopId(), product.getItem().getCategoryId(),
-                                    product.getItem().getSubcategoryId(), product.getItem().getImage(), product.getItem().getChoices(), product.getItem().getStatus()
+                                    product.getItem().getSubcategoryId(), product.getItem().getImage(), product.getItem().getChoices(), product.getItem().getStatus(), Integer.parseInt(product.getShop().getDeliveryCharges())
                             ));
                         }
 
@@ -234,7 +234,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
             CartModel updatedCartModel = new CartModel(
                     cartModel.getCartId(), cartModel.getCustomerId(), cartModel.getItemId(), cartModel.getCart_qty() - 1, cartModel.getItemName(),
                     cartModel.getTotal_qty(), cartModel.getPrice(), cartModel.getShopId(), cartModel.getCategoryId(),
-                    cartModel.getSubCategoryId(), cartModel.getImage(), cartModel.getChoice(), cartModel.getStatus()
+                    cartModel.getSubCategoryId(), cartModel.getImage(), cartModel.getChoice(), cartModel.getStatus(), cartModel.getDeliveryCharge()
             );
             Log.d(TAG, "onMinusClick: " + updatedCartModel.getCart_qty());
             cartModelList.remove(cartModel);
@@ -253,11 +253,12 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
     @Override
     public void onPlusClick(int position, CartModel cartModel) {
         int i = cartModelList.indexOf(cartModel);
+
         CartModel updatedCartModel = new CartModel(
                 cartModel.getCartId(), cartModel.getCustomerId(), cartModel.getItemId(), cartModel.getCart_qty() + 1, cartModel.getItemName(),
                 cartModel.getTotal_qty(), cartModel.getPrice(), cartModel.getShopId(), cartModel.getCategoryId(),
-                cartModel.getSubCategoryId(), cartModel.getImage(), cartModel.getChoice(), cartModel.getStatus());
-        Log.d(TAG, "onPlusClick: " + updatedCartModel.getCart_qty());
+                cartModel.getSubCategoryId(), cartModel.getImage(), cartModel.getChoice(), cartModel.getStatus(), cartModel.getDeliveryCharge());
+
         cartModelList.remove(cartModel);
         cartModelList.add(i, updatedCartModel);
 
@@ -273,6 +274,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
     public void calculateCartTotal() {
         int grandTotal = 0;
         int itemCount = 0;
+        int deliveryCharge = 0;
 
         for (CartModel order : cartModelList) {
             Log.d(TAG, "calculateCartTotal: " + order.getPrice());
@@ -280,6 +282,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
             grandTotal += order.getPrice() * order.getCart_qty();
             Log.d(TAG, "calculateCartTotal: " + grandTotal);
             shop_id = order.getShopId();
+            deliveryCharge = order.getDeliveryCharge();
 
             if (order.getCart_qty() > 0) {
                 itemCount += order.getCart_qty();
@@ -293,23 +296,21 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
             binding.actionBottomCart.getRoot().setVisibility(View.VISIBLE);
             int finalGrandTotal = grandTotal;
             int finalItemCount = itemCount;
-            binding.actionBottomCart.txtViewCart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("grandTotal", finalGrandTotal);
-                    bundle.putInt("itemCount", finalItemCount);
-                    bundle.putString("shop_id", shop_id);
-                    bundle.putString("FROM", "Cart");
-                    Navigation.findNavController(v).navigate(R.id.addressListFragment, bundle);
-                }
+            int finalDeliveryCharge = deliveryCharge;
+            binding.actionBottomCart.txtViewCart.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putInt("grandTotal", finalGrandTotal);
+                bundle.putInt("itemCount", finalItemCount);
+                bundle.putString("shop_id", shop_id);
+                bundle.putString("FROM", "Cart");
+                bundle.putInt("DeliveryCharge", finalDeliveryCharge);
+                Navigation.findNavController(v).navigate(R.id.addressListFragment, bundle);
             });
         } else {
             binding.actionBottomCart.getRoot().setVisibility(View.GONE);
         }
 
     }
-
 
     private void updateCart(CartModel cartModel) {
         // binding.progressBar.setVisibility(View.VISIBLE);

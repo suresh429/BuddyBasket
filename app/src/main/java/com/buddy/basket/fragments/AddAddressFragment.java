@@ -38,7 +38,8 @@ import static android.content.ContentValues.TAG;
 public class AddAddressFragment extends Fragment implements View.OnClickListener {
 
     private FragmentAddAddressBinding binding;
-    String customerId,from;
+    String customerId,from,shop_id;
+    int grandTotal,itemCount,address_id,deliveryCharge;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,6 +51,11 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
 
         assert getArguments() != null;
         from = getArguments().getString("FROM");
+        grandTotal=getArguments().getInt("grandTotal");
+        itemCount=getArguments().getInt("itemCount");
+        address_id=getArguments().getInt("address_id");
+        shop_id=getArguments().getString("shop_id");
+        deliveryCharge = getArguments().getInt("DeliveryCharge");
 
         binding.actionLayout.txtActionBarTitle.setText("Add Address");
         binding.actionLayout.badgeCart.setVisibility(View.GONE);
@@ -105,6 +111,9 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
                     // Navigation.findNavController(binding.getRoot()).navigate(R.id.addressListFragment);
                     Bundle bundle = new Bundle();
                     bundle.putString("FROM",from);
+                    bundle.putInt("grandTotal",grandTotal);
+                    bundle.putInt("itemCount",itemCount);
+                    bundle.putInt("DeliveryCharge",deliveryCharge);
                     NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.addressListFragment, true).build();
                     Navigation.findNavController(binding.getRoot()).navigate(R.id.addressListFragment, bundle, navOptions);
 

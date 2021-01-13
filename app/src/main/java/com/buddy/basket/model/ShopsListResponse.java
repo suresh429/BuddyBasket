@@ -53,6 +53,8 @@ public class ShopsListResponse {
         private String opentime;
         @SerializedName("closetime")
         private String closetime;
+        @SerializedName("delivery_charges")
+        private String deliveryCharges;
         @SerializedName("image")
         private String image;
         @SerializedName("status")
@@ -158,6 +160,14 @@ public class ShopsListResponse {
 
         public void setClosetime(String closetime) {
             this.closetime = closetime;
+        }
+
+        public String getDeliveryCharges() {
+            return deliveryCharges;
+        }
+
+        public void setDeliveryCharges(String deliveryCharges) {
+            this.deliveryCharges = deliveryCharges;
         }
 
         public String getImage() {

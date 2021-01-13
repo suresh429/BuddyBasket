@@ -44,7 +44,7 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
     String customerId,from,shop_id;
     AddressListAdapter.AdapterListner adapterListner;
 
-    int grandTotal,itemCount;
+    int grandTotal,itemCount,deliveryCharge;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddressListBinding.inflate(inflater, container, false);
@@ -60,6 +60,7 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
             itemCount=getArguments().getInt("itemCount");
             from = getArguments().getString("FROM");
             shop_id = getArguments().getString("shop_id");
+            deliveryCharge = getArguments().getInt("DeliveryCharge");
         }
 
 
@@ -69,13 +70,13 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
                 Navigation.findNavController(v).popBackStack()
         );
 
-        binding.btnAddNewAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("FROM",from);
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.addAddressFragment,bundle);
-            }
+        binding.btnAddNewAddress.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("FROM",from);
+            bundle.putInt("grandTotal",grandTotal);
+            bundle.putInt("itemCount",itemCount);
+            bundle.putInt("DeliveryCharge",deliveryCharge);
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.addAddressFragment,bundle);
         });
 
         AddressListData();
@@ -150,6 +151,10 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
         bundle.putInt("address_id",product.getId());
         bundle.putString("shop_id",shop_id);
         bundle.putString("FROM",from);
+        bundle.putInt("grandTotal",grandTotal);
+        bundle.putInt("itemCount",itemCount);
+        bundle.putInt("DeliveryCharge",deliveryCharge);
+
         Navigation.findNavController(binding.getRoot()).navigate(R.id.updateAddressFragment,bundle);
     }
 
@@ -194,6 +199,8 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
         bundle.putInt("itemCount",itemCount);
         bundle.putInt("address_id",product.getId());
         bundle.putString("shop_id",shop_id);
+        bundle.putInt("DeliveryCharge",deliveryCharge);
+
         Navigation.findNavController(binding.getRoot()).navigate(R.id.placeOrderFragment,bundle);
     }
 }

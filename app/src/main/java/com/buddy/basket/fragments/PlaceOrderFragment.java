@@ -43,8 +43,7 @@ public class PlaceOrderFragment extends Fragment {
 
     private FragmentPlaceorderBinding binding;
     String customerId,shop_id;
-    Double deliveryCharge=30.00;
-    int grandTotal,itemCount,address_id;
+    int grandTotal,itemCount,address_id,deliveryCharge;
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -60,6 +59,7 @@ public class PlaceOrderFragment extends Fragment {
         itemCount=getArguments().getInt("itemCount");
         address_id=getArguments().getInt("address_id");
         shop_id=getArguments().getString("shop_id");
+        deliveryCharge = getArguments().getInt("DeliveryCharge");
 
         binding.txtShopName.setText(userSessionManager.getShopDetails().get("shopName"));
         binding.txtAddreess.setText(userSessionManager.getShopDetails().get("shopLocation"));
@@ -75,9 +75,9 @@ public class PlaceOrderFragment extends Fragment {
 
         binding.txtTotalCount.setText(""+itemCount);
         binding.txtTotalItems.setText("\u20b9"+ String.format("%.2f", (double)grandTotal));
-        binding.txtDeliveryPrice.setText("\u20b9"+String.format("%.2f", deliveryCharge));
+        binding.txtDeliveryPrice.setText("\u20b9"+String.format("%.2f", (double)deliveryCharge));
 
-        Double total = grandTotal + deliveryCharge;
+        Double total = grandTotal + (double)deliveryCharge;
         binding.txtGrandTotal.setText("\u20b9"+String.format("%.2f", total));
         binding.btnPlaceOrder.setOnClickListener(v -> PlaceOrderData());
         return binding.getRoot();
@@ -89,6 +89,7 @@ public class PlaceOrderFragment extends Fragment {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("customer_id", customerId);
         jsonObject.addProperty("total_amt", grandTotal);
+        jsonObject.addProperty("delivery_charges", deliveryCharge);
         jsonObject.addProperty("customer_comments", Objects.requireNonNull(binding.etComments.getText()).toString());
         jsonObject.addProperty("address_id", address_id);
         jsonObject.addProperty("shop_id", shop_id);
