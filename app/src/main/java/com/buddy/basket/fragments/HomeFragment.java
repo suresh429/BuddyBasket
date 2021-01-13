@@ -45,6 +45,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import kotlin.collections.CollectionsKt;
 
@@ -122,8 +123,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
             if (homeResponse.getStatus().equalsIgnoreCase("true")){
                 List<CitiesResponse.DataBean> dataBeans = homeResponse.getData();
 
-
-
                 if (cityId!=null && city_Name != null){
 
                     binding.actionLayout.textLocation.setText(city_Name);
@@ -134,7 +133,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
 
                 }
 
-                Log.d(TAG, "inside method: "+ cityId + "======"+dataBeans.get(0).getCity());
 
                 //before inflating the custom alert dialog layout, we will get the current activity viewgroup
                 ViewGroup viewGroup = getView().getRootView().findViewById(android.R.id.content);
@@ -158,7 +156,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
                 RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
                 recyclerView.setLayoutManager(mLayoutManager1);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.addItemDecoration(new DividerItemDecoration(this.getActivity(), LinearLayout.VERTICAL));
+                recyclerView.addItemDecoration(new DividerItemDecoration(this.requireActivity(), LinearLayout.VERTICAL));
 
 
                 LocationListAdapter adapter = new LocationListAdapter(dataBeans, requireContext(),this::onClick);

@@ -32,7 +32,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
-     BottomNavigationView navView;
+    private static final String TAG ="HOME" ;
+    BottomNavigationView navView;
     boolean doubleBackToExitPressedOnce = false;
     ActivityHomeBinding binding;
     String customerId;
@@ -60,6 +61,7 @@ public class HomeActivity extends AppCompatActivity {
                 cartCount();
             }else {
                 navView.setVisibility(View.GONE);
+
             }
         });
 
@@ -73,6 +75,25 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: ");
+        cartCount();
+    }
+
+   /* @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart: ");
+    }*/
 
     public void cartCount(){
         JsonObject jsonObject = new JsonObject();
