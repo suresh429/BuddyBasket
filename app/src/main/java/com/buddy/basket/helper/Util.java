@@ -1,5 +1,6 @@
 package com.buddy.basket.helper;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -55,7 +56,7 @@ public class Util {
         }
     }
 
-    public static  void noNetworkAlert(Activity activity, String message){
+   /* public static  void noNetworkAlert(Activity activity, String message){
 
         AlertDialog.Builder builder =new AlertDialog.Builder(activity);
         builder.setCancelable(false);
@@ -69,9 +70,10 @@ public class Util {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-    }
+    }*/
 
 
+    @SuppressLint("QueryPermissionsNeeded")
     public static void viewInBrowser(Context context, String url, String message) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);

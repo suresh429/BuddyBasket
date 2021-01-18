@@ -67,9 +67,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 Util.snackBar(binding.getRoot().getRootView(), message, Color.WHITE);
             } else {
                 Util.snackBar(binding.getRoot().getRootView(), message, Color.WHITE);
-                // noInternetDialog(this);
-                //  Util.snackBar(binding.getRoot().getRootView(), "No network available, please check your WiFi or Data connection", Color.WHITE);
-            }
+               }
 
         });
 
@@ -104,8 +102,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         if (v.getId() == R.id.btn_signup) {
 
-            String name = binding.etName.getText().toString();
-            String password = binding.etPassword.getText().toString();
+            String name = Objects.requireNonNull(binding.etName.getText()).toString();
+            String password = Objects.requireNonNull(binding.etPassword.getText()).toString();
             if (name.isEmpty()) {
                 Util.snackBar(binding.getRoot().getRootView(), "Name Can't be Empty", Color.WHITE);
             } else if (password.length() < 5) {

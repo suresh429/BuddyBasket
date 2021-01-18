@@ -16,22 +16,21 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/action_layout"
-        android:layout_above="@id/btnPlaceOrder">
+        android:layout_above="@id/btnPlaceOrder"
+        android:layout_below="@+id/action_layout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible"
-                android:padding="15dp">
+                android:padding="15dp"
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/imgShop"
@@ -126,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/proxima_nova_regular"
-                    android:text="Instructions"
+                    android:text="@string/instructions"
                     android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="14sp"
@@ -139,7 +138,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/rounded_outline_grey_bg"
                     android:gravity="start"
-                    android:hint="Instructions for Delivery"
+                    android:hint="@string/instructions_for_delivery"
                     android:paddingStart="10dp"
                     android:paddingTop="10dp"
                     tools:ignore="RtlSymmetry" />
@@ -150,7 +149,7 @@
                     android:layout_marginTop="35dp"
                     android:layout_marginBottom="5dp"
                     android:fontFamily="@font/proxima_nova_regular"
-                    android:text="Order Details "
+                    android:text="@string/order_details"
                     android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="14sp"
@@ -167,7 +166,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toStartOf="@+id/txtTotalCount"
                         android:fontFamily="@font/proxima_nova_regular"
-                        android:text="Item Count"
+                        android:text="@string/item_count"
                         android:textSize="16sp" />
 
                     <TextView
@@ -176,7 +175,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/proxima_nova_regular"
-                        android:text="12"
+                        android:text="@string/_12"
                         android:textSize="14sp" />
 
                     <TextView
@@ -187,7 +186,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_toStartOf="@+id/txtTotalItems"
                         android:fontFamily="@font/proxima_nova_regular"
-                        android:text="Item Total "
+                        android:text="@string/item_total"
                         android:textSize="16sp" />
 
                     <TextView
@@ -198,7 +197,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/proxima_nova_regular"
-                        android:text="12"
+                        android:text="@string/_12"
                         android:textSize="14sp" />
 
 
@@ -221,7 +220,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/proxima_nova_regular"
-                        android:text="12"
+                        android:text="@string/_12"
                         android:textSize="14sp" />
 
                     <View
@@ -239,7 +238,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/view"
                         android:fontFamily="@font/proxima_nova_regular"
-                        android:text="Grand Total"
+                        android:text="@string/grand_total"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -250,7 +249,7 @@
                         android:layout_below="@+id/view"
                         android:layout_alignParentEnd="true"
                         android:fontFamily="@font/proxima_nova_regular"
-                        android:text="12"
+                        android:text="@string/_12"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
 
@@ -268,7 +267,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="35dp"
                     android:fontFamily="@font/proxima_nova_regular"
-                    android:text="Payment Mode "
+                    android:text="@string/payment_mode"
                     android:textAllCaps="true"
                     android:textColor="@color/black"
                     android:textSize="14sp"
@@ -286,7 +285,7 @@
                         android:background="@drawable/rounded_outline_grey_bg"
                         android:checked="true"
                         android:padding="15dp"
-                        android:text="Cash On Delivery" />
+                        android:text="@string/cash_on_delivery" />
                 </RadioGroup>
             </LinearLayout>
         </LinearLayout>
@@ -304,6 +303,11 @@
         android:text="@string/place_order"
         android:textColor="@color/white"
         android:visibility="visible" />
+
+    <include
+        android:id="@+id/noInternet"
+        layout="@layout/no_connection_layout"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressBar"

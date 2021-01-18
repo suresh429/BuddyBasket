@@ -1,5 +1,7 @@
 package com.buddy.basket.fragments;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import com.buddy.basket.activities.HomeActivity;
 import com.buddy.basket.adapters.OrderHistoryListAdapter;
 import com.buddy.basket.databinding.FragmentHistoryBinding;
 import com.buddy.basket.helper.UserSessionManager;
+import com.buddy.basket.helper.Util;
 import com.buddy.basket.model.OrderHistoryResponse;
 import com.buddy.basket.viewmodels.OrderHistoryViewModel;
 
@@ -29,6 +32,7 @@ public class HistoryFragment extends Fragment {
     OrderHistoryListAdapter adapter;
     String customerId;
 
+    @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         orderHistoryViewModel = new ViewModelProvider(this).get(OrderHistoryViewModel.class);
@@ -44,6 +48,31 @@ public class HistoryFragment extends Fragment {
 
 
         orderHistoryViewModel.initOrderHistory(customerId, requireActivity());
+
+        // Alert toast msg
+        orderHistoryViewModel.getToastObserver().observe(getViewLifecycleOwner(), message -> {
+
+            if (message.equalsIgnoreCase(getResources().getString(R.string.no_connection))) {
+                binding.noInternet.noInternet.setVisibility(View.VISIBLE);
+            } else {
+                Util.snackBar(requireView().getRootView(), message, Color.RED);
+            }
+
+
+        });
+
+
+        // progress bar
+        orderHistoryViewModel.getProgressbarObservable().observe(getViewLifecycleOwner(), aBoolean -> {
+            if (aBoolean) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+
+            } else {
+                binding.progressBar.setVisibility(View.GONE);
+
+            }
+        });
+
         // get home data
         orderHistoryViewModel.getRepository().observe(getViewLifecycleOwner(), homeResponse -> {
 
@@ -52,7 +81,7 @@ public class HistoryFragment extends Fragment {
                 adapter = new OrderHistoryListAdapter(catDetailsBeanList, getActivity());
                 binding.recyclerHistory.setAdapter(adapter);
                 binding.progressBar.setVisibility(View.GONE);
-               // binding.recyclerHistory.setVisibility(View.VISIBLE);
+                binding.noInternet.noInternet.setVisibility(View.GONE);
                 binding.errorLayout.txtError.setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
             }else {

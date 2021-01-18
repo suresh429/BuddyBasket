@@ -41,7 +41,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         return new ViewHolder(RestaurantsItemsListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void onBindViewHolder(@NonNull CartListAdapter.ViewHolder holder, int position) {
 
@@ -61,13 +61,11 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             holder.rowItemBinding.productQuantity.setText("ADD");
             holder.rowItemBinding.productMinus.setVisibility(View.GONE);
             holder.rowItemBinding.productPlus.setVisibility(View.GONE);
-            Log.d(TAG, "onBindViewHolder: " + modelList.get(position).getCart_qty());
 
         } else {
             holder.rowItemBinding.productQuantity.setText("" + modelList.get(position).getCart_qty());
             holder.rowItemBinding.productMinus.setVisibility(View.VISIBLE);
             holder.rowItemBinding.productPlus.setVisibility(View.VISIBLE);
-            Log.d(TAG, "onBindViewHolder1: " + modelList.get(position).getCart_qty());
         }
 
         holder.rowItemBinding.productQuantity.setOnClickListener(view -> {
@@ -92,18 +90,6 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
 
         });
 
-        holder.rowItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-               /* bundle.putString("catId", modelList.get(position).getCat_id());
-                bundle.putString("catName", modelList.get(position).getCat_name());*/
-
-               /* NavController navController = Navigation.findNavController(v);
-                navController.navigate(R.id.categoryFragment,bundle);*/
-                //Navigation.findNavController(v).navigate(R.id.categoryFragment,bundle);
-            }
-        });
     }
 
     @Override

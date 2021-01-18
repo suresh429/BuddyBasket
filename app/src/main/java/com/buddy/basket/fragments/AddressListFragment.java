@@ -1,8 +1,8 @@
 package com.buddy.basket.fragments;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,31 +10,24 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.buddy.basket.R;
 import com.buddy.basket.adapters.AddressListAdapter;
 import com.buddy.basket.databinding.FragmentAddressListBinding;
-import com.buddy.basket.databinding.FragmentCartBinding;
 import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.helper.Util;
 import com.buddy.basket.model.AddressResponse;
-import com.buddy.basket.model.CartResponse;
 import com.buddy.basket.network.ApiInterface;
 import com.buddy.basket.network.RetrofitService;
-
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.content.ContentValues.TAG;
 
 
 public class AddressListFragment extends Fragment implements AddressListAdapter.AdapterListner{
@@ -45,6 +38,7 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
     AddressListAdapter.AdapterListner adapterListner;
 
     int grandTotal,itemCount,deliveryCharge;
+    @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddressListBinding.inflate(inflater, container, false);
@@ -75,6 +69,7 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
             bundle.putString("FROM",from);
             bundle.putInt("grandTotal",grandTotal);
             bundle.putInt("itemCount",itemCount);
+            bundle.putString("shop_id",shop_id);
             bundle.putInt("DeliveryCharge",deliveryCharge);
             Navigation.findNavController(binding.getRoot()).navigate(R.id.addAddressFragment,bundle);
         });
@@ -96,6 +91,7 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
 
                 if (response.isSuccessful()) {
                     binding.progressBar.setVisibility(View.GONE);
+                    assert response.body() != null;
                     List<AddressResponse.AddressesBean> addressesBeanList = response.body().getAddresses();
 
                     if (addressesBeanList.size() > 0){
@@ -107,6 +103,7 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
                             adapter.notifyDataSetChanged();
 
                             binding.errorLayout.txtError.setVisibility(View.GONE);
+                            binding.noInternet.noInternet.setVisibility(View.GONE);
                             binding.recyclerAddressList.setVisibility(View.VISIBLE);
 
                         } catch (IllegalArgumentException | IllegalStateException e) {
@@ -118,20 +115,19 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
                         /*Navigation.findNavController(binding.getRoot()).navigate(R.id.addAddressFragment);*/
                         binding.errorLayout.txtError.setVisibility(View.VISIBLE);
                         binding.recyclerAddressList.setVisibility(View.GONE);
+                        binding.noInternet.noInternet.setVisibility(View.GONE);
                     }
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
+                    binding.noInternet.noInternet.setVisibility(View.GONE);
+
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<AddressResponse> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.noInternet.noInternet.setVisibility(View.VISIBLE);
                 binding.progressBar.setVisibility(View.GONE);
             }
         });
@@ -171,22 +167,21 @@ public class AddressListFragment extends Fragment implements AddressListAdapter.
 
                 if (response.isSuccessful()) {
                     binding.progressBar.setVisibility(View.GONE);
+                    binding.noInternet.noInternet.setVisibility(View.GONE);
                     adapter.notifyDataSetChanged();
                     Util.snackBar(binding.getRoot(),"Address Deleted!", Color.RED);
                     AddressListData();
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
+                    binding.noInternet.noInternet.setVisibility(View.GONE);
+
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<AddressResponse> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Util.snackBar(requireView().getRootView(),t.getMessage(),Color.RED);
                 binding.progressBar.setVisibility(View.GONE);
             }
         });

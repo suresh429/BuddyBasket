@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="8dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/imgShop"
@@ -154,6 +154,9 @@
         android:visibility="gone"
         tools:visibility="visible" />
 
+    <include layout="@layout/no_connection_layout"
+        android:id="@+id/noInternet"
+        android:visibility="gone"/>
     <include
         android:id="@+id/errorLayout"
         layout="@layout/error_layout"

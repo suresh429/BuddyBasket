@@ -43,7 +43,7 @@ public class OrderItemListAdapter extends RecyclerView.Adapter<OrderItemListAdap
         return new ViewHolder(OrderSummaryListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void onBindViewHolder(@NonNull OrderItemListAdapter.ViewHolder holder, int position) {
 

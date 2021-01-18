@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">BuddyBasket</string>
-
-
     <string name="action_cart">Cart</string>
-
     <string name="password">Password</string>
     <string name="phone">Phone</string>
     <string name="forgot_password">Forgot password?</string>
@@ -45,8 +42,32 @@
     <string name="enter_phone">Enter Phone</string>
     <string name="update_address">Update Address</string>
     <string name="cart">Cart</string>
-    <string name="no_data_available">No Data Available...</string>
+    <string name="no_data_available">No Data Available…</string>
     <string name="delivery_charge">Delivery Charge</string>
+    <string name="could_not_connect_to_the_internet_please_check_your_network">Could not connect to the internet.Please check your network…!</string>
+    <string name="try_again">Try again</string>
+    <string name="restaurant_name">Restaurant Name</string>
+    <string name="restaurant_location">Restaurant Location</string>
+    <string name="this_order_was_delivered">This Order was Delivered</string>
+    <string name="your_order">Your Order</string>
+    <string name="item_total">Item Total</string>
+    <string name="_200">200</string>
+    <string name="delivery_charges">Delivery Charges</string>
+    <string name="grand_total">Grand Total</string>
+    <string name="order_details">Order Details</string>
+    <string name="order_number">Order Number</string>
+    <string name="payment">Payment</string>
+    <string name="cash_on_delivery">Cash on Delivery</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="_9030080894">9030080894</string>
+    <string name="deliver_to">Deliver To</string>
+    <string name="address">Address</string>
+    <string name="payment_mode">Payment Mode</string>
+    <string name="_12">12</string>
+    <string name="item_count">Item Count</string>
+    <string name="instructions_for_delivery">Instructions for Delivery</string>
+    <string name="instructions">Instructions</string>
+    <string name="no_connection">No network available, please check your WiFi or Data connection</string>
 
 
 </resources>

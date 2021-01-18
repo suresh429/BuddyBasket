@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -156,7 +155,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 binding.btnContinue.setText(R.string.login);
 
                 if (binding.btnContinue.getText().toString().equalsIgnoreCase("LOGIN")) {
-                    Log.d(TAG, "customer: " + "hghg");
                     binding.btnContinue.setOnClickListener(v -> verifyCustomer(baseResponse.getCustomer().get(0).getPhonenumber()));
                 }
 
@@ -182,7 +180,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("phonenumber", mobile);
             jsonObject.addProperty("password", password);
-            Call<CustomerResponse> call = RetrofitService.createService(ApiInterface.class,this).getCustomerVerifyList(jsonObject);
+            Call<CustomerResponse> call = RetrofitService.createService(ApiInterface.class, this).getCustomerVerifyList(jsonObject);
             call.enqueue(new Callback<CustomerResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<CustomerResponse> call, @NonNull Response<CustomerResponse> response) {
@@ -212,16 +210,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     } else if (response.errorBody() != null) {
                         binding.progressLayout.progressBar1.setVisibility(View.GONE);
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
+
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<CustomerResponse> call, @NonNull Throwable t) {
-                    Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Util.snackBar(binding.getRoot(),t.getMessage(),Color.RED);
                     binding.progressLayout.progressBar1.setVisibility(View.GONE);
                 }
             });

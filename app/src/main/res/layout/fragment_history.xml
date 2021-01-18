@@ -36,4 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"/>
 
+    <include layout="@layout/no_connection_layout"
+        android:id="@+id/noInternet"
+        android:visibility="gone"/>
+
 </RelativeLayout>

@@ -1,58 +1,41 @@
 package com.buddy.basket.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.buddy.basket.R;
 import com.buddy.basket.activities.HomeActivity;
-import com.buddy.basket.activities.LoginActivity;
 import com.buddy.basket.adapters.CartListAdapter;
-import com.buddy.basket.adapters.ItemsListAdapter;
 import com.buddy.basket.databinding.FragmentCartBinding;
 import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.helper.Util;
 import com.buddy.basket.model.CartModel;
 import com.buddy.basket.model.CartResponse;
-import com.buddy.basket.model.ItemDetailsResponse;
-import com.buddy.basket.model.ItemsListResponse;
 import com.buddy.basket.network.ApiInterface;
 import com.buddy.basket.network.RetrofitService;
-import com.buddy.basket.viewmodels.CartUpdateViewModel;
 import com.buddy.basket.viewmodels.CartViewModel;
-import com.buddy.basket.viewmodels.ItemsListViewModel;
 import com.bumptech.glide.Glide;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.ContentValues.TAG;
 import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 
@@ -77,6 +60,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
         return binding.getRoot();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -86,14 +70,6 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
         UserSessionManager userSessionManager = new UserSessionManager(requireContext());
         HashMap<String, String> userDetails = userSessionManager.getUserDetails();
         customerId = userDetails.get("id");
-
-
-        binding.txtShopName.setText(userSessionManager.getShopDetails().get("shopName"));
-        binding.txtAddreess.setText(userSessionManager.getShopDetails().get("shopLocation"));
-        binding.txtTime.setText(userSessionManager.getShopDetails().get("shopOpenTime") + " - " + userSessionManager.getShopDetails().get("shopCloseTime"));
-        binding.txtMobile.setText(userSessionManager.getShopDetails().get("shopContact"));
-        binding.txtDescription.setText(userSessionManager.getShopDetails().get("shopDescription"));
-        Glide.with(requireContext()).load(IMAGE_HOME_URL + userSessionManager.getShopDetails().get("shopImage")).error(R.drawable.placeholder).into(binding.imgShop);
 
 
         binding.actionLayout.textLocation.setText("Cart");
@@ -178,6 +154,14 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
                     assert homeResponse != null;
                     if (homeResponse.getStatus().equalsIgnoreCase("true")) {
 
+                        binding.txtShopName.setText(homeResponse.getCart().get(0).getShop().getShopname());
+                        binding.txtAddreess.setText(homeResponse.getCart().get(0).getShop().getAddress());
+                        binding.txtTime.setText(homeResponse.getCart().get(0).getShop().getOpentime() + " - " + homeResponse.getCart().get(0).getShop().getClosetime());
+                        binding.txtMobile.setText(homeResponse.getCart().get(0).getShop().getPhone());
+                        binding.txtDescription.setText(homeResponse.getCart().get(0).getShop().getDescription());
+                        Glide.with(requireContext()).load(IMAGE_HOME_URL + homeResponse.getCart().get(0).getShop().getImage()).error(R.drawable.placeholder).into(binding.imgShop);
+
+
                         List<CartResponse.CartBean> catDetailsBeanList = homeResponse.getCart();
                         //dataBeanArrayList.addAll(catDetailsBeanList);
                         cartModelList.clear();
@@ -193,6 +177,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
                         binding.progressBar.setVisibility(View.GONE);
                         binding.errorLayout.txtError.setVisibility(View.GONE);
                         binding.shopLayout.setVisibility(View.VISIBLE);
+                        binding.noInternet.noInternet.setVisibility(View.GONE);
                         adapter.notifyDataSetChanged();
                         calculateCartTotal();
 
@@ -207,17 +192,15 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
+                    binding.noInternet.noInternet.setVisibility(View.GONE);
+
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.progressBar.setVisibility(View.GONE);
+                binding.noInternet.noInternet.setVisibility(View.VISIBLE);
             }
         });
 
@@ -236,7 +219,7 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
                     cartModel.getTotal_qty(), cartModel.getPrice(), cartModel.getShopId(), cartModel.getCategoryId(),
                     cartModel.getSubCategoryId(), cartModel.getImage(), cartModel.getChoice(), cartModel.getStatus(), cartModel.getDeliveryCharge()
             );
-            Log.d(TAG, "onMinusClick: " + updatedCartModel.getCart_qty());
+
             cartModelList.remove(cartModel);
             cartModelList.add(i, updatedCartModel);
 
@@ -277,10 +260,8 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
         int deliveryCharge = 0;
 
         for (CartModel order : cartModelList) {
-            Log.d(TAG, "calculateCartTotal: " + order.getPrice());
-            Log.d(TAG, "calculateCartTotal: " + order.getCart_qty());
+
             grandTotal += order.getPrice() * order.getCart_qty();
-            Log.d(TAG, "calculateCartTotal: " + grandTotal);
             shop_id = order.getShopId();
             deliveryCharge = order.getDeliveryCharge();
 
@@ -325,21 +306,20 @@ public class CartFragment extends Fragment implements CartListAdapter.Restaurant
 
                 if (response.isSuccessful()) {
                     binding.progressBar.setVisibility(View.GONE);
+                    binding.noInternet.noInternet.setVisibility(View.GONE);
 
                     cartListData();
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
+                    binding.noInternet.noInternet.setVisibility(View.GONE);
+
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Util.snackBar(requireView().getRootView(),t.getMessage(), Color.RED);
                 binding.progressBar.setVisibility(View.GONE);
             }
         });

@@ -6,6 +6,8 @@
     android:fitsSystemWindows="true"
     android:layout_height="match_parent">
 
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
@@ -30,5 +32,13 @@
         app:navGraph="@navigation/mobile_navigation"
         android:layout_above="@+id/nav_view"
        />
+
+    <include
+        layout="@layout/no_connection_layout"
+        android:id="@+id/noInternet"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"/>
 
 </RelativeLayout>

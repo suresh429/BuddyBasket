@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <include
         android:id="@+id/action_layout"
@@ -52,7 +52,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/proxima_nova_regular"
-                        android:text="Restaurant Name"
+                        android:text="@string/restaurant_name"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/proxima_nova_regular"
-                        android:text="Restaurant Location" />
+                        android:text="@string/restaurant_location" />
 
                 </LinearLayout>
 
@@ -80,11 +80,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginEnd="5dp"
                 android:fontFamily="@font/proxima_nova_regular"
-                android:text="This Order was Delivered"
-                android:textColor="@color/black"
+                android:text="@string/this_order_was_delivered"
+                android:textColor="@color/colorPrimary"
                 android:textSize="12sp" />
 
 
@@ -96,9 +96,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/proxima_nova_regular"
-                android:text="Your Order"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
+                android:text="@string/your_order"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="match_parent"
@@ -138,7 +138,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:fontFamily="@font/proxima_nova_regular"
-                    android:text="Item Total"
+                    android:text="@string/item_total"
                     android:textColor="@color/black" />
 
 
@@ -150,7 +150,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:fontFamily="@font/proxima_nova_regular"
-                    android:text="200"
+                    android:text="@string/_200"
                     android:textColor="@color/black" />
             </RelativeLayout>
 
@@ -167,8 +167,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:fontFamily="@font/proxima_nova_regular"
-                    android:text="Delivery Charges"
-                    />
+                    android:text="@string/delivery_charges" />
 
 
                 <TextView
@@ -179,8 +178,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:fontFamily="@font/proxima_nova_regular"
-                    android:text="200"
-                     />
+                    android:text="@string/_200" />
 
 
             </RelativeLayout>
@@ -205,7 +203,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:fontFamily="@font/proxima_nova_regular"
-                    android:text="Grand Total"
+                    android:text="@string/grand_total"
                     android:textColor="@color/black" />
 
 
@@ -217,7 +215,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:fontFamily="@font/proxima_nova_regular"
-                    android:text="200"
+                    android:text="@string/_200"
                     android:textColor="@color/black" />
 
 
@@ -236,7 +234,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/proxima_nova_regular"
-                android:text="Order Details"
+                android:text="@string/order_details"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -250,10 +248,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
                 android:fontFamily="@font/proxima_nova_regular"
-                android:text="Order Number"
+                android:text="@string/order_number"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -265,7 +263,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/proxima_nova_regular"
-                android:text="Your Order"
+                android:text="@string/your_order"
                 android:textColor="@color/black" />
 
             <TextView
@@ -275,7 +273,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/proxima_nova_regular"
-                android:text="Payment"
+                android:text="@string/payment"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -287,7 +285,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/proxima_nova_regular"
-                android:text="Cash on Delivery"
+                android:text="@string/cash_on_delivery"
                 android:textColor="@color/black" />
 
             <TextView
@@ -297,7 +295,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/proxima_nova_regular"
-                android:text="Phone Number"
+                android:text="@string/phone_number"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -309,7 +307,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/proxima_nova_regular"
-                android:text="9030080894" />
+                android:text="@string/_9030080894" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -318,7 +316,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/proxima_nova_regular"
-                android:text="Deliver To"
+                android:text="@string/deliver_to"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -330,7 +328,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:fontFamily="@font/proxima_nova_regular"
-                android:text="Address" />
+                android:text="@string/address" />
 
             <View
                 android:layout_width="match_parent"
@@ -355,4 +353,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <include
+        android:id="@+id/noInternet"
+        layout="@layout/no_connection_layout"
+        android:visibility="gone" />
 </RelativeLayout>

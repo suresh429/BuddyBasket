@@ -130,4 +130,5 @@
         android:layout_gravity="center"
         android:visibility="gone"
         tools:visibility="visible" />
+
 </RelativeLayout>

@@ -1,8 +1,8 @@
 package com.buddy.basket.fragments;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +14,7 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.buddy.basket.R;
-import com.buddy.basket.adapters.AddressListAdapter;
 import com.buddy.basket.databinding.FragmentAddAddressBinding;
-import com.buddy.basket.databinding.FragmentAddressListBinding;
 import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.helper.Util;
 import com.buddy.basket.model.AddressResponse;
@@ -25,14 +23,11 @@ import com.buddy.basket.network.RetrofitService;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.content.ContentValues.TAG;
 
 
 public class AddAddressFragment extends Fragment implements View.OnClickListener {
@@ -41,6 +36,7 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
     String customerId,from,shop_id;
     int grandTotal,itemCount,address_id,deliveryCharge;
 
+    @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAddAddressBinding.inflate(inflater, container, false);
@@ -113,22 +109,20 @@ public class AddAddressFragment extends Fragment implements View.OnClickListener
                     bundle.putString("FROM",from);
                     bundle.putInt("grandTotal",grandTotal);
                     bundle.putInt("itemCount",itemCount);
+                    bundle.putString("shop_id",shop_id);
                     bundle.putInt("DeliveryCharge",deliveryCharge);
                     NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.addressListFragment, true).build();
                     Navigation.findNavController(binding.getRoot()).navigate(R.id.addressListFragment, bundle, navOptions);
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
+
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<AddressResponse> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Util.snackBar(requireView().getRootView(),t.getMessage(),Color.RED);
                 binding.progressBar.setVisibility(View.GONE);
             }
         });

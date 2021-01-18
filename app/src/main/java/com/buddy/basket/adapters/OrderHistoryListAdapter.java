@@ -58,39 +58,13 @@ public class OrderHistoryListAdapter extends RecyclerView.Adapter<OrderHistoryLi
         holder.rowItemBinding.txtRestuarntName.setText(modelList.get(position).getShop().getShopname());
         holder.rowItemBinding.txtRestuarntLocation.setText(modelList.get(position).getShop().getAddress());
 
-       /* @SuppressLint("SimpleDateFormat") SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat = new SimpleDateFormat("MMMM dd, yyyy");
-        String inputDateStr="2020-12-13T16:05:58.000000Z";
-
-        try {
-            Date date = inputFormat.parse(modelList.get(position).getCreated_at());
-            assert date != null;
-            String outputDateStr = outputFormat.format(date);
-            holder.rowItemBinding.txtDate.setText(outputDateStr);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }*/
-
 
         holder.rowItemBinding.txtAmount.setText("\u20b9"+modelList.get(position).getTotalAmt());
         holder.rowItemBinding.txtDate.setText(modelList.get(position).getCreatedAt());
         Glide.with(context)
                 .load(IMAGE_HOME_URL+modelList.get(position).getShop().getImage())
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
-                .into(new CustomTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        holder.rowItemBinding.imgShop.setImageDrawable(resource);
-
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-
-
-                    }
-
-                });
+                .error(R.drawable.placeholder)
+                .into(holder.rowItemBinding.imgShop);
 
         holder.rowItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override

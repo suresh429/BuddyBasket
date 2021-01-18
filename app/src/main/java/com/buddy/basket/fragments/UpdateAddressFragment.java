@@ -1,5 +1,6 @@
 package com.buddy.basket.fragments;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.buddy.basket.R;
-import com.buddy.basket.databinding.FragmentAddAddressBinding;
 import com.buddy.basket.databinding.FragmentUpdateAddressBinding;
 import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.helper.Util;
@@ -36,6 +36,7 @@ public class UpdateAddressFragment extends Fragment implements View.OnClickListe
     int addressId,grandTotal,deliveryCharge,itemCount;
     String customerId,from,name,phone,address1,address2,landmark,pincode,shop_id;
 
+    @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentUpdateAddressBinding.inflate(inflater, container, false);
@@ -131,16 +132,13 @@ public class UpdateAddressFragment extends Fragment implements View.OnClickListe
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
+
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<AddressResponse> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Util.snackBar(requireView().getRootView(),t.getMessage(),Color.RED);
                 binding.progressBar.setVisibility(View.GONE);
             }
         });

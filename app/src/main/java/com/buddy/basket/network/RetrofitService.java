@@ -39,24 +39,20 @@ public class RetrofitService {
             // Adding NetworkConnectionInterceptor with okHttpClientBuilder.
 
 
-            oktHttpClient.addInterceptor(new Interceptor() {
-                @NotNull
-                @Override
-                public Response intercept(@NotNull Chain chain) throws IOException {
-                    Request original = chain.request();
-                    HttpUrl originalHttpUrl = original.url();
+            oktHttpClient.addInterceptor(chain -> {
+                Request original = chain.request();
+                HttpUrl originalHttpUrl = original.url();
 
-                    HttpUrl url = originalHttpUrl.newBuilder()
-                            .addQueryParameter("api_token", "LpDUtnLPfkzzthcCGy06KlU0l8bzD0mSUl8IBWNjRapThL7WFkvyyIvsMRq7")
-                            .build();
+                HttpUrl url = originalHttpUrl.newBuilder()
+                        .addQueryParameter("api_token", "LpDUtnLPfkzzthcCGy06KlU0l8bzD0mSUl8IBWNjRapThL7WFkvyyIvsMRq7")
+                        .build();
 
-                    // Request customization: add request headers
-                    Request.Builder requestBuilder = original.newBuilder()
-                            .url(url);
+                // Request customization: add request headers
+                Request.Builder requestBuilder = original.newBuilder()
+                        .url(url);
 
-                    Request request = requestBuilder.build();
-                    return chain.proceed(request);
-                }
+                Request request = requestBuilder.build();
+                return chain.proceed(request);
             });
 
             retrofit = new Retrofit.Builder()

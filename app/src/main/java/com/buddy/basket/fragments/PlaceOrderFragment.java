@@ -2,8 +2,8 @@ package com.buddy.basket.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +22,7 @@ import com.buddy.basket.R;
 import com.buddy.basket.activities.HomeActivity;
 import com.buddy.basket.databinding.FragmentPlaceorderBinding;
 import com.buddy.basket.helper.UserSessionManager;
+import com.buddy.basket.helper.Util;
 import com.buddy.basket.model.PlaceOrderResponse;
 import com.buddy.basket.network.ApiInterface;
 import com.buddy.basket.network.RetrofitService;
@@ -35,30 +36,29 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.buddy.basket.fragments.CartFragment.TAG;
 import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 
 public class PlaceOrderFragment extends Fragment {
 
     private FragmentPlaceorderBinding binding;
-    String customerId,shop_id;
-    int grandTotal,itemCount,address_id,deliveryCharge;
+    String customerId, shop_id;
+    int grandTotal, itemCount, address_id, deliveryCharge;
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPlaceorderBinding.inflate(inflater, container, false);
 
-        UserSessionManager userSessionManager= new UserSessionManager(requireContext());
+        UserSessionManager userSessionManager = new UserSessionManager(requireContext());
         HashMap<String, String> userDetails = userSessionManager.getUserDetails();
         customerId = userDetails.get("id");
 
         assert getArguments() != null;
-        grandTotal=getArguments().getInt("grandTotal");
-        itemCount=getArguments().getInt("itemCount");
-        address_id=getArguments().getInt("address_id");
-        shop_id=getArguments().getString("shop_id");
+        grandTotal = getArguments().getInt("grandTotal");
+        itemCount = getArguments().getInt("itemCount");
+        address_id = getArguments().getInt("address_id");
+        shop_id = getArguments().getString("shop_id");
         deliveryCharge = getArguments().getInt("DeliveryCharge");
 
         binding.txtShopName.setText(userSessionManager.getShopDetails().get("shopName"));
@@ -73,18 +73,18 @@ public class PlaceOrderFragment extends Fragment {
         binding.actionLayout.badgeCart.setVisibility(View.GONE);
         binding.actionLayout.txtActionBarTitle.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
 
-        binding.txtTotalCount.setText(""+itemCount);
-        binding.txtTotalItems.setText("\u20b9"+ String.format("%.2f", (double)grandTotal));
-        binding.txtDeliveryPrice.setText("\u20b9"+String.format("%.2f", (double)deliveryCharge));
+        binding.txtTotalCount.setText("" + itemCount);
+        binding.txtTotalItems.setText("\u20b9" + String.format("%.2f", (double) grandTotal));
+        binding.txtDeliveryPrice.setText("\u20b9" + String.format("%.2f", (double) deliveryCharge));
 
-        Double total = grandTotal + (double)deliveryCharge;
-        binding.txtGrandTotal.setText("\u20b9"+String.format("%.2f", total));
+        Double total = grandTotal + (double) deliveryCharge;
+        binding.txtGrandTotal.setText("\u20b9" + String.format("%.2f", total));
         binding.btnPlaceOrder.setOnClickListener(v -> PlaceOrderData());
         return binding.getRoot();
 
     }
 
-    private void PlaceOrderData(){
+    private void PlaceOrderData() {
         binding.progressBar.setVisibility(View.VISIBLE);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("customer_id", customerId);
@@ -93,7 +93,7 @@ public class PlaceOrderFragment extends Fragment {
         jsonObject.addProperty("customer_comments", Objects.requireNonNull(binding.etComments.getText()).toString());
         jsonObject.addProperty("address_id", address_id);
         jsonObject.addProperty("shop_id", shop_id);
-        Call<PlaceOrderResponse> call = RetrofitService.createService(ApiInterface.class,requireContext()).getPlaceOrderList(jsonObject);
+        Call<PlaceOrderResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).getPlaceOrderList(jsonObject);
         call.enqueue(new Callback<PlaceOrderResponse>() {
             @Override
             public void onResponse(@NonNull Call<PlaceOrderResponse> call, @NonNull Response<PlaceOrderResponse> response) {
@@ -102,23 +102,20 @@ public class PlaceOrderFragment extends Fragment {
                     binding.progressBar.setVisibility(View.GONE);
 
                     assert response.body() != null;
-                    displayAlert("Success",response.body().getMsg());
+                    displayAlert("Success", response.body().getMsg());
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);
                     assert response.body() != null;
-                    displayAlert("Failure",response.body().getMsg());
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
+                    displayAlert("Failure", response.body().getMsg());
+
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<PlaceOrderResponse> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.progressBar.setVisibility(View.GONE);
+                Util.snackBar(requireView().getRootView(), t.getMessage(), Color.RED);
             }
         });
     }
@@ -153,7 +150,7 @@ public class PlaceOrderFragment extends Fragment {
         txtMsg.setText(message);
         image.setImageResource(R.drawable.ic_success);
         buttonOk.setOnClickListener(v -> {
-           // Navigation.findNavController(v).navigate(R.id.navigation_home);
+            // Navigation.findNavController(v).navigate(R.id.navigation_home);
             Intent intentLogin = new Intent(requireContext(), HomeActivity.class);
             intentLogin.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intentLogin);
@@ -163,7 +160,6 @@ public class PlaceOrderFragment extends Fragment {
 
 
     }
-
 
 
 }

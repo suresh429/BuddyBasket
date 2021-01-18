@@ -1,5 +1,6 @@
 package com.buddy.basket.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +40,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.View
         return new ViewHolder(RestaurantsItemsListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull ItemsListAdapter.ViewHolder holder, int position) {
 
@@ -59,12 +61,10 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.View
             holder.rowItemBinding.productQuantity.setText("ADD");
             holder.rowItemBinding.productMinus.setVisibility(View.GONE);
             holder.rowItemBinding.productPlus.setVisibility(View.GONE);
-            Log.d(TAG, "onBindViewHolder: " + modelList.get(position).getQty());
         } else {
             holder.rowItemBinding.productQuantity.setText("" + modelList.get(position).getQty());
             holder.rowItemBinding.productMinus.setVisibility(View.VISIBLE);
             holder.rowItemBinding.productPlus.setVisibility(View.VISIBLE);
-            Log.d(TAG, "onBindViewHolder1: " + modelList.get(position).getQty());
         }
 
         holder.rowItemBinding.productQuantity.setOnClickListener(view -> {
@@ -89,18 +89,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListAdapter.View
 
         });
 
-        holder.rowItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-               /* bundle.putString("catId", modelList.get(position).getCat_id());
-                bundle.putString("catName", modelList.get(position).getCat_name());*/
 
-               /* NavController navController = Navigation.findNavController(v);
-                navController.navigate(R.id.categoryFragment,bundle);*/
-                //Navigation.findNavController(v).navigate(R.id.categoryFragment,bundle);
-            }
-        });
     }
 
     @Override

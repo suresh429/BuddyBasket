@@ -15,7 +15,6 @@ import androidx.navigation.Navigation;
 
 import com.buddy.basket.BuildConfig;
 import com.buddy.basket.R;
-import com.buddy.basket.activities.HomeActivity;
 import com.buddy.basket.activities.LoginActivity;
 import com.buddy.basket.databinding.FragmentMyaccountBinding;
 import com.buddy.basket.helper.UserSessionManager;

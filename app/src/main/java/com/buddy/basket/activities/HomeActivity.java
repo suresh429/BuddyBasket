@@ -53,7 +53,6 @@ public class HomeActivity extends AppCompatActivity {
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId()==R.id.navigation_home || destination.getId()==R.id.navigation_cart
                     || destination.getId()==R.id.navigation_history || destination.getId()==R.id.navigation_myaccount){
@@ -65,13 +64,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
         UserSessionManager userSessionManager = new UserSessionManager(HomeActivity.this);
         HashMap<String, String> userDetails = userSessionManager.getUserDetails();
         customerId = userDetails.get("id");
 
-
-       // cartCount();
 
 
     }
@@ -79,7 +75,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart: ");
+
         cartCount();
     }
 
@@ -109,8 +105,6 @@ public class HomeActivity extends AppCompatActivity {
                     if (response.body().getStatus().equalsIgnoreCase("true")){
 
                         List<CartResponse.CartBean> cartBeanList = response.body().getCart();
-
-                        //Objects.requireNonNull(binding.navView.getOrCreateBadge(R.id.navigation_cart)).setNumber(2);
                         BadgeDrawable badgeDrawable = binding.navView.getOrCreateBadge(R.id.navigation_cart);
                         badgeDrawable.setBackgroundColor(Color.parseColor("#FB4249"));
                         badgeDrawable.setBadgeTextColor(Color.WHITE);
@@ -123,41 +117,20 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-                } else if (response.errorBody() != null) {
-
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
-                Toast.makeText(HomeActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HomeActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+               binding.noInternet.noInternet.setVisibility(View.VISIBLE);
+               binding.navView.setVisibility(View.GONE);
 
             }
         });
     }
 
-   /* @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            moveTaskToBack(true);
 
-
-        } else {
-
-            Toast.makeText(getApplicationContext(), "Press Back again to Exit.", Toast.LENGTH_SHORT).show();
-            doubleBackToExitPressedOnce = true;
-            new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce = false, 2 * 1000);
-
-        }
-    }*/
 
 
 

@@ -3,7 +3,6 @@ package com.buddy.basket.fragments;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.buddy.basket.adapters.OrderHistoryListAdapter;
 import com.buddy.basket.adapters.OrderItemListAdapter;
-import com.buddy.basket.databinding.FragmentHistoryBinding;
 import com.buddy.basket.databinding.FragmentOrderSummaryBinding;
-import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.model.OrderHistoryResponse;
 import com.buddy.basket.viewmodels.OrderHistoryViewModel;
 import com.bumptech.glide.Glide;
@@ -27,12 +23,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 
-import java.sql.ClientInfoStatus;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
-import static com.buddy.basket.fragments.CartFragment.TAG;
 import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 

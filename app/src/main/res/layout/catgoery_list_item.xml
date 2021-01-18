@@ -2,34 +2,62 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     app:cardUseCompatPadding="true"
-    app:elevation="5dp"
+    app:elevation="-1dp"
     app:cardCornerRadius="5dp"
-    android:foreground="?attr/selectableItemBackground"
-    android:background="@color/white">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:padding="5dp">
 
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:scaleType="fitXY"
-            android:id="@+id/catImage"
-            android:contentDescription="@string/todo" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:cardUseCompatPadding="true"
+        app:elevation="5dp"
+        app:cardCornerRadius="5dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:background="@color/white">
 
-        <TextView
-            android:id="@+id/catName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textSize="18sp"
-            android:fontFamily="@font/proxima_nova_regular"
-            android:layout_gravity="center_vertical"/>
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
+                android:id="@+id/catImage"
+                android:contentDescription="@string/todo" />
+
+            <TextView
+                android:id="@+id/catName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textSize="18sp"
+                android:fontFamily="@font/proxima_nova_regular"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/shopListRecycler"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="10"
+        android:orientation="horizontal"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="15dp"/>
+
     </LinearLayout>
-
-
 </androidx.cardview.widget.CardView>

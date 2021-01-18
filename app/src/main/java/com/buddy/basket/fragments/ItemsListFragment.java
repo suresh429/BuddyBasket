@@ -1,13 +1,12 @@
 package com.buddy.basket.fragments;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -17,8 +16,6 @@ import androidx.navigation.Navigation;
 
 import com.buddy.basket.R;
 import com.buddy.basket.adapters.ItemsListAdapter;
-
-
 import com.buddy.basket.databinding.FragmentItemsListBinding;
 import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.helper.Util;
@@ -30,23 +27,15 @@ import com.buddy.basket.network.RetrofitService;
 import com.buddy.basket.viewmodels.CartViewModel;
 import com.buddy.basket.viewmodels.ItemsListViewModel;
 import com.bumptech.glide.Glide;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +45,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.ContentValues.TAG;
 import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 
@@ -75,10 +63,10 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
     String shopName, customerId, shopImage, shopLocation, shopDescription, shopOpenTime, shopCloseTime, shopContact;
     int shopId,qty;
 
+    @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        //View root = inflater.inflate(R.layout.fragment_restaurants, container, false);
         binding = FragmentItemsListBinding.inflate(inflater, container, false);
 
         userSessionManager = new UserSessionManager(requireContext());
@@ -238,12 +226,14 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
                         binding.recyclerHomeList.setAdapter(itemsListAdapter);
                         binding.progressBar.setVisibility(View.GONE);
                         binding.errorLayout.txtError.setVisibility(View.GONE);
+                        binding.noInternet.noInternet.setVisibility(View.GONE);
                         itemsListAdapter.notifyDataSetChanged();
                         calculateCartTotal();
 
                     }
                 } else {
                     binding.progressBar.setVisibility(View.GONE);
+                    binding.noInternet.noInternet.setVisibility(View.GONE);
                     binding.errorLayout.txtError.setVisibility(View.VISIBLE);
                 }
 
@@ -251,8 +241,8 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
 
             @Override
             public void onFailure(@NotNull Call<ItemsListResponse> call, @NotNull Throwable t) {
-                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 binding.progressBar.setVisibility(View.GONE);
+                binding.noInternet.noInternet.setVisibility(View.VISIBLE);
             }
         });
 
@@ -263,7 +253,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
     @Override
     public void onMinusClick(int position, ItemDetailsResponse itemDetailsResponse) {
         int i = itemDetailsResponseList.indexOf(itemDetailsResponse);
-        Log.d(TAG, "onMinusClick: " + itemDetailsResponse.getQty());
+
         if (itemDetailsResponse.getQty() > 0) {
 
             ItemDetailsResponse updatedItemDetailsResponse = new ItemDetailsResponse(itemDetailsResponse.getId(), itemDetailsResponse.getItemname(), itemDetailsResponse.getSlug(), (itemDetailsResponse.getQty() - 1), itemDetailsResponse.getShop_id(), itemDetailsResponse.getCategory_id(),
@@ -311,6 +301,7 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
     }
 
     // total Amount
+    @SuppressLint("SetTextI18n")
     public void calculateCartTotal() {
         int grandTotal = 0;
         int itemCount = 0;
@@ -358,8 +349,9 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
                     binding.progressBar.setVisibility(View.GONE);
 
                     CartResponse cartResponse = response.body();
+                    assert cartResponse != null;
                     if (cartResponse.getStatus().equalsIgnoreCase("true")) {
-                        Toast.makeText(getContext(), "Item Added to Cart", Toast.LENGTH_SHORT).show();
+                        Util.snackBar(requireView().getRootView(),"Item Added to Cart",Color.WHITE);
                     } else {
                         clearCartDialog(customerId, itemId);
                     }
@@ -367,17 +359,15 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
+
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Util.snackBar(requireView().getRootView(),t.getMessage(),Color.WHITE);
                 binding.progressBar.setVisibility(View.GONE);
+
             }
         });
     }
@@ -420,24 +410,24 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
 
                     CartResponse cartResponse = response.body();
                     if (Objects.requireNonNull(cartResponse).getStatus().equalsIgnoreCase("true")) {
-                        Toast.makeText(getContext(), "Item Added to Cart", Toast.LENGTH_SHORT).show();
+                        Util.snackBar(requireView().getRootView(),"Item Added to Cart", Color.WHITE);
+
+
                     } else {
-                        Toast.makeText(getContext(), "Different Shop", Toast.LENGTH_SHORT).show();
+
+                        Util.snackBar(requireView().getRootView(),"Different Shop", Color.WHITE);
                     }
 
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
+
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Util.snackBar(requireView().getRootView(),t.getMessage(),Color.WHITE);
                 binding.progressBar.setVisibility(View.GONE);
             }
         });
@@ -457,20 +447,17 @@ public class ItemsListFragment extends Fragment implements ItemsListAdapter.Rest
                 if (response.isSuccessful()) {
                     binding.progressBar.setVisibility(View.GONE);
 
-                    Toast.makeText(getContext(), "Item Updated", Toast.LENGTH_SHORT).show();
+                    Util.snackBar(requireView().getRootView(),"Item Updated",Color.WHITE);
 
                 } else if (response.errorBody() != null) {
                     binding.progressBar.setVisibility(View.GONE);
-                   /* ApiError errorResponse = new Gson().fromJson(response.errorBody().charStream(), ApiError.class);
-                    //Util.toast(context, "Session expired");
-                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Session expired", Toast.LENGTH_SHORT).show());
-                    */
+
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
-                Toast.makeText(requireContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Util.snackBar(requireView().getRootView(),t.getMessage(),Color.WHITE);
                 binding.progressBar.setVisibility(View.GONE);
             }
         });

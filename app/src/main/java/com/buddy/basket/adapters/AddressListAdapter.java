@@ -1,5 +1,6 @@
 package com.buddy.basket.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
         return new ViewHolder(AddressItemsListBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull AddressListAdapter.ViewHolder holder, int position) {
 
