@@ -66,9 +66,11 @@ public class HistoryFragment extends Fragment {
         orderHistoryViewModel.getProgressbarObservable().observe(getViewLifecycleOwner(), aBoolean -> {
             if (aBoolean) {
                 binding.progressBar.setVisibility(View.VISIBLE);
+                binding.noInternet.noInternet.setVisibility(View.GONE);
 
             } else {
                 binding.progressBar.setVisibility(View.GONE);
+                //binding.noInternet.noInternet.setVisibility(View.GONE);
 
             }
         });

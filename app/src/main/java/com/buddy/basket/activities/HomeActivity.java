@@ -123,8 +123,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<CartResponse> call, @NonNull Throwable t) {
                 //Toast.makeText(HomeActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-               binding.noInternet.noInternet.setVisibility(View.VISIBLE);
-               binding.navView.setVisibility(View.GONE);
+              // binding.noInternet.noInternet.setVisibility(View.VISIBLE);
+              // binding.navView.setVisibility(View.GONE);
 
             }
         });

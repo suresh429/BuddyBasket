@@ -33,12 +33,12 @@
         android:layout_above="@+id/nav_view"
        />
 
-    <include
+    <!--<include
         layout="@layout/no_connection_layout"
         android:id="@+id/noInternet"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"/>
+        />-->
 
 </RelativeLayout>

@@ -81,6 +81,7 @@ public class ShopsFragment extends Fragment {
         shopsViewModel.getProgressbarObservable().observe(getViewLifecycleOwner(), aBoolean -> {
             if (aBoolean) {
                 binding.progressBar.setVisibility(View.VISIBLE);
+                binding.noInternet.noInternet.setVisibility(View.GONE);
 
             } else {
                 binding.progressBar.setVisibility(View.GONE);

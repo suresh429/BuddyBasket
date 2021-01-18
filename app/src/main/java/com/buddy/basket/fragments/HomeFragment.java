@@ -94,9 +94,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
         citiesViewModel.getProgressbarObservable().observe(getViewLifecycleOwner(), aBoolean -> {
             if (aBoolean) {
                 binding.progressBar.setVisibility(View.VISIBLE);
+               // binding.noInternet.noInternet.setVisibility(View.GONE);
 
             } else {
                 binding.progressBar.setVisibility(View.GONE);
+               // binding.noInternet.noInternet.setVisibility(View.GONE);
 
             }
         });
@@ -180,9 +182,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
         categoriesViewModel.getProgressbarObservable().observe(getViewLifecycleOwner(), aBoolean -> {
             if (aBoolean) {
                 binding.progressBar.setVisibility(View.VISIBLE);
+                binding.noInternet.noInternet.setVisibility(View.GONE);
 
             } else {
                 binding.progressBar.setVisibility(View.GONE);
+              //  binding.noInternet.noInternet.setVisibility(View.GONE);
 
             }
         });
@@ -191,23 +195,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
         // get home data
         categoriesViewModel.getRepository().observe(getViewLifecycleOwner(), homeResponse -> {
 
-            if (homeResponse.getStatus().equalsIgnoreCase("true")) {
-                List<CategoriesResponse.DataBean> catDetailsBeanList = homeResponse.getData();
-                dataBeanArrayList.addAll(catDetailsBeanList);
+            List<CategoriesResponse.DataBean> catDetailsBeanList = homeResponse.getData();
+            dataBeanArrayList.addAll(catDetailsBeanList);
 
-                List<CategoriesResponse.DataBean> filterDataBean = CollectionsKt.filter(catDetailsBeanList, s -> !s.getStatus().equals("0"));
+            List<CategoriesResponse.DataBean> filterDataBean = CollectionsKt.filter(catDetailsBeanList, s -> !s.getStatus().equals("0"));
 
-                categoryListAdapter = new CategoryListAdapter(filterDataBean, getActivity());
-                binding.recyclerHomeList.setAdapter(categoryListAdapter);
+            categoryListAdapter = new CategoryListAdapter(filterDataBean, getActivity());
+            binding.recyclerHomeList.setAdapter(categoryListAdapter);
 
-                binding.progressBar.setVisibility(View.GONE);
-                binding.noInternet.noInternet.setVisibility(View.GONE);
+            binding.progressBar.setVisibility(View.GONE);
+            binding.noInternet.noInternet.setVisibility(View.GONE);
 
-                categoryListAdapter.notifyDataSetChanged();
-            } else {
-                binding.progressBar.setVisibility(View.GONE);
-                binding.noInternet.noInternet.setVisibility(View.GONE);
-            }
+            categoryListAdapter.notifyDataSetChanged();
         });
 
 

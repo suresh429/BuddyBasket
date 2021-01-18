@@ -49,7 +49,10 @@
 
     <include layout="@layout/no_connection_layout"
         android:id="@+id/noInternet"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@id/action_layout"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
