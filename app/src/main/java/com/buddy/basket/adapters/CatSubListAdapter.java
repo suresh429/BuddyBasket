@@ -26,11 +26,11 @@ import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 public class CatSubListAdapter extends RecyclerView.Adapter<CatSubListAdapter.ViewHolder> {
 
-    List<CategoriesResponse.DataBean> modelList;
+    List<CategoriesResponse.DataBean.ShopsBean> modelList;
     Context context;
 
 
-    public CatSubListAdapter(List<CategoriesResponse.DataBean> modelList, Context context) {
+    public CatSubListAdapter(List<CategoriesResponse.DataBean.ShopsBean> modelList, Context context) {
         this.modelList = modelList;
         this.context = context;
     }
@@ -44,30 +44,31 @@ public class CatSubListAdapter extends RecyclerView.Adapter<CatSubListAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull CatSubListAdapter.ViewHolder holder, int position) {
 
-        holder.rowItemBinding.txtShopName.setText(modelList.get(position).getCategoryname());
+        holder.rowItemBinding.txtShopName.setText(modelList.get(position).getShopname());
 
         Glide.with(context).load(IMAGE_HOME_URL + modelList.get(position).getImage())
                 .error(R.drawable.placeholder).into(holder.rowItemBinding.imgShop);
 
         holder.rowItemBinding.getRoot().setOnClickListener(v -> {
 
-            UserSessionManager userSessionManager = new UserSessionManager(context);
-            HashMap<String, String> location = userSessionManager.getLocationDetails();
-            String cityId = location.get("cityId");
-
             Bundle bundle = new Bundle();
-            bundle.putInt("city_id", Integer.parseInt(Objects.requireNonNull(cityId)));
-            bundle.putInt("category_id", modelList.get(position).getId());
-            bundle.putString("categoryname", modelList.get(position).getCategoryname());
+            bundle.putInt("shopId", modelList.get(position).getId());
+            bundle.putString("shopName", modelList.get(position).getShopname());
+            bundle.putString("shopImage", modelList.get(position).getImage());
+            bundle.putString("shopLocation", modelList.get(position).getAddress());
+            bundle.putString("shopDescription", modelList.get(position).getDescription());
+            bundle.putString("shopOpenTime", modelList.get(position).getOpentime());
+            bundle.putString("shopCloseTime", modelList.get(position).getClosetime());
+            bundle.putString("shopContact", modelList.get(position).getPhone());
 
-            NavController navController = Navigation.findNavController(v);
-            navController.navigate(R.id.shopsFragment, bundle);
+            Navigation.findNavController(v).navigate(R.id.restaurantsItemsListFragment, bundle);
         });
     }
 
     @Override
     public int getItemCount() {
-        return modelList.size();
+        //return modelList.size();
+        return Math.min(modelList.size(), 5);
     }
 
 

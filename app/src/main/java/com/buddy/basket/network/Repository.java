@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 
 import com.buddy.basket.model.AddressResponse;
+import com.buddy.basket.model.BannerResponse;
 import com.buddy.basket.model.CartResponse;
 import com.buddy.basket.model.CategoriesResponse;
 import com.buddy.basket.model.CitiesResponse;
@@ -594,6 +595,40 @@ public class Repository {
 
             @Override
             public void onFailure(@NotNull Call<CitiesResponse> call, @NotNull Throwable t) {
+                if (t instanceof NoConnectivityException) {
+                    // show No Connectivity message to user or do whatever you want.
+                    toastMessageObserver.setValue(t.getMessage());
+                    // Whenever you want to show toast use setValue.
+
+                }
+                // homeData.setValue(null);
+                progressbarObservable.setValue(false);
+            }
+        });
+        return homeData;
+    }
+
+
+    // getting banners data response
+    public MutableLiveData<BannerResponse> getBannersData(JsonObject jsonObject) {
+        progressbarObservable.setValue(true);
+        MutableLiveData<BannerResponse> homeData = new MutableLiveData<>();
+
+        newsApiInterface.getBannersList(jsonObject).enqueue(new Callback<BannerResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<BannerResponse> call, @NotNull Response<BannerResponse> response) {
+                if (response.isSuccessful()) {
+                    progressbarObservable.setValue(false);
+                    homeData.setValue(response.body());
+                } else {
+                    progressbarObservable.setValue(false);
+                    toastMessageObserver.setValue("Something unexpected happened to our request: " + response.message()); // Whenever you want to show toast use setValue.
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<BannerResponse> call, @NotNull Throwable t) {
                 if (t instanceof NoConnectivityException) {
                     // show No Connectivity message to user or do whatever you want.
                     toastMessageObserver.setValue(t.getMessage());

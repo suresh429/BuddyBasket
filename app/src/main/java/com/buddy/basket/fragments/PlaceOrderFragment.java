@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,10 @@ import com.buddy.basket.network.RetrofitService;
 import com.bumptech.glide.Glide;
 import com.google.gson.JsonObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -40,9 +44,9 @@ import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 
 public class PlaceOrderFragment extends Fragment {
-
+    private static final String TAG = "PlaceOrderFragment";
     private FragmentPlaceorderBinding binding;
-    String customerId, shop_id;
+    String customerId, shop_id,date_time;
     int grandTotal, itemCount, address_id, deliveryCharge;
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
@@ -61,6 +65,9 @@ public class PlaceOrderFragment extends Fragment {
         shop_id = getArguments().getString("shop_id");
         deliveryCharge = getArguments().getInt("DeliveryCharge");
 
+        date_time = new SimpleDateFormat("MMM dd, yyyy HH:mm a", Locale.getDefault()).format(new Date());
+
+        Log.d(TAG, "onCreateView: "+date_time);
         binding.txtShopName.setText(userSessionManager.getShopDetails().get("shopName"));
         binding.txtAddreess.setText(userSessionManager.getShopDetails().get("shopLocation"));
         binding.txtTime.setText(userSessionManager.getShopDetails().get("shopOpenTime") + " - " + userSessionManager.getShopDetails().get("shopCloseTime"));
@@ -93,6 +100,7 @@ public class PlaceOrderFragment extends Fragment {
         jsonObject.addProperty("customer_comments", Objects.requireNonNull(binding.etComments.getText()).toString());
         jsonObject.addProperty("address_id", address_id);
         jsonObject.addProperty("shop_id", shop_id);
+        jsonObject.addProperty("date_time", date_time);
         Call<PlaceOrderResponse> call = RetrofitService.createService(ApiInterface.class, requireContext()).getPlaceOrderList(jsonObject);
         call.enqueue(new Callback<PlaceOrderResponse>() {
             @Override

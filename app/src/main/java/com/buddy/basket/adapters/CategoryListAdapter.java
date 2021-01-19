@@ -3,6 +3,7 @@ package com.buddy.basket.adapters;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import static com.buddy.basket.fragments.CartFragment.TAG;
 import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 
@@ -38,7 +40,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     List<CategoriesResponse.DataBean> modelList;
     Context context;
     CatSubListAdapter catSubListAdapter;
-
+    List<CategoriesResponse.DataBean.ShopsBean> shopsBeanList;
 
     public CategoryListAdapter(List<CategoriesResponse.DataBean> modelList, Context context) {
         this.modelList = modelList;
@@ -54,15 +56,18 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     @Override
     public void onBindViewHolder(@NonNull CategoryListAdapter.ViewHolder holder, int position) {
 
+        shopsBeanList = modelList.get(position).getShops();
         holder.rowItemBinding.catName.setText(modelList.get(position).getCategoryname());
 
         Glide.with(context).load(IMAGE_HOME_URL + modelList.get(position).getImage())
                 .error(R.drawable.placeholder).into(holder.rowItemBinding.catImage);
 
-
-        catSubListAdapter = new CatSubListAdapter(modelList,context);
+        catSubListAdapter = new CatSubListAdapter(shopsBeanList,context);
         holder.rowItemBinding.shopListRecycler.setAdapter(catSubListAdapter);
 
+        if (shopsBeanList.size()==0){
+            holder.rowItemBinding.getRoot().setVisibility(View.GONE);
+        }
 
         holder.rowItemBinding.getRoot().setOnClickListener(v -> {
 

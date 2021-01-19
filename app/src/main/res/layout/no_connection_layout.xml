@@ -23,11 +23,13 @@
         android:text="@string/could_not_connect_to_the_internet_please_check_your_network"/>
 
     <TextView
+        android:id="@+id/txtTryAgain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:gravity="center"
         android:padding="10dp"
+        android:foreground="?attr/selectableItemBackground"
         android:textColor="@color/colorPrimary"
         android:text="@string/try_again"/>
 

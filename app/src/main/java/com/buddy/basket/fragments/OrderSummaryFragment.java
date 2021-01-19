@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.buddy.basket.R;
 import com.buddy.basket.adapters.OrderItemListAdapter;
 import com.buddy.basket.databinding.FragmentOrderSummaryBinding;
 import com.buddy.basket.model.OrderHistoryResponse;
@@ -65,22 +66,8 @@ public class OrderSummaryFragment extends Fragment {
         binding.txtRestuarntLocation.setText(ordersBeanList.get(position).getShop().getAddress());
         Glide.with(requireActivity())
                 .load(IMAGE_HOME_URL + ordersBeanList.get(position).getShop().getImage())
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
-                .into(new CustomTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        binding.imgShop.setImageDrawable(resource);
-
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-
-
-                    }
-
-                });
-
+                .error(R.drawable.placeholder)
+                .into(binding.imgShop);
 
         binding.txtOrderStatus.setText("This Order was "+ordersBeanList.get(position).getStatus());
         binding.txtItemTotalPrice.setText("\u20b9"+ordersBeanList.get(position).getTotalAmt());

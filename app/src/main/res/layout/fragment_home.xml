@@ -4,23 +4,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#74ECECEC"
     tools:context=".fragments.HomeFragment">
 
     <include
         android:id="@+id/action_layout"
         layout="@layout/location_layout" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerHomeList"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        android:orientation="vertical"
-        android:padding="5dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="3"
-        tools:listitem="@layout/catgoery_list_item"
-        android:layout_below="@id/action_layout"/>
+        android:layout_below="@+id/action_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/parentCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
+
+                <com.denzcoskun.imageslider.ImageSlider
+                    android:id="@+id/image_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    app:iss_auto_cycle="true"
+                    app:iss_delay="10"
+                    app:iss_error_image="@drawable/placeholder"
+                    app:iss_period="1000"
+                    app:iss_placeholder="@drawable/placeholder"
+                    app:iss_selected_dot="@drawable/red_selected_dot"
+                    app:iss_unselected_dot="@drawable/default_unselected_dot" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerHomeList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:orientation="vertical"
+                android:padding="5dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/catgoery_list_item" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 
     <ProgressBar
@@ -32,11 +72,12 @@
         android:visibility="gone"
         tools:visibility="visible" />
 
-    <include layout="@layout/no_connection_layout"
+    <include
         android:id="@+id/noInternet"
-        android:visibility="gone"
-        android:layout_height="match_parent"
+        layout="@layout/no_connection_layout"
         android:layout_width="match_parent"
-        android:layout_below="@id/action_layout"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/action_layout"
+        android:visibility="gone" />
 
 </RelativeLayout>

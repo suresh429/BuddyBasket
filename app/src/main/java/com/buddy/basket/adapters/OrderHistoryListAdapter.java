@@ -60,23 +60,20 @@ public class OrderHistoryListAdapter extends RecyclerView.Adapter<OrderHistoryLi
 
 
         holder.rowItemBinding.txtAmount.setText("\u20b9"+modelList.get(position).getTotalAmt());
-        holder.rowItemBinding.txtDate.setText(modelList.get(position).getCreatedAt());
+        holder.rowItemBinding.txtDate.setText(modelList.get(position).getDate_time());
         Glide.with(context)
                 .load(IMAGE_HOME_URL+modelList.get(position).getShop().getImage())
                 .error(R.drawable.placeholder)
                 .into(holder.rowItemBinding.imgShop);
 
-        holder.rowItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
+        holder.rowItemBinding.getRoot().setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
 
-                bundle.putParcelableArrayList("shopListArray", modelList);
-                bundle.putParcelableArrayList("orderListArray",  modelList.get(position).getOrderItem());
-                bundle.putInt("position", position);
+            bundle.putParcelableArrayList("shopListArray", modelList);
+            bundle.putParcelableArrayList("orderListArray",  modelList.get(position).getOrderItem());
+            bundle.putInt("position", position);
 
-                Navigation.findNavController(v).navigate(R.id.orderSummaryFragment,bundle);
-            }
+            Navigation.findNavController(v).navigate(R.id.orderSummaryFragment,bundle);
         });
     }
 

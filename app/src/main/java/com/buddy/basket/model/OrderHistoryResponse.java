@@ -72,11 +72,13 @@ public class OrderHistoryResponse implements Parcelable {
         @SerializedName("delivery_charges")
         private String deliveryCharges;
         @SerializedName("customer_comments")
-        private Object customerComments;
+        private String customerComments;
         @SerializedName("status")
         private String status;
         @SerializedName("comments")
-        private Object comments;
+        private String comments;
+        @SerializedName("date_time")
+        private String date_time;
         @SerializedName("created_at")
         private String createdAt;
         @SerializedName("updated_at")
@@ -88,15 +90,21 @@ public class OrderHistoryResponse implements Parcelable {
         @SerializedName("order_item")
         private ArrayList<OrderItemBean> orderItem;
 
+
         protected OrdersBean(Parcel in) {
             id = in.readInt();
             customerId = in.readString();
             totalAmt = in.readString();
             addressId = in.readString();
             shopId = in.readString();
+            deliveryCharges = in.readString();
+            customerComments = in.readString();
             status = in.readString();
+            comments = in.readString();
+            date_time = in.readString();
             createdAt = in.readString();
             updatedAt = in.readString();
+            orderItem = in.createTypedArrayList(OrderItemBean.CREATOR);
         }
 
         public static final Creator<OrdersBean> CREATOR = new Creator<OrdersBean>() {
@@ -158,13 +166,7 @@ public class OrderHistoryResponse implements Parcelable {
         public void setDeliveryCharges(String deliveryCharges) {
             this.deliveryCharges = deliveryCharges;
         }
-        public Object getCustomerComments() {
-            return customerComments;
-        }
 
-        public void setCustomerComments(Object customerComments) {
-            this.customerComments = customerComments;
-        }
 
         public String getStatus() {
             return status;
@@ -174,12 +176,28 @@ public class OrderHistoryResponse implements Parcelable {
             this.status = status;
         }
 
-        public Object getComments() {
+        public String getCustomerComments() {
+            return customerComments;
+        }
+
+        public void setCustomerComments(String customerComments) {
+            this.customerComments = customerComments;
+        }
+
+        public String getComments() {
             return comments;
         }
 
-        public void setComments(Object comments) {
+        public void setComments(String comments) {
             this.comments = comments;
+        }
+
+        public String getDate_time() {
+            return date_time;
+        }
+
+        public void setDate_time(String date_time) {
+            this.date_time = date_time;
         }
 
         public String getCreatedAt() {

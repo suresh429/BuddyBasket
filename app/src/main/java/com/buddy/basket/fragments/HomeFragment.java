@@ -1,6 +1,7 @@
 package com.buddy.basket.fragments;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,10 +25,15 @@ import com.buddy.basket.adapters.LocationListAdapter;
 import com.buddy.basket.databinding.FragmentHomeBinding;
 import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.helper.Util;
+import com.buddy.basket.model.BannerResponse;
 import com.buddy.basket.model.CategoriesResponse;
 import com.buddy.basket.model.CitiesResponse;
+import com.buddy.basket.viewmodels.BannersViewModel;
 import com.buddy.basket.viewmodels.CategoriesViewModel;
 import com.buddy.basket.viewmodels.CitiesViewModel;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -37,15 +43,19 @@ import java.util.Objects;
 
 import kotlin.collections.CollectionsKt;
 
+import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
+
 
 public class HomeFragment extends Fragment implements View.OnClickListener, LocationListAdapter.AdapterListner {
     UserSessionManager userSessionManager;
     AlertDialog alertDialog;
     private static final String TAG = "CatList";
     ArrayList<CategoriesResponse.DataBean> dataBeanArrayList = new ArrayList<>();
+    ArrayList<SlideModel> imageList = new ArrayList<>();
 
     CategoriesViewModel categoriesViewModel;
     CitiesViewModel citiesViewModel;
+    BannersViewModel bannersViewModel;
 
     FragmentHomeBinding binding;
     CategoryListAdapter categoryListAdapter;
@@ -54,6 +64,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         citiesViewModel = new ViewModelProvider(this).get(CitiesViewModel.class);
+        bannersViewModel = new ViewModelProvider(this).get(BannersViewModel.class);
         categoriesViewModel = new ViewModelProvider(this).get(CategoriesViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -67,6 +78,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
 
 
         citiesList();
+        bannerList();
         homeData();
 
 
@@ -94,11 +106,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
         citiesViewModel.getProgressbarObservable().observe(getViewLifecycleOwner(), aBoolean -> {
             if (aBoolean) {
                 binding.progressBar.setVisibility(View.VISIBLE);
-               // binding.noInternet.noInternet.setVisibility(View.GONE);
+                // binding.noInternet.noInternet.setVisibility(View.GONE);
 
             } else {
                 binding.progressBar.setVisibility(View.GONE);
-               // binding.noInternet.noInternet.setVisibility(View.GONE);
+                // binding.noInternet.noInternet.setVisibility(View.GONE);
 
             }
         });
@@ -163,14 +175,78 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
 
     }
 
+    private void bannerList() {
+
+        bannersViewModel.initCities("1", requireActivity());
+
+        // Alert toast msg
+        bannersViewModel.getToastObserver().observe(getViewLifecycleOwner(), message -> {
+
+            if (message.equalsIgnoreCase(getResources().getString(R.string.no_connection))) {
+                binding.noInternet.noInternet.setVisibility(View.VISIBLE);
+            } else {
+                Util.snackBar(requireView().getRootView(), message, Color.RED);
+            }
+
+
+        });
+
+
+        // progress bar
+        bannersViewModel.getProgressbarObservable().observe(getViewLifecycleOwner(), aBoolean -> {
+            if (aBoolean) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+                // binding.noInternet.noInternet.setVisibility(View.GONE);
+
+            } else {
+                binding.progressBar.setVisibility(View.GONE);
+                // binding.noInternet.noInternet.setVisibility(View.GONE);
+
+            }
+        });
+
+
+        // get home data
+        bannersViewModel.getRepository().observe(getViewLifecycleOwner(), homeResponse -> {
+            if (homeResponse.getStatus().equalsIgnoreCase("true")) {
+                List<BannerResponse.DataBean> dataBeans = homeResponse.getData();
+
+                imageList.clear();
+                for (BannerResponse.DataBean dataBean : dataBeans) {
+                    imageList.add(new SlideModel(IMAGE_HOME_URL+dataBean.getImage(), ScaleTypes.FIT));
+                }
+
+                binding.imageSlider.setImageList(imageList);
+
+                binding.progressBar.setVisibility(View.GONE);
+                binding.noInternet.noInternet.setVisibility(View.GONE);
+                //shopsListAdapter.notifyDataSetChanged();
+            } else {
+                Util.snackBar(requireView().getRootView(), "No Locations Found!", Color.RED);
+                binding.noInternet.noInternet.setVisibility(View.GONE);
+            }
+
+
+        });
+
+
+    }
+
+
     private void homeData() {
         categoriesViewModel.initCategories(requireActivity());
 
         // Alert toast msg
         categoriesViewModel.getToastObserver().observe(getViewLifecycleOwner(), message -> {
-            Log.d(TAG, "homeData: "+message);
+            Log.d(TAG, "homeData: " + message);
             if (message.equalsIgnoreCase(getResources().getString(R.string.no_connection))) {
                 binding.noInternet.noInternet.setVisibility(View.VISIBLE);
+                /*binding.noInternet.txtTryAgain.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent()
+                    }
+                });*/
             } else {
                 Util.snackBar(requireView().getRootView(), message, Color.RED);
             }
@@ -186,7 +262,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
 
             } else {
                 binding.progressBar.setVisibility(View.GONE);
-              //  binding.noInternet.noInternet.setVisibility(View.GONE);
+                //  binding.noInternet.noInternet.setVisibility(View.GONE);
 
             }
         });
@@ -199,6 +275,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
             dataBeanArrayList.addAll(catDetailsBeanList);
 
             List<CategoriesResponse.DataBean> filterDataBean = CollectionsKt.filter(catDetailsBeanList, s -> !s.getStatus().equals("0"));
+
+            /*for (CategoriesResponse.DataBean dataBean : filterDataBean) {
+                List<CategoriesResponse.DataBean> shopsBeans = CollectionsKt.filter(dataBean, s -> !s.ge().equals("0"));
+            }*/
 
             categoryListAdapter = new CategoryListAdapter(filterDataBean, getActivity());
             binding.recyclerHomeList.setAdapter(categoryListAdapter);

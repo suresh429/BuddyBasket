@@ -1,6 +1,7 @@
 package com.buddy.basket.network;
 
 import com.buddy.basket.model.AddressResponse;
+import com.buddy.basket.model.BannerResponse;
 import com.buddy.basket.model.CartResponse;
 import com.buddy.basket.model.CategoriesResponse;
 import com.buddy.basket.model.CitiesResponse;
@@ -22,6 +23,10 @@ import retrofit2.http.POST;
 
 public interface ApiInterface {
 
+
+    @Headers("Content-Type: application/json")
+    @POST("banners")
+    Call<BannerResponse> getBannersList(@Body JsonObject jsonObject);
 
     @Headers("Content-Type: application/json")
     @POST("cities")
