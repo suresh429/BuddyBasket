@@ -129,6 +129,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
                     userSessionManager.saveLocation(String.valueOf(dataBeans.get(0).getId()), dataBeans.get(0).getCity());
                     binding.actionLayout.textLocation.setText(dataBeans.get(0).getCity());
 
+
+
                 }
 
 
@@ -280,7 +282,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
                 List<CategoriesResponse.DataBean> shopsBeans = CollectionsKt.filter(dataBean, s -> !s.ge().equals("0"));
             }*/
 
-            categoryListAdapter = new CategoryListAdapter(filterDataBean, getActivity());
+            categoryListAdapter = new CategoryListAdapter(filterDataBean, getActivity(),cityId);
             binding.recyclerHomeList.setAdapter(categoryListAdapter);
 
             binding.progressBar.setVisibility(View.GONE);
@@ -307,6 +309,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
         alertDialog.dismiss();
         userSessionManager.saveLocation(String.valueOf(product.getId()), product.getCity());
         binding.actionLayout.textLocation.setText(product.getCity());
+
+        cityId = userSessionManager.getLocationDetails().get("cityId");
+
+        homeData();
 
 
     }

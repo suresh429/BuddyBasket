@@ -62,7 +62,7 @@ public class ShopsFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void shopList(int city_id, int category_id, String categoryName) {
+    public void shopList(int city_id, int category_id, String categoryName) {
         shopsViewModel.initShops(city_id, category_id, requireActivity());
 
         // Alert toast msg

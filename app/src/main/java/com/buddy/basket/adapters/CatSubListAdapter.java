@@ -15,6 +15,7 @@ import com.buddy.basket.databinding.CatgoeryListItemBinding;
 import com.buddy.basket.databinding.CatsublistItamBinding;
 import com.buddy.basket.helper.UserSessionManager;
 import com.buddy.basket.model.CategoriesResponse;
+import com.buddy.basket.model.ShopsListResponse;
 import com.bumptech.glide.Glide;
 
 import java.util.HashMap;
@@ -26,11 +27,11 @@ import static com.buddy.basket.network.RetrofitService.IMAGE_HOME_URL;
 
 public class CatSubListAdapter extends RecyclerView.Adapter<CatSubListAdapter.ViewHolder> {
 
-    List<CategoriesResponse.DataBean.ShopsBean> modelList;
+    List<ShopsListResponse.DataBean> modelList;
     Context context;
 
 
-    public CatSubListAdapter(List<CategoriesResponse.DataBean.ShopsBean> modelList, Context context) {
+    public CatSubListAdapter(List<ShopsListResponse.DataBean> modelList, Context context) {
         this.modelList = modelList;
         this.context = context;
     }
