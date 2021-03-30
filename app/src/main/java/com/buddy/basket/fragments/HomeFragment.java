@@ -126,10 +126,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Loca
                     binding.actionLayout.textLocation.setText(city_Name);
 
                 } else {
+                    cityId = String.valueOf(dataBeans.get(0).getId());
                     userSessionManager.saveLocation(String.valueOf(dataBeans.get(0).getId()), dataBeans.get(0).getCity());
                     binding.actionLayout.textLocation.setText(dataBeans.get(0).getCity());
-
-
 
                 }
 
